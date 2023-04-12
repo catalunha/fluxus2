@@ -79,6 +79,26 @@ class HomePage extends StatelessWidget {
                   )
                 ],
               ),
+              HomeCardModule(
+                title: 'Procedimentos',
+                access: const ['admin'],
+                icon: Icons.construction_sharp,
+                color: Colors.black87,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/procedure/save');
+                    },
+                    icon: const Icon(Icons.add),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/procedure/search');
+                    },
+                    icon: const Icon(Icons.search),
+                  )
+                ],
+              ),
             ],
           ),
         ),

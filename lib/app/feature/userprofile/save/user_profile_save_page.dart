@@ -5,6 +5,7 @@ import 'package:fluxus2/app/core/models/graduation_model.dart';
 import 'package:validatorless/validatorless.dart';
 
 import '../../../core/authentication/authentication.dart';
+import '../../../core/models/expertise_model.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/repositories/user_profile_repository.dart';
 import '../../utils/app_import_image.dart';
@@ -248,6 +249,58 @@ class _UserProfileSaveViewState extends State<UserProfileSaveView> {
                                                   .read<UserProfileSaveBloc>()
                                                   .add(
                                                     UserProfileSaveEventRemoveGraduation(
+                                                      e,
+                                                    ),
+                                                  );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                    .toList(),
+                              );
+                            },
+                          ),
+                          const SizedBox(width: 15)
+                        ],
+                      ),
+                      const Text('Selecione uma especialidade'),
+                      Row(
+                        children: [
+                          IconButton(
+                              onPressed: () async {
+                                var contextTemp =
+                                    context.read<UserProfileSaveBloc>();
+                                ExpertiseModel? result =
+                                    await Navigator.of(context)
+                                            .pushNamed('/expertise/select')
+                                        as ExpertiseModel?;
+                                if (result != null) {
+                                  contextTemp.add(
+                                    UserProfileSaveEventAddExpertise(
+                                      result,
+                                    ),
+                                  );
+                                }
+                              },
+                              icon: const Icon(Icons.search)),
+                          BlocBuilder<UserProfileSaveBloc,
+                              UserProfileSaveState>(
+                            builder: (context, state) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: state.expertisesUpdated
+                                    .map(
+                                      (e) => Row(
+                                        children: [
+                                          Text('${e.name}'),
+                                          IconButton(
+                                            icon: const Icon(Icons.delete),
+                                            onPressed: () {
+                                              context
+                                                  .read<UserProfileSaveBloc>()
+                                                  .add(
+                                                    UserProfileSaveEventRemoveExpertise(
                                                       e,
                                                     ),
                                                   );

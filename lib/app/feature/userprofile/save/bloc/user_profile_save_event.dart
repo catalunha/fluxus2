@@ -1,5 +1,6 @@
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../core/models/expertise_model.dart';
 import '../../../../core/models/graduation_model.dart';
 
 abstract class UserProfileSaveEvent {}
@@ -42,6 +43,20 @@ class UserProfileSaveEventAddGraduation extends UserProfileSaveEvent {
 class UserProfileSaveEventRemoveGraduation extends UserProfileSaveEvent {
   final GraduationModel model;
   UserProfileSaveEventRemoveGraduation(
+    this.model,
+  );
+}
+
+class UserProfileSaveEventAddExpertise extends UserProfileSaveEvent {
+  final ExpertiseModel model;
+  UserProfileSaveEventAddExpertise(
+    this.model,
+  );
+}
+
+class UserProfileSaveEventRemoveExpertise extends UserProfileSaveEvent {
+  final ExpertiseModel model;
+  UserProfileSaveEventRemoveExpertise(
     this.model,
   );
 }

@@ -8,14 +8,12 @@ class ProcedureModel {
   final String? code;
   final String? name;
   final double? cost;
-  final double? percent;
   ProcedureModel({
     this.id,
     this.expertise,
     this.code,
     this.name,
     this.cost,
-    this.percent,
   });
 
   ProcedureModel copyWith({
@@ -24,7 +22,6 @@ class ProcedureModel {
     String? code,
     String? name,
     double? cost,
-    double? percent,
   }) {
     return ProcedureModel(
       id: id ?? this.id,
@@ -32,7 +29,6 @@ class ProcedureModel {
       code: code ?? this.code,
       name: name ?? this.name,
       cost: cost ?? this.cost,
-      percent: percent ?? this.percent,
     );
   }
 
@@ -54,9 +50,6 @@ class ProcedureModel {
     if (cost != null) {
       result.addAll({'cost': cost});
     }
-    if (percent != null) {
-      result.addAll({'percent': percent});
-    }
 
     return result;
   }
@@ -70,7 +63,6 @@ class ProcedureModel {
       code: map['code'],
       name: map['name'],
       cost: map['cost']?.toDouble(),
-      percent: map['percent']?.toDouble(),
     );
   }
 
@@ -81,7 +73,7 @@ class ProcedureModel {
 
   @override
   String toString() {
-    return 'ProcedureModel(id: $id, expertise: $expertise, code: $code, name: $name, cost: $cost, percent: $percent)';
+    return 'ProcedureModel(id: $id, expertise: $expertise, code: $code, name: $name, cost: $cost)';
   }
 
   @override
@@ -93,8 +85,7 @@ class ProcedureModel {
         other.expertise == expertise &&
         other.code == code &&
         other.name == name &&
-        other.cost == cost &&
-        other.percent == percent;
+        other.cost == cost;
   }
 
   @override
@@ -103,7 +94,6 @@ class ProcedureModel {
         expertise.hashCode ^
         code.hashCode ^
         name.hashCode ^
-        cost.hashCode ^
-        percent.hashCode;
+        cost.hashCode;
   }
 }

@@ -13,6 +13,9 @@ import 'feature/expertise/select/expertise_select_page.dart';
 import 'feature/graduation/list/graduation_list_page.dart';
 import 'feature/graduation/save/graduation_save_page.dart';
 import 'feature/home/home_page.dart';
+import 'feature/procedure/save/procedure_save_page.dart';
+import 'feature/procedure/search/procedure_search_page.dart';
+import 'feature/procedure/select/procedure_select_page.dart';
 import 'feature/splash/splash_page.dart';
 import 'feature/user/login/login_page.dart';
 import 'feature/user/register/email/user_register_email.page.dart';
@@ -115,6 +118,9 @@ class _AppViewState extends State<AppView> {
         '/expertise/list': (_) => const ExpertiseListPage(),
         '/expertise/save': (_) => const ExpertiseSavePage(),
         '/expertise/select': (_) => const ExpertiseSelectPage(),
+        '/procedure/save': (_) => const ProcedureSavePage(),
+        '/procedure/search': (_) => const ProcedureSearchPage(),
+        '/procedure/select': (_) => const ProcedureSelectPage(),
       },
       initialRoute: '/',
     );

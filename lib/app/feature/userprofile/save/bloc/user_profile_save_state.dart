@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../core/models/expertise_model.dart';
 import '../../../../core/models/graduation_model.dart';
 import '../../../../core/models/user_model.dart';
 
@@ -13,6 +14,8 @@ class UserProfileSaveState {
   final XFile? xfile;
   final List<GraduationModel> graduationsOriginal;
   final List<GraduationModel> graduationsUpdated;
+  final List<ExpertiseModel> expertisesOriginal;
+  final List<ExpertiseModel> expertisesUpdated;
   UserProfileSaveState({
     required this.status,
     this.error,
@@ -20,6 +23,8 @@ class UserProfileSaveState {
     this.xfile,
     this.graduationsOriginal = const [],
     this.graduationsUpdated = const [],
+    this.expertisesOriginal = const [],
+    this.expertisesUpdated = const [],
   });
 
   UserProfileSaveState.initial(this.user)
@@ -27,7 +32,9 @@ class UserProfileSaveState {
         error = '',
         xfile = null,
         graduationsOriginal = user.userProfile?.graduations ?? [],
-        graduationsUpdated = user.userProfile?.graduations ?? [];
+        graduationsUpdated = user.userProfile?.graduations ?? [],
+        expertisesOriginal = user.userProfile?.expertises ?? [],
+        expertisesUpdated = user.userProfile?.expertises ?? [];
 
   UserProfileSaveState copyWith({
     UserProfileSaveStateStatus? status,
@@ -36,6 +43,8 @@ class UserProfileSaveState {
     XFile? xfile,
     List<GraduationModel>? graduationsOriginal,
     List<GraduationModel>? graduationsUpdated,
+    List<ExpertiseModel>? expertisesOriginal,
+    List<ExpertiseModel>? expertisesUpdated,
   }) {
     return UserProfileSaveState(
       status: status ?? this.status,
@@ -44,6 +53,8 @@ class UserProfileSaveState {
       xfile: xfile ?? this.xfile,
       graduationsOriginal: graduationsOriginal ?? this.graduationsOriginal,
       graduationsUpdated: graduationsUpdated ?? this.graduationsUpdated,
+      expertisesOriginal: expertisesOriginal ?? this.expertisesOriginal,
+      expertisesUpdated: expertisesUpdated ?? this.expertisesUpdated,
     );
   }
 
@@ -57,7 +68,9 @@ class UserProfileSaveState {
         other.user == user &&
         other.xfile == xfile &&
         listEquals(other.graduationsOriginal, graduationsOriginal) &&
-        listEquals(other.graduationsUpdated, graduationsUpdated);
+        listEquals(other.graduationsUpdated, graduationsUpdated) &&
+        listEquals(other.expertisesOriginal, expertisesOriginal) &&
+        listEquals(other.expertisesUpdated, expertisesUpdated);
   }
 
   @override
@@ -67,7 +80,9 @@ class UserProfileSaveState {
         user.hashCode ^
         xfile.hashCode ^
         graduationsOriginal.hashCode ^
-        graduationsUpdated.hashCode;
+        graduationsUpdated.hashCode ^
+        expertisesOriginal.hashCode ^
+        expertisesUpdated.hashCode;
   }
 
   @override

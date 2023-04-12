@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 
+import '../../../../core/models/expertise_model.dart';
 import '../../../../core/models/graduation_model.dart';
 import '../../../../core/models/user_model.dart';
 import '../../../../core/models/user_profile_model.dart';
@@ -23,6 +24,9 @@ class UserProfileSaveBloc
     on<UserProfileSaveEventAddGraduation>(_onUserProfileSaveEventAddGraduation);
     on<UserProfileSaveEventRemoveGraduation>(
         _onUserProfileSaveEventRemoveGraduation);
+    on<UserProfileSaveEventAddExpertise>(_onUserProfileSaveEventAddExpertise);
+    on<UserProfileSaveEventRemoveExpertise>(
+        _onUserProfileSaveEventRemoveExpertise);
   }
 
   FutureOr<void> _onUserProfileSaveEventFormSubmitted(
@@ -53,9 +57,13 @@ class UserProfileSaveBloc
       }
       List<GraduationModel> graduationsResult =
           await updateRelationGraduation(userProfileId);
+      List<ExpertiseModel> expertisesResult =
+          await updateRelationExpertise(userProfileId);
 
       userProfileModel = userProfileModel.copyWith(
-          id: userProfileId, graduations: graduationsResult);
+          id: userProfileId,
+          graduations: graduationsResult,
+          expertises: expertisesResult);
 
       UserModel user = state.user.copyWith(userProfile: userProfileModel);
 
@@ -79,18 +87,18 @@ class UserProfileSaveBloc
     int index = state.graduationsUpdated
         .indexWhere((model) => model.id == event.model.id);
     if (index < 0) {
-      List<GraduationModel> expertisesTemp = [...state.graduationsUpdated];
-      expertisesTemp.add(event.model);
-      emit(state.copyWith(graduationsUpdated: expertisesTemp));
+      List<GraduationModel> temp = [...state.graduationsUpdated];
+      temp.add(event.model);
+      emit(state.copyWith(graduationsUpdated: temp));
     }
   }
 
   FutureOr<void> _onUserProfileSaveEventRemoveGraduation(
       UserProfileSaveEventRemoveGraduation event,
       Emitter<UserProfileSaveState> emit) {
-    List<GraduationModel> expertisesTemp = [...state.graduationsUpdated];
-    expertisesTemp.removeWhere((element) => element.id == event.model.id);
-    emit(state.copyWith(graduationsUpdated: expertisesTemp));
+    List<GraduationModel> temp = [...state.graduationsUpdated];
+    temp.removeWhere((element) => element.id == event.model.id);
+    emit(state.copyWith(graduationsUpdated: temp));
   }
 
   Future<List<GraduationModel>> updateRelationGraduation(String modelId) async {
@@ -98,21 +106,63 @@ class UserProfileSaveBloc
     List<GraduationModel> listFinal = [];
     listResult.addAll([...state.graduationsUpdated]);
     listFinal.addAll([...state.graduationsOriginal]);
-    for (var expertiseOriginal in state.graduationsOriginal) {
+    for (var original in state.graduationsOriginal) {
       int index = state.graduationsUpdated
-          .indexWhere((model) => model.id == expertiseOriginal.id);
+          .indexWhere((model) => model.id == original.id);
       if (index < 0) {
         await _repository.updateRelationGraduations(
-            modelId, [expertiseOriginal.id!], false);
-        listFinal.removeWhere((element) => element.id == expertiseOriginal.id);
+            modelId, [original.id!], false);
+        listFinal.removeWhere((element) => element.id == original.id);
       } else {
-        listResult.removeWhere((element) => element.id == expertiseOriginal.id);
+        listResult.removeWhere((element) => element.id == original.id);
       }
     }
-    for (var expertiseResult in listResult) {
-      await _repository.updateRelationGraduations(
-          modelId, [expertiseResult.id!], true);
-      listFinal.add(expertiseResult);
+    for (var result in listResult) {
+      await _repository.updateRelationGraduations(modelId, [result.id!], true);
+      listFinal.add(result);
+    }
+    return listFinal;
+  }
+
+  FutureOr<void> _onUserProfileSaveEventAddExpertise(
+      UserProfileSaveEventAddExpertise event,
+      Emitter<UserProfileSaveState> emit) {
+    int index = state.expertisesUpdated
+        .indexWhere((model) => model.id == event.model.id);
+    if (index < 0) {
+      List<ExpertiseModel> temp = [...state.expertisesUpdated];
+      temp.add(event.model);
+      emit(state.copyWith(expertisesUpdated: temp));
+    }
+  }
+
+  FutureOr<void> _onUserProfileSaveEventRemoveExpertise(
+      UserProfileSaveEventRemoveExpertise event,
+      Emitter<UserProfileSaveState> emit) {
+    List<ExpertiseModel> temp = [...state.expertisesUpdated];
+    temp.removeWhere((element) => element.id == event.model.id);
+    emit(state.copyWith(expertisesUpdated: temp));
+  }
+
+  Future<List<ExpertiseModel>> updateRelationExpertise(String modelId) async {
+    List<ExpertiseModel> listResult = [];
+    List<ExpertiseModel> listFinal = [];
+    listResult.addAll([...state.expertisesUpdated]);
+    listFinal.addAll([...state.expertisesOriginal]);
+    for (var original in state.graduationsOriginal) {
+      int index = state.graduationsUpdated
+          .indexWhere((model) => model.id == original.id);
+      if (index < 0) {
+        await _repository.updateRelationExpertises(
+            modelId, [original.id!], false);
+        listFinal.removeWhere((element) => element.id == original.id);
+      } else {
+        listResult.removeWhere((element) => element.id == original.id);
+      }
+    }
+    for (var result in listResult) {
+      await _repository.updateRelationExpertises(modelId, [result.id!], true);
+      listFinal.add(result);
     }
     return listFinal;
   }
