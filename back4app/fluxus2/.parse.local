@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "_default": {
+      "link": "fluxus2"
+    },
+    "fluxus2": {
+      "applicationId": "DJORW0khdQmM9ZrmDt2gKOrVfPHdYFlJkRRY51I1"
+    }
+  }
+}
