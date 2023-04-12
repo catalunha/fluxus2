@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluxus2/app/core/models/graduation_model.dart';
 import 'package:validatorless/validatorless.dart';
 
 import '../../../core/authentication/authentication.dart';
-import '../../../core/models/expertise_model.dart';
-import '../../../core/models/procedure_model.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/repositories/user_profile_repository.dart';
 import '../../utils/app_import_image.dart';
@@ -78,7 +75,7 @@ class _UserProfileSaveViewState extends State<UserProfileSaveView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Savear seu perfil'),
+        title: const Text('Editar seu perfil'),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.cloud_upload),
@@ -212,164 +209,6 @@ class _UserProfileSaveViewState extends State<UserProfileSaveView> {
                             _birthday = newDate;
                           },
                         ),
-                      ),
-                      const Text('Selecione as graduações'),
-                      Row(
-                        children: [
-                          IconButton(
-                              onPressed: () async {
-                                var contextTemp =
-                                    context.read<UserProfileSaveBloc>();
-                                GraduationModel? result =
-                                    await Navigator.of(context)
-                                            .pushNamed('/graduation/select')
-                                        as GraduationModel?;
-                                if (result != null) {
-                                  contextTemp.add(
-                                    UserProfileSaveEventAddGraduation(
-                                      result,
-                                    ),
-                                  );
-                                }
-                              },
-                              icon: const Icon(Icons.search)),
-                          BlocBuilder<UserProfileSaveBloc,
-                              UserProfileSaveState>(
-                            builder: (context, state) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: state.graduationsUpdated
-                                    .map(
-                                      (e) => Row(
-                                        children: [
-                                          Text('${e.name}'),
-                                          IconButton(
-                                            icon: const Icon(Icons.delete),
-                                            onPressed: () {
-                                              context
-                                                  .read<UserProfileSaveBloc>()
-                                                  .add(
-                                                    UserProfileSaveEventRemoveGraduation(
-                                                      e,
-                                                    ),
-                                                  );
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                    .toList(),
-                              );
-                            },
-                          ),
-                          const SizedBox(width: 15)
-                        ],
-                      ),
-                      const Text('Selecione as especialidades'),
-                      Row(children: [
-                        IconButton(
-                            onPressed: () async {
-                              var contextTemp =
-                                  context.read<UserProfileSaveBloc>();
-                              ExpertiseModel? result =
-                                  await Navigator.of(context)
-                                          .pushNamed('/expertise/select')
-                                      as ExpertiseModel?;
-                              if (result != null) {
-                                contextTemp.add(
-                                  UserProfileSaveEventAddExpertise(
-                                    result,
-                                  ),
-                                );
-                              }
-                            },
-                            icon: const Icon(Icons.search)),
-                        BlocBuilder<UserProfileSaveBloc, UserProfileSaveState>(
-                          builder: (context, state) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: state.expertisesUpdated
-                                  .map(
-                                    (e) => Row(
-                                      children: [
-                                        Text('${e.name}'),
-                                        IconButton(
-                                          icon: const Icon(Icons.delete),
-                                          onPressed: () {
-                                            context
-                                                .read<UserProfileSaveBloc>()
-                                                .add(
-                                                  UserProfileSaveEventRemoveExpertise(
-                                                    e,
-                                                  ),
-                                                );
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                  .toList(),
-                            );
-                          },
-                        ),
-                      ]),
-                      const Text('Selecione os procedimentos'),
-                      Row(
-                        children: [
-                          IconButton(
-                              onPressed: () async {
-                                var contextTemp =
-                                    context.read<UserProfileSaveBloc>();
-                                ProcedureModel? result =
-                                    await Navigator.of(context)
-                                            .pushNamed('/procedure/select')
-                                        as ProcedureModel?;
-                                if (result != null) {
-                                  contextTemp.add(
-                                    UserProfileSaveEventAddProcedure(
-                                      result,
-                                    ),
-                                  );
-                                }
-                              },
-                              icon: const Icon(Icons.search)),
-                          BlocBuilder<UserProfileSaveBloc,
-                              UserProfileSaveState>(
-                            builder: (context, state) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: state.proceduresUpdated
-                                    .map(
-                                      (e) => Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          SizedBox(
-                                            width: 300,
-                                            child: Text(
-                                                '${e.code}. ${e.name}. ${e.cost}'),
-                                          ),
-                                          IconButton(
-                                            icon: const Icon(Icons.delete),
-                                            onPressed: () {
-                                              context
-                                                  .read<UserProfileSaveBloc>()
-                                                  .add(
-                                                    UserProfileSaveEventRemoveProcedure(
-                                                      e,
-                                                    ),
-                                                  );
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                    .toList(),
-                              );
-                            },
-                          ),
-                          const SizedBox(width: 15)
-                        ],
                       ),
                       const SizedBox(height: 70),
                     ],

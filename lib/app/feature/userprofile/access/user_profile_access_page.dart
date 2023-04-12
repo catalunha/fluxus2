@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/models/expertise_model.dart';
+import '../../../core/models/graduation_model.dart';
+import '../../../core/models/procedure_model.dart';
 import '../../../core/models/user_profile_model.dart';
 import '../../../core/repositories/user_profile_repository.dart';
 import '../../utils/app_photo_show.dart';
@@ -25,8 +28,8 @@ class UserProfileAccessPage extends StatelessWidget {
         create: (context) => UserProfileRepository(),
         child: BlocProvider(
           create: (context) => UserProfileAccessBloc(
-              userProfileModel: userProfileModel,
-              userProfileRepository:
+              model: userProfileModel,
+              repository:
                   RepositoryProvider.of<UserProfileRepository>(context)),
           child: UserProfileAccessView(userProfileModel: userProfileModel),
         ),
@@ -90,7 +93,7 @@ class _UserProfileAccessViewState extends State<UserProfileAccessView> {
             Navigator.of(context).pop();
             context
                 .read<UserProfileSearchBloc>()
-                .add(UserProfileSearchEventUpdateList(state.userProfileModel));
+                .add(UserProfileSearchEventUpdateList(state.model));
             Navigator.of(context).pop();
           }
           if (state.status == UserProfileAccessStateStatus.loading) {
@@ -160,7 +163,160 @@ class _UserProfileAccessViewState extends State<UserProfileAccessView> {
                           accessSelect('Financeiro', 'fin'),
                         ],
                       ),
-
+                      const Text('Selecione as graduações'),
+                      Row(
+                        children: [
+                          IconButton(
+                              onPressed: () async {
+                                var contextTemp =
+                                    context.read<UserProfileAccessBloc>();
+                                GraduationModel? result =
+                                    await Navigator.of(context)
+                                            .pushNamed('/graduation/select')
+                                        as GraduationModel?;
+                                if (result != null) {
+                                  contextTemp.add(
+                                    UserProfileAccessEventAddGraduation(
+                                      result,
+                                    ),
+                                  );
+                                }
+                              },
+                              icon: const Icon(Icons.search)),
+                          BlocBuilder<UserProfileAccessBloc,
+                              UserProfileAccessState>(
+                            builder: (context, state) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: state.graduationsUpdated
+                                    .map(
+                                      (e) => Row(
+                                        children: [
+                                          Text('${e.name}'),
+                                          IconButton(
+                                            icon: const Icon(Icons.delete),
+                                            onPressed: () {
+                                              context
+                                                  .read<UserProfileAccessBloc>()
+                                                  .add(
+                                                    UserProfileAccessEventRemoveGraduation(
+                                                      e,
+                                                    ),
+                                                  );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                    .toList(),
+                              );
+                            },
+                          ),
+                          const SizedBox(width: 15)
+                        ],
+                      ),
+                      const Text('Selecione as especialidades'),
+                      Row(children: [
+                        IconButton(
+                            onPressed: () async {
+                              var contextTemp =
+                                  context.read<UserProfileAccessBloc>();
+                              ExpertiseModel? result =
+                                  await Navigator.of(context)
+                                          .pushNamed('/expertise/select')
+                                      as ExpertiseModel?;
+                              if (result != null) {
+                                contextTemp.add(
+                                  UserProfileAccessEventAddExpertise(
+                                    result,
+                                  ),
+                                );
+                              }
+                            },
+                            icon: const Icon(Icons.search)),
+                        BlocBuilder<UserProfileAccessBloc,
+                            UserProfileAccessState>(
+                          builder: (context, state) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: state.expertisesUpdated
+                                  .map(
+                                    (e) => Row(
+                                      children: [
+                                        Text('${e.name}'),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          onPressed: () {
+                                            context
+                                                .read<UserProfileAccessBloc>()
+                                                .add(
+                                                  UserProfileAccessEventRemoveExpertise(
+                                                    e,
+                                                  ),
+                                                );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                          },
+                        ),
+                      ]),
+                      const Text('Selecione os procedimentos'),
+                      Row(
+                        children: [
+                          IconButton(
+                              onPressed: () async {
+                                var contextTemp =
+                                    context.read<UserProfileAccessBloc>();
+                                ProcedureModel? result =
+                                    await Navigator.of(context)
+                                            .pushNamed('/procedure/select')
+                                        as ProcedureModel?;
+                                if (result != null) {
+                                  contextTemp.add(
+                                    UserProfileAccessEventAddProcedure(
+                                      result,
+                                    ),
+                                  );
+                                }
+                              },
+                              icon: const Icon(Icons.search)),
+                          BlocBuilder<UserProfileAccessBloc,
+                              UserProfileAccessState>(
+                            builder: (context, state) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: state.proceduresUpdated
+                                    .map(
+                                      (e) => Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text('${e.code}'),
+                                          IconButton(
+                                            icon: const Icon(Icons.delete),
+                                            onPressed: () {
+                                              context
+                                                  .read<UserProfileAccessBloc>()
+                                                  .add(
+                                                    UserProfileAccessEventRemoveProcedure(
+                                                      e,
+                                                    ),
+                                                  );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                    .toList(),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                       const SizedBox(height: 70),
                     ],
                   ),

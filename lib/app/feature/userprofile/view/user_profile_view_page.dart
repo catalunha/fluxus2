@@ -103,6 +103,12 @@ class UserProfileViewPage extends StatelessWidget {
                       model.expertises?.map((e) => e.name).toList().join(', '),
                   inColumn: true,
                 ),
+                AppTextTitleValue(
+                  title: 'Procedimentos: ',
+                  value:
+                      model.procedures?.map((e) => e.code).toList().join(', '),
+                  inColumn: true,
+                ),
               ],
             ),
           ),

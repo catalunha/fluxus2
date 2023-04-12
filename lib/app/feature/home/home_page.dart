@@ -60,7 +60,7 @@ class HomePage extends StatelessWidget {
                 ],
               ),
               HomeCardModule(
-                title: 'Expecialidades',
+                title: 'Especialidades',
                 access: const ['admin'],
                 icon: Icons.folder_special,
                 color: Colors.black87,
