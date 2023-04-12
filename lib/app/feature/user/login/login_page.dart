@@ -92,7 +92,7 @@ class _LoginViewState extends State<LoginView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Text(
-                              'Informações para acesso',
+                              'Informações para acesso ao Fluxus 2',
                               // style: context.textTheme.titleLarge?.copyWith(
                               //   fontWeight: FontWeight.bold,
                               //   // color: context.theme.primaryColorDark,

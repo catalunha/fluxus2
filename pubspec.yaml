@@ -7,6 +7,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # Localizations
+  flutter_localizations:
+    sdk: flutter      
   # Gerenciador de estados
   bloc: ^8.1.1
   flutter_bloc: ^8.1.2

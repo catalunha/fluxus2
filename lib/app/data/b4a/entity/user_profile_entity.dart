@@ -7,54 +7,80 @@ class UserProfileEntity {
   // Nome do campo local =  no Database
   static const String id = 'objectId';
   static const String email = 'email';
+  static const String nickname = 'nickname';
   static const String name = 'name';
   static const String cpf = 'cpf';
+  static const String register = 'register';
   static const String phone = 'phone';
+  static const String address = 'address';
   static const String photo = 'photo';
-  static const String access = 'access';
+  static const String isFemale = 'isFemale';
   static const String isActive = 'isActive';
+  static const String birthday = 'birthday';
+  static const String access = 'access';
 
   UserProfileModel fromParse(ParseObject parseObject) {
-    UserProfileModel profileModel = UserProfileModel(
+    UserProfileModel model = UserProfileModel(
       id: parseObject.objectId!,
       email: parseObject.get(UserProfileEntity.email),
+      nickname: parseObject.get(UserProfileEntity.nickname),
       name: parseObject.get(UserProfileEntity.name),
       cpf: parseObject.get(UserProfileEntity.cpf),
+      register: parseObject.get(UserProfileEntity.register),
       phone: parseObject.get(UserProfileEntity.phone),
+      address: parseObject.get(UserProfileEntity.address),
       photo: parseObject.get(UserProfileEntity.photo)?.get('url'),
+      isFemale: parseObject.get(UserProfileEntity.isFemale),
+      isActive: parseObject.get(UserProfileEntity.isActive),
+      birthday:
+          parseObject.get<DateTime>(UserProfileEntity.birthday)?.toLocal(),
       access: parseObject.get<List<dynamic>>(UserProfileEntity.access) != null
           ? parseObject
               .get<List<dynamic>>(UserProfileEntity.access)!
               .map((e) => e.toString())
               .toList()
           : [],
-      isActive: parseObject.get(UserProfileEntity.isActive),
     );
-    return profileModel;
+    return model;
   }
 
-  Future<ParseObject> toParse(UserProfileModel profileModel) async {
-    final profileParseObject = ParseObject(UserProfileEntity.className);
-    profileParseObject.objectId = profileModel.id;
-    if (profileModel.name != null) {
-      profileParseObject.set(UserProfileEntity.name, profileModel.name);
+  Future<ParseObject> toParse(UserProfileModel model) async {
+    final parseObject = ParseObject(UserProfileEntity.className);
+    parseObject.objectId = model.id;
+
+    if (model.nickname != null) {
+      parseObject.set(UserProfileEntity.nickname, model.nickname);
+    }
+    if (model.name != null) {
+      parseObject.set(UserProfileEntity.name, model.name);
+    }
+    if (model.cpf != null) {
+      parseObject.set(UserProfileEntity.cpf, model.cpf);
+    }
+    if (model.register != null) {
+      parseObject.set(UserProfileEntity.register, model.register);
     }
 
-    if (profileModel.phone != null) {
-      profileParseObject.set(UserProfileEntity.phone, profileModel.phone);
+    if (model.phone != null) {
+      parseObject.set(UserProfileEntity.phone, model.phone);
     }
-    if (profileModel.cpf != null) {
-      profileParseObject.set(UserProfileEntity.cpf, profileModel.cpf);
-    }
-
-    if (profileModel.phone != null) {
-      profileParseObject.set(UserProfileEntity.phone, profileModel.phone);
-    }
-    if (profileModel.access != null) {
-      profileParseObject.set(UserProfileEntity.access, profileModel.access);
+    if (model.address != null) {
+      parseObject.set(UserProfileEntity.address, model.address);
     }
 
-    profileParseObject.set(UserProfileEntity.isActive, profileModel.isActive);
-    return profileParseObject;
+    if (model.isFemale != null) {
+      parseObject.set(UserProfileEntity.isFemale, model.isFemale);
+    }
+
+    if (model.birthday != null) {
+      parseObject.set<DateTime?>(
+          UserProfileEntity.birthday,
+          DateTime(model.birthday!.year, model.birthday!.month,
+              model.birthday!.day));
+    }
+    parseObject.set(UserProfileEntity.access, model.access);
+
+    parseObject.set(UserProfileEntity.isActive, model.isActive);
+    return parseObject;
   }
 }

@@ -10,40 +10,22 @@ class UserProfileEditEventSendXFile extends UserProfileEditEvent {
 }
 
 class UserProfileEditEventFormSubmitted extends UserProfileEditEvent {
-  final String name;
-  final String cpf;
-  final String phone;
+  final String? name;
+  final String? nickname;
+  final String? cpf;
+  final String? phone;
+  final String? address;
+  final String? register;
+  final bool? isFemale;
+  final DateTime? birthday;
   UserProfileEditEventFormSubmitted({
-    required this.name,
-    required this.cpf,
-    required this.phone,
+    this.name,
+    this.nickname,
+    this.cpf,
+    this.phone,
+    this.address,
+    this.register,
+    this.isFemale,
+    this.birthday,
   });
-
-  UserProfileEditEventFormSubmitted copyWith({
-    String? nickname,
-    String? name,
-    String? cpf,
-    String? phone,
-  }) {
-    return UserProfileEditEventFormSubmitted(
-      name: name ?? this.name,
-      cpf: cpf ?? this.cpf,
-      phone: phone ?? this.phone,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is UserProfileEditEventFormSubmitted &&
-        other.name == name &&
-        other.cpf == cpf &&
-        other.phone == phone;
-  }
-
-  @override
-  int get hashCode {
-    return name.hashCode ^ cpf.hashCode ^ phone.hashCode;
-  }
 }

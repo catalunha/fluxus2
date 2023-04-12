@@ -1,6 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:validatorless/validatorless.dart';
 
 import '../../../core/authentication/authentication.dart';
@@ -46,18 +46,27 @@ class UserProfileEditView extends StatefulWidget {
 }
 
 class _UserProfileEditViewState extends State<UserProfileEditView> {
-  final dateFormat = DateFormat('dd/MM/y');
-
   final _formKey = GlobalKey<FormState>();
+  final _nicknameTec = TextEditingController();
   final _nameTec = TextEditingController();
   final _phoneTec = TextEditingController();
   final _cpfTec = TextEditingController();
+  final _addressTec = TextEditingController();
+  final _registerTec = TextEditingController();
+  bool isFemale = true;
+  DateTime _birthday = DateTime.now();
+
   @override
   void initState() {
     super.initState();
     _nameTec.text = widget.userModel.userProfile?.name ?? "";
+    _nicknameTec.text = widget.userModel.userProfile?.nickname ?? "";
     _phoneTec.text = widget.userModel.userProfile?.phone ?? "";
     _cpfTec.text = widget.userModel.userProfile?.cpf ?? "";
+    _addressTec.text = widget.userModel.userProfile?.address ?? "";
+    _registerTec.text = widget.userModel.userProfile?.register ?? "";
+    isFemale = widget.userModel.userProfile?.isFemale ?? true;
+    _birthday = widget.userModel.userProfile?.birthday ?? DateTime.now();
   }
 
   @override
@@ -74,8 +83,13 @@ class _UserProfileEditViewState extends State<UserProfileEditView> {
             context.read<UserProfileEditBloc>().add(
                   UserProfileEditEventFormSubmitted(
                     name: _nameTec.text,
+                    nickname: _nicknameTec.text,
                     cpf: _cpfTec.text,
                     phone: _phoneTec.text,
+                    address: _addressTec.text,
+                    register: _registerTec.text,
+                    isFemale: isFemale,
+                    birthday: _birthday,
                   ),
                 );
           }
@@ -126,6 +140,12 @@ class _UserProfileEditViewState extends State<UserProfileEditView> {
                       ),
                       const SizedBox(height: 5),
                       AppTextFormField(
+                        label: '* Seu nome curto ou apelido',
+                        controller: _nicknameTec,
+                        validator:
+                            Validatorless.required('Nome curto é obrigatório'),
+                      ),
+                      AppTextFormField(
                         label: '* Seu nome',
                         controller: _nameTec,
                         validator: Validatorless.required(
@@ -140,13 +160,30 @@ class _UserProfileEditViewState extends State<UserProfileEditView> {
                         ]),
                       ),
                       AppTextFormField(
-                          label: 'Seu telefone. Formato: DDDNÚMERO',
+                          label: '* Seu telefone. Formato: DDDNÚMERO',
                           controller: _phoneTec,
                           validator: Validatorless.multiple([
                             Validatorless.number(
                                 'Apenas números. Formato: DDDNÚMERO'),
                             Validatorless.required('Telefone é obrigatório'),
                           ])),
+                      AppTextFormField(
+                        label: 'Seu endereço',
+                        controller: _addressTec,
+                      ),
+                      AppTextFormField(
+                        label: 'Seu registro no seu conselho',
+                        controller: _registerTec,
+                      ),
+                      CheckboxListTile(
+                        title: const Text("Sexo feminino ?"),
+                        onChanged: (value) {
+                          setState(() {
+                            isFemale = value ?? true;
+                          });
+                        },
+                        value: isFemale,
+                      ),
                       const SizedBox(height: 5),
                       AppImportImage(
                         label:
@@ -157,6 +194,19 @@ class _UserProfileEditViewState extends State<UserProfileEditView> {
                             .add(UserProfileEditEventSendXFile(xfile: value)),
                         maxHeightImage: 150,
                         maxWidthImage: 100,
+                      ),
+                      const SizedBox(height: 5),
+                      const Text('Aniversário'),
+                      SizedBox(
+                        width: 300,
+                        height: 100,
+                        child: CupertinoDatePicker(
+                          initialDateTime: _birthday,
+                          mode: CupertinoDatePickerMode.date,
+                          onDateTimeChanged: (DateTime newDate) {
+                            _birthday = newDate;
+                          },
+                        ),
                       ),
                       const SizedBox(height: 70),
                     ],

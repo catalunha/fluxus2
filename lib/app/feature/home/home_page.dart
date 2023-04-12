@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
         title: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
             return Text(
-                "Olá, ${state.user?.userProfile?.name ?? 'Atualize seu perfil.'}.");
+                "Olá, ${state.user?.userProfile?.nickname ?? 'Atualize seu perfil.'}.");
           },
         ),
         actions: const [
