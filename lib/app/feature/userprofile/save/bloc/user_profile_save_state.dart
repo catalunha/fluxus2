@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/models/expertise_model.dart';
 import '../../../../core/models/graduation_model.dart';
+import '../../../../core/models/procedure_model.dart';
 import '../../../../core/models/user_model.dart';
 
 enum UserProfileSaveStateStatus { initial, loading, success, error }
@@ -16,6 +17,8 @@ class UserProfileSaveState {
   final List<GraduationModel> graduationsUpdated;
   final List<ExpertiseModel> expertisesOriginal;
   final List<ExpertiseModel> expertisesUpdated;
+  final List<ProcedureModel> proceduresOriginal;
+  final List<ProcedureModel> proceduresUpdated;
   UserProfileSaveState({
     required this.status,
     this.error,
@@ -25,6 +28,8 @@ class UserProfileSaveState {
     this.graduationsUpdated = const [],
     this.expertisesOriginal = const [],
     this.expertisesUpdated = const [],
+    this.proceduresOriginal = const [],
+    this.proceduresUpdated = const [],
   });
 
   UserProfileSaveState.initial(this.user)
@@ -34,7 +39,9 @@ class UserProfileSaveState {
         graduationsOriginal = user.userProfile?.graduations ?? [],
         graduationsUpdated = user.userProfile?.graduations ?? [],
         expertisesOriginal = user.userProfile?.expertises ?? [],
-        expertisesUpdated = user.userProfile?.expertises ?? [];
+        expertisesUpdated = user.userProfile?.expertises ?? [],
+        proceduresOriginal = user.userProfile?.procedures ?? [],
+        proceduresUpdated = user.userProfile?.procedures ?? [];
 
   UserProfileSaveState copyWith({
     UserProfileSaveStateStatus? status,
@@ -45,6 +52,8 @@ class UserProfileSaveState {
     List<GraduationModel>? graduationsUpdated,
     List<ExpertiseModel>? expertisesOriginal,
     List<ExpertiseModel>? expertisesUpdated,
+    List<ProcedureModel>? proceduresOriginal,
+    List<ProcedureModel>? proceduresUpdated,
   }) {
     return UserProfileSaveState(
       status: status ?? this.status,
@@ -55,6 +64,8 @@ class UserProfileSaveState {
       graduationsUpdated: graduationsUpdated ?? this.graduationsUpdated,
       expertisesOriginal: expertisesOriginal ?? this.expertisesOriginal,
       expertisesUpdated: expertisesUpdated ?? this.expertisesUpdated,
+      proceduresOriginal: proceduresOriginal ?? this.proceduresOriginal,
+      proceduresUpdated: proceduresUpdated ?? this.proceduresUpdated,
     );
   }
 
@@ -70,7 +81,9 @@ class UserProfileSaveState {
         listEquals(other.graduationsOriginal, graduationsOriginal) &&
         listEquals(other.graduationsUpdated, graduationsUpdated) &&
         listEquals(other.expertisesOriginal, expertisesOriginal) &&
-        listEquals(other.expertisesUpdated, expertisesUpdated);
+        listEquals(other.expertisesUpdated, expertisesUpdated) &&
+        listEquals(other.proceduresOriginal, proceduresOriginal) &&
+        listEquals(other.proceduresUpdated, proceduresUpdated);
   }
 
   @override
@@ -82,11 +95,13 @@ class UserProfileSaveState {
         graduationsOriginal.hashCode ^
         graduationsUpdated.hashCode ^
         expertisesOriginal.hashCode ^
-        expertisesUpdated.hashCode;
+        expertisesUpdated.hashCode ^
+        proceduresOriginal.hashCode ^
+        proceduresUpdated.hashCode;
   }
 
   @override
   String toString() {
-    return 'UserProfileSaveState(status: $status, error: $error, user: $user, xfile: $xfile, graduationsOriginal: $graduationsOriginal, graduationsUpdated: $graduationsUpdated)';
+    return 'UserProfileSaveState(status: $status, error: $error, user: $user, xfile: $xfile, graduationsOriginal: $graduationsOriginal, graduationsUpdated: $graduationsUpdated, expertisesOriginal: $expertisesOriginal, expertisesUpdated: $expertisesUpdated, proceduresOriginal: $proceduresOriginal, proceduresUpdated: $proceduresUpdated)';
   }
 }

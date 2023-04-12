@@ -26,4 +26,8 @@ class UserProfileRepository {
           String objectId, List<String> ids, bool add) =>
       userProfileB4a.updateRelationExpertises(
           objectId: objectId, ids: ids, add: add);
+  Future<void> updateRelationProcedures(
+          String objectId, List<String> ids, bool add) =>
+      userProfileB4a.updateRelationProcedures(
+          objectId: objectId, ids: ids, add: add);
 }

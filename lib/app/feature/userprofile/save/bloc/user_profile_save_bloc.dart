@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 
 import '../../../../core/models/expertise_model.dart';
 import '../../../../core/models/graduation_model.dart';
+import '../../../../core/models/procedure_model.dart';
 import '../../../../core/models/user_model.dart';
 import '../../../../core/models/user_profile_model.dart';
 import '../../../../core/repositories/user_profile_repository.dart';
@@ -27,6 +28,9 @@ class UserProfileSaveBloc
     on<UserProfileSaveEventAddExpertise>(_onUserProfileSaveEventAddExpertise);
     on<UserProfileSaveEventRemoveExpertise>(
         _onUserProfileSaveEventRemoveExpertise);
+    on<UserProfileSaveEventAddProcedure>(_onUserProfileSaveEventAddProcedure);
+    on<UserProfileSaveEventRemoveProcedure>(
+        _onUserProfileSaveEventRemoveProcedure);
   }
 
   FutureOr<void> _onUserProfileSaveEventFormSubmitted(
@@ -59,11 +63,14 @@ class UserProfileSaveBloc
           await updateRelationGraduation(userProfileId);
       List<ExpertiseModel> expertisesResult =
           await updateRelationExpertise(userProfileId);
-
+      List<ProcedureModel> proceduresResult =
+          await updateRelationProcedure(userProfileId);
       userProfileModel = userProfileModel.copyWith(
-          id: userProfileId,
-          graduations: graduationsResult,
-          expertises: expertisesResult);
+        id: userProfileId,
+        graduations: graduationsResult,
+        expertises: expertisesResult,
+        procedures: proceduresResult,
+      );
 
       UserModel user = state.user.copyWith(userProfile: userProfileModel);
 
@@ -162,6 +169,49 @@ class UserProfileSaveBloc
     }
     for (var result in listResult) {
       await _repository.updateRelationExpertises(modelId, [result.id!], true);
+      listFinal.add(result);
+    }
+    return listFinal;
+  }
+
+  FutureOr<void> _onUserProfileSaveEventAddProcedure(
+      UserProfileSaveEventAddProcedure event,
+      Emitter<UserProfileSaveState> emit) {
+    int index = state.proceduresUpdated
+        .indexWhere((model) => model.id == event.model.id);
+    if (index < 0) {
+      List<ProcedureModel> temp = [...state.proceduresUpdated];
+      temp.add(event.model);
+      emit(state.copyWith(proceduresUpdated: temp));
+    }
+  }
+
+  FutureOr<void> _onUserProfileSaveEventRemoveProcedure(
+      UserProfileSaveEventRemoveProcedure event,
+      Emitter<UserProfileSaveState> emit) {
+    List<ProcedureModel> temp = [...state.proceduresUpdated];
+    temp.removeWhere((element) => element.id == event.model.id);
+    emit(state.copyWith(proceduresUpdated: temp));
+  }
+
+  Future<List<ProcedureModel>> updateRelationProcedure(String modelId) async {
+    List<ProcedureModel> listResult = [];
+    List<ProcedureModel> listFinal = [];
+    listResult.addAll([...state.proceduresUpdated]);
+    listFinal.addAll([...state.proceduresOriginal]);
+    for (var original in state.graduationsOriginal) {
+      int index = state.graduationsUpdated
+          .indexWhere((model) => model.id == original.id);
+      if (index < 0) {
+        await _repository.updateRelationProcedures(
+            modelId, [original.id!], false);
+        listFinal.removeWhere((element) => element.id == original.id);
+      } else {
+        listResult.removeWhere((element) => element.id == original.id);
+      }
+    }
+    for (var result in listResult) {
+      await _repository.updateRelationProcedures(modelId, [result.id!], true);
       listFinal.add(result);
     }
     return listFinal;

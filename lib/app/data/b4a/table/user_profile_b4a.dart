@@ -107,6 +107,17 @@ class UserProfileB4a {
       await parseObject.save();
     }
   }
+
+  Future<void> updateRelationProcedures(
+      {required String objectId,
+      required List<String> ids,
+      required bool add}) async {
+    final parseObject = UserProfileEntity()
+        .toParseRelationProcedures(objectId: objectId, ids: ids, add: add);
+    if (parseObject != null) {
+      await parseObject.save();
+    }
+  }
 /*
   Future<UserProfileModel?> readByCPF(String? value) async {
     QueryBuilder<ParseObject> query =

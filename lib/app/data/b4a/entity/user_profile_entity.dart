@@ -2,9 +2,11 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../core/models/expertise_model.dart';
 import '../../../core/models/graduation_model.dart';
+import '../../../core/models/procedure_model.dart';
 import '../../../core/models/user_profile_model.dart';
 import 'expertise_entity.dart';
 import 'graduation_entity.dart';
+import 'procedure_entity.dart';
 
 class UserProfileEntity {
   static const String className = 'UserProfile';
@@ -24,6 +26,7 @@ class UserProfileEntity {
   static const String access = 'access';
   static const String graduations = 'graduations';
   static const String expertises = 'expertises';
+  static const String procedures = 'procedures';
 
   Future<UserProfileModel> fromParse(ParseObject parseObject) async {
     //+++ get graduation
@@ -41,7 +44,7 @@ class UserProfileEntity {
       }
     }
     //--- get graduation
-    //+++ get graduation
+    //+++ get expertise
     List<ExpertiseModel> expertiseList = [];
     {
       QueryBuilder<ParseObject> queryExpertise =
@@ -55,7 +58,24 @@ class UserProfileEntity {
         }
       }
     }
-    //--- get graduation
+    //--- get expertise
+    //+++ get procedure
+    List<ProcedureModel> procedureList = [];
+    {
+      QueryBuilder<ParseObject> queryProcedure =
+          QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className));
+      queryProcedure.whereRelatedTo(UserProfileEntity.procedures,
+          UserProfileEntity.className, parseObject.objectId!);
+      queryProcedure.includeObject(['expertise']);
+      final ParseResponse parseResponse = await queryProcedure.query();
+      if (parseResponse.success && parseResponse.results != null) {
+        for (var e in parseResponse.results!) {
+          procedureList.add(ProcedureEntity().toModel(e as ParseObject));
+        }
+      }
+    }
+    //--- get procedure
+
     UserProfileModel model = UserProfileModel(
       id: parseObject.objectId!,
       email: parseObject.get(UserProfileEntity.email),
@@ -78,6 +98,7 @@ class UserProfileEntity {
           : [],
       graduations: graduationList,
       expertises: expertiseList,
+      procedures: procedureList,
     );
     return model;
   }
@@ -181,6 +202,38 @@ class UserProfileEntity {
           ids
               .map((element) =>
                   ParseObject(ExpertiseEntity.className)..objectId = element)
+              .toList());
+    }
+    return parseObject;
+  }
+
+  ParseObject? toParseRelationProcedures({
+    required String objectId,
+    required List<String> ids,
+    required bool add,
+  }) {
+    final parseObject = ParseObject(UserProfileEntity.className);
+    parseObject.objectId = objectId;
+    if (ids.isEmpty) {
+      parseObject.unset(UserProfileEntity.procedures);
+      return parseObject;
+    }
+    if (add) {
+      parseObject.addRelation(
+        UserProfileEntity.procedures,
+        ids
+            .map(
+              (element) =>
+                  ParseObject(ProcedureEntity.className)..objectId = element,
+            )
+            .toList(),
+      );
+    } else {
+      parseObject.removeRelation(
+          UserProfileEntity.procedures,
+          ids
+              .map((element) =>
+                  ParseObject(ProcedureEntity.className)..objectId = element)
               .toList());
     }
     return parseObject;
