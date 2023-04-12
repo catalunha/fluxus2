@@ -61,7 +61,7 @@ class UserProfileViewPage extends StatelessWidget {
                 ),
                 AppTextTitleValue(
                   title: 'Acessa como: ',
-                  value: userProfileModel.access?.join('\n'),
+                  value: userProfileModel.access.join('\n'),
                   inColumn: true,
                 ),
               ],

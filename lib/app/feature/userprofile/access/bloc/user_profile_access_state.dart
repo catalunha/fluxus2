@@ -18,7 +18,7 @@ class UserProfileAccessState {
   UserProfileAccessState.initial(this.userProfileModel)
       : status = UserProfileAccessStateStatus.initial,
         error = '',
-        access = userProfileModel.access ?? [];
+        access = userProfileModel.access;
 
   UserProfileAccessState copyWith({
     UserProfileAccessStateStatus? status,
