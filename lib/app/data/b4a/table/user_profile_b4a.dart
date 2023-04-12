@@ -27,7 +27,7 @@ class UserProfileB4a {
       List<UserProfileModel> listTemp = <UserProfileModel>[];
       if (response.success && response.results != null) {
         for (var element in response.results!) {
-          listTemp.add(UserProfileEntity().fromParse(element));
+          listTemp.add(await UserProfileEntity().fromParse(element));
         }
         return listTemp;
       } else {

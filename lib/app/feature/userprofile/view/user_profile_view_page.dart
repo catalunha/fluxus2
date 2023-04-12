@@ -91,6 +91,12 @@ class UserProfileViewPage extends StatelessWidget {
                   value: model.access.join('\n'),
                   inColumn: true,
                 ),
+                AppTextTitleValue(
+                  title: 'Graduações: ',
+                  value:
+                      model.graduations?.map((e) => e.name).toList().join(', '),
+                  inColumn: true,
+                ),
               ],
             ),
           ),

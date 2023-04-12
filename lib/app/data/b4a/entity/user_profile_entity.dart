@@ -1,5 +1,6 @@
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
+import '../../../core/models/graduation_model.dart';
 import '../../../core/models/user_profile_model.dart';
 import 'graduation_entity.dart';
 
@@ -21,7 +22,20 @@ class UserProfileEntity {
   static const String access = 'access';
   static const String graduations = 'graduations';
 
-  UserProfileModel fromParse(ParseObject parseObject) {
+  Future<UserProfileModel> fromParse(ParseObject parseObject) async {
+    //+++ get graduation
+    List<GraduationModel> graduationList = [];
+    QueryBuilder<ParseObject> queryGraduation =
+        QueryBuilder<ParseObject>(ParseObject(GraduationEntity.className));
+    queryGraduation.whereRelatedTo(UserProfileEntity.graduations,
+        UserProfileEntity.className, parseObject.objectId!);
+    final ParseResponse parseResponse = await queryGraduation.query();
+    if (parseResponse.success && parseResponse.results != null) {
+      for (var e in parseResponse.results!) {
+        graduationList.add(GraduationEntity().toModel(e as ParseObject));
+      }
+    }
+    //--- get graduation
     UserProfileModel model = UserProfileModel(
       id: parseObject.objectId!,
       email: parseObject.get(UserProfileEntity.email),
@@ -42,6 +56,7 @@ class UserProfileEntity {
               .map((e) => e.toString())
               .toList()
           : [],
+      graduations: graduationList,
     );
     return model;
   }

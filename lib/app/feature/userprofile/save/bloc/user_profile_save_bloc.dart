@@ -51,6 +51,11 @@ class UserProfileSaveBloc
         );
         userProfileModel = userProfileModel.copyWith(photo: photoUrl);
       }
+      List<GraduationModel> graduationsResult =
+          await updateRelationGraduation(userProfileId);
+
+      userProfileModel = userProfileModel.copyWith(
+          id: userProfileId, graduations: graduationsResult);
 
       UserModel user = state.user.copyWith(userProfile: userProfileModel);
 
