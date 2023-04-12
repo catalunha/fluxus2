@@ -6,10 +6,10 @@ import '../../utils/app_photo_show.dart';
 import '../../utils/app_text_title_value.dart';
 
 class UserProfileViewPage extends StatelessWidget {
-  final UserProfileModel userProfileModel;
+  final UserProfileModel model;
   UserProfileViewPage({
     Key? key,
-    required this.userProfileModel,
+    required this.model,
   }) : super(key: key);
   final dateFormat = DateFormat('dd/MM/y');
 
@@ -30,38 +30,65 @@ class UserProfileViewPage extends StatelessWidget {
                   value: '',
                 ),
                 AppImageShow(
-                  photoUrl: userProfileModel.photo,
+                  photoUrl: model.photo,
                   height: 100,
                   width: 100,
                 ),
                 AppTextTitleValue(
                   title: 'E-mail: ',
-                  value: userProfileModel.email,
+                  value: model.email,
+                  inColumn: true,
+                ),
+                AppTextTitleValue(
+                  title: 'Nome curto: ',
+                  value: model.nickname,
                   inColumn: true,
                 ),
                 AppTextTitleValue(
                   title: 'Nome completo: ',
-                  value: userProfileModel.name,
+                  value: model.name,
                   inColumn: true,
                 ),
                 AppTextTitleValue(
                   title: 'CPF: ',
-                  value: userProfileModel.cpf,
+                  value: model.cpf,
+                  inColumn: true,
+                ),
+                AppTextTitleValue(
+                  title: 'Registro: ',
+                  value: model.register,
                   inColumn: true,
                 ),
                 AppTextTitleValue(
                   title: 'Telefone: ',
-                  value: userProfileModel.phone,
+                  value: model.phone,
+                  inColumn: true,
+                ),
+                AppTextTitleValue(
+                  title: 'Endereço: ',
+                  value: model.address,
+                  inColumn: true,
+                ),
+                AppTextTitleValue(
+                  title: 'Sexo: ',
+                  value: model.isFemale ?? true ? "Feminino" : "Masculino",
                   inColumn: true,
                 ),
                 AppTextTitleValue(
                   title: 'Acesso: ',
-                  value: userProfileModel.isActive ? "LIBERADO" : "bloqueado",
+                  value: model.isActive ? "LIBERADO" : "bloqueado",
+                  inColumn: true,
+                ),
+                AppTextTitleValue(
+                  title: 'Aniversário: ',
+                  value: model.birthday == null
+                      ? '...'
+                      : dateFormat.format(model.birthday!),
                   inColumn: true,
                 ),
                 AppTextTitleValue(
                   title: 'Acessa como: ',
-                  value: userProfileModel.access.join('\n'),
+                  value: model.access.join('\n'),
                   inColumn: true,
                 ),
               ],

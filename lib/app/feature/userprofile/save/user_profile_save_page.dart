@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluxus2/app/core/models/graduation_model.dart';
 import 'package:validatorless/validatorless.dart';
 
 import '../../../core/authentication/authentication.dart';
@@ -8,11 +9,13 @@ import '../../../core/models/user_model.dart';
 import '../../../core/repositories/user_profile_repository.dart';
 import '../../utils/app_import_image.dart';
 import '../../utils/app_textformfield.dart';
-import 'bloc/user_profile_edit_bloc.dart';
+import 'bloc/user_profile_save_bloc.dart';
+import 'bloc/user_profile_save_event.dart';
+import 'bloc/user_profile_save_state.dart';
 
-class UserProfileEditPage extends StatelessWidget {
+class UserProfileSavePage extends StatelessWidget {
   final UserModel userModel;
-  const UserProfileEditPage({
+  const UserProfileSavePage({
     Key? key,
     required this.userModel,
   }) : super(key: key);
@@ -23,29 +26,29 @@ class UserProfileEditPage extends StatelessWidget {
       body: RepositoryProvider(
         create: (context) => UserProfileRepository(),
         child: BlocProvider(
-          create: (context) => UserProfileEditBloc(
-              userModel: userModel,
-              userProfileRepository:
+          create: (context) => UserProfileSaveBloc(
+              model: userModel,
+              repository:
                   RepositoryProvider.of<UserProfileRepository>(context)),
-          child: UserProfileEditView(userModel: userModel),
+          child: UserProfileSaveView(userModel: userModel),
         ),
       ),
     );
   }
 }
 
-class UserProfileEditView extends StatefulWidget {
+class UserProfileSaveView extends StatefulWidget {
   final UserModel userModel;
-  const UserProfileEditView({
+  const UserProfileSaveView({
     Key? key,
     required this.userModel,
   }) : super(key: key);
 
   @override
-  State<UserProfileEditView> createState() => _UserProfileEditViewState();
+  State<UserProfileSaveView> createState() => _UserProfileSaveViewState();
 }
 
-class _UserProfileEditViewState extends State<UserProfileEditView> {
+class _UserProfileSaveViewState extends State<UserProfileSaveView> {
   final _formKey = GlobalKey<FormState>();
   final _nicknameTec = TextEditingController();
   final _nameTec = TextEditingController();
@@ -73,15 +76,15 @@ class _UserProfileEditViewState extends State<UserProfileEditView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editar seu perfil'),
+        title: const Text('Savear seu perfil'),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.cloud_upload),
         onPressed: () async {
           final formValid = _formKey.currentState?.validate() ?? false;
           if (formValid) {
-            context.read<UserProfileEditBloc>().add(
-                  UserProfileEditEventFormSubmitted(
+            context.read<UserProfileSaveBloc>().add(
+                  UserProfileSaveEventFormSubmitted(
                     name: _nameTec.text,
                     nickname: _nicknameTec.text,
                     cpf: _cpfTec.text,
@@ -95,25 +98,25 @@ class _UserProfileEditViewState extends State<UserProfileEditView> {
           }
         },
       ),
-      body: BlocListener<UserProfileEditBloc, UserProfileEditState>(
+      body: BlocListener<UserProfileSaveBloc, UserProfileSaveState>(
         listenWhen: (previous, current) {
           return previous.status != current.status;
         },
         listener: (context, state) async {
-          if (state.status == UserProfileEditStateStatus.error) {
+          if (state.status == UserProfileSaveStateStatus.error) {
             Navigator.of(context).pop();
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(SnackBar(content: Text(state.error ?? '...')));
           }
-          if (state.status == UserProfileEditStateStatus.success) {
+          if (state.status == UserProfileSaveStateStatus.success) {
             Navigator.of(context).pop();
             context
                 .read<AuthenticationBloc>()
                 .add(AuthenticationEventUpdateUserProfile(state.user));
             Navigator.of(context).pop();
           }
-          if (state.status == UserProfileEditStateStatus.loading) {
+          if (state.status == UserProfileSaveStateStatus.loading) {
             await showDialog(
               barrierDismissible: false,
               context: context,
@@ -190,8 +193,8 @@ class _UserProfileEditViewState extends State<UserProfileEditView> {
                             'Click aqui para buscar sua foto, apenas face. Padrão 3x4.',
                         imageUrl: widget.userModel.userProfile!.photo,
                         setXFile: (value) => context
-                            .read<UserProfileEditBloc>()
-                            .add(UserProfileEditEventSendXFile(xfile: value)),
+                            .read<UserProfileSaveBloc>()
+                            .add(UserProfileSaveEventSendXFile(xfile: value)),
                         maxHeightImage: 150,
                         maxWidthImage: 100,
                       ),
@@ -207,6 +210,58 @@ class _UserProfileEditViewState extends State<UserProfileEditView> {
                             _birthday = newDate;
                           },
                         ),
+                      ),
+                      const Text('Selecione uma graduação'),
+                      Row(
+                        children: [
+                          IconButton(
+                              onPressed: () async {
+                                var contextTemp =
+                                    context.read<UserProfileSaveBloc>();
+                                GraduationModel? result =
+                                    await Navigator.of(context)
+                                            .pushNamed('/graduation/select')
+                                        as GraduationModel?;
+                                if (result != null) {
+                                  contextTemp.add(
+                                    UserProfileSaveEventAddGraduation(
+                                      result,
+                                    ),
+                                  );
+                                }
+                              },
+                              icon: const Icon(Icons.search)),
+                          BlocBuilder<UserProfileSaveBloc,
+                              UserProfileSaveState>(
+                            builder: (context, state) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: state.graduationsUpdated
+                                    .map(
+                                      (e) => Row(
+                                        children: [
+                                          Text('${e.name}'),
+                                          IconButton(
+                                            icon: const Icon(Icons.delete),
+                                            onPressed: () {
+                                              context
+                                                  .read<UserProfileSaveBloc>()
+                                                  .add(
+                                                    UserProfileSaveEventRemoveGraduation(
+                                                      e,
+                                                    ),
+                                                  );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                    .toList(),
+                              );
+                            },
+                          ),
+                          const SizedBox(width: 15)
+                        ],
                       ),
                       const SizedBox(height: 70),
                     ],

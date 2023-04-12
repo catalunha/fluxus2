@@ -39,6 +39,26 @@ class HomePage extends StatelessWidget {
                 icon: Icons.people,
                 color: Colors.black,
               ),
+              HomeCardModule(
+                title: 'Graduações',
+                access: const ['admin'],
+                icon: Icons.school,
+                color: Colors.black87,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/graduation/save');
+                    },
+                    icon: const Icon(Icons.add),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/graduation/list');
+                    },
+                    icon: const Icon(Icons.list),
+                  )
+                ],
+              ),
             ],
           ),
         ),

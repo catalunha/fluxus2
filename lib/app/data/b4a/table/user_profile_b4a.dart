@@ -86,6 +86,17 @@ class UserProfileB4a {
     }
   }
 
+  Future<void> updateRelationGraduations(
+      {required String objectId,
+      required List<String> ids,
+      required bool add}) async {
+    final parseObject = UserProfileEntity()
+        .toParseRelationGraduations(objectId: objectId, ids: ids, add: add);
+    if (parseObject != null) {
+      await parseObject.save();
+    }
+  }
+/*
   Future<UserProfileModel?> readByCPF(String? value) async {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(UserProfileEntity.className));
@@ -111,4 +122,5 @@ class UserProfileB4a {
       );
     }
   }
+  */
 }

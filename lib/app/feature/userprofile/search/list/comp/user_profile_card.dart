@@ -87,19 +87,13 @@ class UserProfileCard extends StatelessWidget {
                             // );
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (_) => UserProfileViewPage(
-                                    userProfileModel: userProfile),
+                                builder: (_) =>
+                                    UserProfileViewPage(model: userProfile),
                               ),
                             );
                           },
                           icon: const Icon(
                             Icons.assignment_ind_outlined,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.copy,
                           ),
                         ),
                       ],

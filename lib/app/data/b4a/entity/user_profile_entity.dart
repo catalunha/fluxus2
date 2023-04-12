@@ -1,6 +1,7 @@
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../core/models/user_profile_model.dart';
+import 'graduation_entity.dart';
 
 class UserProfileEntity {
   static const String className = 'UserProfile';
@@ -18,6 +19,7 @@ class UserProfileEntity {
   static const String isActive = 'isActive';
   static const String birthday = 'birthday';
   static const String access = 'access';
+  static const String graduations = 'graduations';
 
   UserProfileModel fromParse(ParseObject parseObject) {
     UserProfileModel model = UserProfileModel(
@@ -81,6 +83,38 @@ class UserProfileEntity {
     parseObject.set(UserProfileEntity.access, model.access);
 
     parseObject.set(UserProfileEntity.isActive, model.isActive);
+    return parseObject;
+  }
+
+  ParseObject? toParseRelationGraduations({
+    required String objectId,
+    required List<String> ids,
+    required bool add,
+  }) {
+    final parseObject = ParseObject(UserProfileEntity.className);
+    parseObject.objectId = objectId;
+    if (ids.isEmpty) {
+      parseObject.unset(UserProfileEntity.graduations);
+      return parseObject;
+    }
+    if (add) {
+      parseObject.addRelation(
+        UserProfileEntity.graduations,
+        ids
+            .map(
+              (element) =>
+                  ParseObject(GraduationEntity.className)..objectId = element,
+            )
+            .toList(),
+      );
+    } else {
+      parseObject.removeRelation(
+          UserProfileEntity.graduations,
+          ids
+              .map((element) =>
+                  ParseObject(GraduationEntity.className)..objectId = element)
+              .toList());
+    }
     return parseObject;
   }
 }

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fluxus2/app/feature/graduation/select/graduation_select_page.dart';
 
 import 'core/authentication/authentication.dart';
 import 'core/models/user_model.dart';
 import 'core/repositories/user_repository.dart';
 import 'data/b4a/table/user_b4a.dart';
+import 'feature/graduation/list/graduation_list_page.dart';
+import 'feature/graduation/save/graduation_save_page.dart';
 import 'feature/home/home_page.dart';
 import 'feature/splash/splash_page.dart';
 import 'feature/user/login/login_page.dart';
 import 'feature/user/register/email/user_register_email.page.dart';
-import 'feature/userprofile/edit/user_profile_edit_page.dart';
+import 'feature/userprofile/save/user_profile_save_page.dart';
 import 'feature/userprofile/search/user_profile_search_page.dart';
 
 class App extends StatefulWidget {
@@ -98,11 +101,14 @@ class _AppViewState extends State<AppView> {
           UserModel user =
               ModalRoute.of(context)!.settings.arguments as UserModel;
 
-          return UserProfileEditPage(
+          return UserProfileSavePage(
             userModel: user,
           );
         },
         '/userProfile/search': (_) => const UserProfileSearchPage(),
+        '/graduation/list': (_) => const GraduationListPage(),
+        '/graduation/save': (_) => const GraduationSavePage(),
+        '/graduation/select': (_) => const GraduationSelectPage(),
       },
       initialRoute: '/',
     );
