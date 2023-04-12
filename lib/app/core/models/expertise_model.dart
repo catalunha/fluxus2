@@ -4,23 +4,19 @@ import 'dart:convert';
 class ExpertiseModel {
   final String? id;
   final String? name;
-  final String? description;
 
   ExpertiseModel({
     this.id,
     this.name,
-    this.description,
   });
 
   ExpertiseModel copyWith({
     String? id,
     String? name,
-    String? description,
   }) {
     return ExpertiseModel(
       id: id ?? this.id,
       name: name ?? this.name,
-      description: description ?? this.description,
     );
   }
 
@@ -33,9 +29,6 @@ class ExpertiseModel {
     if (name != null) {
       result.addAll({'name': name});
     }
-    if (description != null) {
-      result.addAll({'description': description});
-    }
 
     return result;
   }
@@ -44,7 +37,6 @@ class ExpertiseModel {
     return ExpertiseModel(
       id: map['id'],
       name: map['name'],
-      description: map['description'],
     );
   }
 
@@ -54,19 +46,15 @@ class ExpertiseModel {
       ExpertiseModel.fromMap(json.decode(source));
 
   @override
-  String toString() =>
-      'ExpertiseModel(id: $id, name: $name, description: $description)';
+  String toString() => 'ExpertiseModel(id: $id, name: $name)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ExpertiseModel &&
-        other.id == id &&
-        other.name == name &&
-        other.description == description;
+    return other is ExpertiseModel && other.id == id && other.name == name;
   }
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ description.hashCode;
+  int get hashCode => id.hashCode ^ name.hashCode;
 }

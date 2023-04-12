@@ -59,6 +59,26 @@ class HomePage extends StatelessWidget {
                   )
                 ],
               ),
+              HomeCardModule(
+                title: 'Expecialidades',
+                access: const ['admin'],
+                icon: Icons.folder_special,
+                color: Colors.black87,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/expertise/save');
+                    },
+                    icon: const Icon(Icons.add),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/expertise/list');
+                    },
+                    icon: const Icon(Icons.list),
+                  )
+                ],
+              ),
             ],
           ),
         ),

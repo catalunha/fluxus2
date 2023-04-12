@@ -7,6 +7,9 @@ import 'core/authentication/authentication.dart';
 import 'core/models/user_model.dart';
 import 'core/repositories/user_repository.dart';
 import 'data/b4a/table/user_b4a.dart';
+import 'feature/expertise/list/expertise_list_page.dart';
+import 'feature/expertise/save/expertise_save_page.dart';
+import 'feature/expertise/select/expertise_select_page.dart';
 import 'feature/graduation/list/graduation_list_page.dart';
 import 'feature/graduation/save/graduation_save_page.dart';
 import 'feature/home/home_page.dart';
@@ -109,6 +112,9 @@ class _AppViewState extends State<AppView> {
         '/graduation/list': (_) => const GraduationListPage(),
         '/graduation/save': (_) => const GraduationSavePage(),
         '/graduation/select': (_) => const GraduationSelectPage(),
+        '/expertise/list': (_) => const ExpertiseListPage(),
+        '/expertise/save': (_) => const ExpertiseSavePage(),
+        '/expertise/select': (_) => const ExpertiseSelectPage(),
       },
       initialRoute: '/',
     );
