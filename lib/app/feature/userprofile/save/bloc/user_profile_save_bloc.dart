@@ -19,6 +19,7 @@ class UserProfileSaveBloc
         super(UserProfileSaveState.initial(model)) {
     on<UserProfileSaveEventFormSubmitted>(_onUserProfileSaveEventFormSubmitted);
     on<UserProfileSaveEventSendXFile>(_onUserProfileSaveEventSendXFile);
+    on<UserProfileSaveEventAddRegion>(_onUserProfileSaveEventAddRegion);
   }
 
   FutureOr<void> _onUserProfileSaveEventFormSubmitted(
@@ -35,6 +36,7 @@ class UserProfileSaveBloc
         register: event.register,
         isFemale: event.isFemale,
         birthday: event.birthday,
+        region: state.region,
       );
 
       String userProfileId = await _repository.update(userProfileModel);
@@ -66,5 +68,10 @@ class UserProfileSaveBloc
   FutureOr<void> _onUserProfileSaveEventSendXFile(
       UserProfileSaveEventSendXFile event, Emitter<UserProfileSaveState> emit) {
     emit(state.copyWith(xfile: event.xfile));
+  }
+
+  FutureOr<void> _onUserProfileSaveEventAddRegion(
+      UserProfileSaveEventAddRegion event, Emitter<UserProfileSaveState> emit) {
+    emit(state.copyWith(region: event.model));
   }
 }

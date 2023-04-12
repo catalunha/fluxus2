@@ -11,6 +11,7 @@ class UserProfileB4a {
       QueryBuilder<ParseObject> query, Pagination pagination) async {
     query.setAmountToSkip((pagination.page - 1) * pagination.limit);
     query.setLimit(pagination.limit);
+    query.includeObject(['region']);
 
     return query;
   }
@@ -47,6 +48,7 @@ class UserProfileB4a {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(UserProfileEntity.className));
     query.whereEqualTo(UserProfileEntity.id, id);
+    query.includeObject(['region']);
     query.first();
     try {
       var response = await query.query();

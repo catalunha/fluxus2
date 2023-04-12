@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:validatorless/validatorless.dart';
 
 import '../../../core/authentication/authentication.dart';
+import '../../../core/models/region_model.dart';
 import '../../../core/models/user_model.dart';
 import '../../../core/repositories/user_profile_repository.dart';
 import '../../utils/app_import_image.dart';
@@ -170,8 +171,34 @@ class _UserProfileSaveViewState extends State<UserProfileSaveView> {
                             Validatorless.required('Telefone é obrigatório'),
                           ])),
                       AppTextFormField(
-                        label: 'Seu endereço',
+                        label: 'Seu endereço completo. (Rua X, ..., CEP ..., )',
                         controller: _addressTec,
+                      ),
+                      const Text('Selecione a região *'),
+                      Row(
+                        children: [
+                          IconButton(
+                              onPressed: () async {
+                                var contextTemp =
+                                    context.read<UserProfileSaveBloc>();
+                                RegionModel? result =
+                                    await Navigator.of(context)
+                                            .pushNamed('/region/select')
+                                        as RegionModel?;
+                                if (result != null) {
+                                  contextTemp.add(
+                                      UserProfileSaveEventAddRegion(result));
+                                }
+                              },
+                              icon: const Icon(Icons.search)),
+                          BlocBuilder<UserProfileSaveBloc,
+                              UserProfileSaveState>(
+                            builder: (context, state) {
+                              return Text(
+                                  '${state.region?.uf}. ${state.region?.city}. ${state.region?.name}');
+                            },
+                          ),
+                        ],
                       ),
                       AppTextFormField(
                         label: 'Seu registro no seu conselho',

@@ -1,5 +1,7 @@
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../core/models/region_model.dart';
+
 abstract class UserProfileSaveEvent {}
 
 class UserProfileSaveEventSendXFile extends UserProfileSaveEvent {
@@ -28,4 +30,9 @@ class UserProfileSaveEventFormSubmitted extends UserProfileSaveEvent {
     this.isFemale,
     this.birthday,
   });
+}
+
+class UserProfileSaveEventAddRegion extends UserProfileSaveEvent {
+  final RegionModel model;
+  UserProfileSaveEventAddRegion(this.model);
 }

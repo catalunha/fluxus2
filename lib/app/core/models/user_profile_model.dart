@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'expertise_model.dart';
 import 'graduation_model.dart';
 import 'procedure_model.dart';
+import 'region_model.dart';
 
 // Perfil de usuario
 class UserProfileModel {
@@ -18,10 +19,11 @@ class UserProfileModel {
   final String? cpf;
   final String? register; // conselho de saude
   final String? phone;
-  final String? address;
   final String? photo;
   final bool? isFemale;
   final DateTime? birthday;
+  final String? address;
+  final RegionModel? region;
   final List<GraduationModel>? graduations; // especialidade
   final List<ExpertiseModel>? expertises; // especialidade
   final List<ProcedureModel>? procedures; // procedimentos
@@ -35,10 +37,11 @@ class UserProfileModel {
     this.cpf,
     this.register,
     this.phone,
-    this.address,
     this.photo,
     this.isFemale,
     this.birthday,
+    this.address,
+    this.region,
     this.graduations,
     this.expertises,
     this.procedures,
@@ -54,10 +57,11 @@ class UserProfileModel {
     String? cpf,
     String? register,
     String? phone,
-    String? address,
     String? photo,
     bool? isFemale,
     DateTime? birthday,
+    String? address,
+    RegionModel? region,
     List<GraduationModel>? graduations,
     List<ExpertiseModel>? expertises,
     List<ProcedureModel>? procedures,
@@ -72,10 +76,11 @@ class UserProfileModel {
       cpf: cpf ?? this.cpf,
       register: register ?? this.register,
       phone: phone ?? this.phone,
-      address: address ?? this.address,
       photo: photo ?? this.photo,
       isFemale: isFemale ?? this.isFemale,
       birthday: birthday ?? this.birthday,
+      address: address ?? this.address,
+      region: region ?? this.region,
       graduations: graduations ?? this.graduations,
       expertises: expertises ?? this.expertises,
       procedures: procedures ?? this.procedures,
@@ -96,10 +101,11 @@ class UserProfileModel {
         other.cpf == cpf &&
         other.register == register &&
         other.phone == phone &&
-        other.address == address &&
         other.photo == photo &&
         other.isFemale == isFemale &&
         other.birthday == birthday &&
+        other.address == address &&
+        other.region == region &&
         listEquals(other.graduations, graduations) &&
         listEquals(other.expertises, expertises) &&
         listEquals(other.procedures, procedures);
@@ -116,10 +122,11 @@ class UserProfileModel {
         cpf.hashCode ^
         register.hashCode ^
         phone.hashCode ^
-        address.hashCode ^
         photo.hashCode ^
         isFemale.hashCode ^
         birthday.hashCode ^
+        address.hashCode ^
+        region.hashCode ^
         graduations.hashCode ^
         expertises.hashCode ^
         procedures.hashCode;
@@ -127,7 +134,7 @@ class UserProfileModel {
 
   @override
   String toString() {
-    return 'UserProfileModel(id: $id, email: $email, isActive: $isActive, access: $access, nickname: $nickname, name: $name, cpf: $cpf, register: $register, phone: $phone, address: $address, photo: $photo, isFemale: $isFemale, birthday: $birthday, graduations: $graduations, expertises: $expertises, procedures: $procedures)';
+    return 'UserProfileModel(id: $id, email: $email, isActive: $isActive, access: $access, nickname: $nickname, name: $name, cpf: $cpf, register: $register, phone: $phone, photo: $photo, isFemale: $isFemale, birthday: $birthday, address: $address, region: $region, graduations: $graduations, expertises: $expertises, procedures: $procedures)';
   }
 
   Map<String, dynamic> toMap() {
@@ -152,9 +159,6 @@ class UserProfileModel {
     if (phone != null) {
       result.addAll({'phone': phone});
     }
-    if (address != null) {
-      result.addAll({'address': address});
-    }
     if (photo != null) {
       result.addAll({'photo': photo});
     }
@@ -163,6 +167,12 @@ class UserProfileModel {
     }
     if (birthday != null) {
       result.addAll({'birthday': birthday!.millisecondsSinceEpoch});
+    }
+    if (address != null) {
+      result.addAll({'address': address});
+    }
+    if (region != null) {
+      result.addAll({'region': region!.toMap()});
     }
     if (graduations != null) {
       result
@@ -189,12 +199,13 @@ class UserProfileModel {
       cpf: map['cpf'],
       register: map['register'],
       phone: map['phone'],
-      address: map['address'],
       photo: map['photo'],
       isFemale: map['isFemale'],
       birthday: map['birthday'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['birthday'])
           : null,
+      address: map['address'],
+      region: map['region'] != null ? RegionModel.fromMap(map['region']) : null,
       graduations: map['graduations'] != null
           ? List<GraduationModel>.from(
               map['graduations']?.map((x) => GraduationModel.fromMap(x)))

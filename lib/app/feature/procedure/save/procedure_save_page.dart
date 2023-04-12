@@ -47,8 +47,6 @@ class _ProcedureSaveViewState extends State<ProcedureSaveView> {
   final _nameTEC = TextEditingController();
   final _codeTEC = TextEditingController();
   final _costTEC = TextEditingController();
-  final _latitudeTEC = TextEditingController();
-  final _longitudeTEC = TextEditingController();
   bool delete = false;
   @override
   void initState() {

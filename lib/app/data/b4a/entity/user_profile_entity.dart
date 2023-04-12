@@ -7,6 +7,7 @@ import '../../../core/models/user_profile_model.dart';
 import 'expertise_entity.dart';
 import 'graduation_entity.dart';
 import 'procedure_entity.dart';
+import 'region_entity.dart';
 
 class UserProfileEntity {
   static const String className = 'UserProfile';
@@ -18,11 +19,12 @@ class UserProfileEntity {
   static const String cpf = 'cpf';
   static const String register = 'register';
   static const String phone = 'phone';
-  static const String address = 'address';
   static const String photo = 'photo';
   static const String isFemale = 'isFemale';
   static const String isActive = 'isActive';
   static const String birthday = 'birthday';
+  static const String address = 'address';
+  static const String region = 'region';
   static const String access = 'access';
   static const String graduations = 'graduations';
   static const String expertises = 'expertises';
@@ -96,6 +98,9 @@ class UserProfileEntity {
               .map((e) => e.toString())
               .toList()
           : [],
+      region: parseObject.get(UserProfileEntity.region) != null
+          ? RegionEntity().toModel(parseObject.get(UserProfileEntity.region))
+          : null,
       graduations: graduationList,
       expertises: expertiseList,
       procedures: procedureList,
@@ -136,6 +141,12 @@ class UserProfileEntity {
           UserProfileEntity.birthday,
           DateTime(model.birthday!.year, model.birthday!.month,
               model.birthday!.day));
+    }
+    if (model.region != null) {
+      parseObject.set(
+          UserProfileEntity.region,
+          (ParseObject(RegionEntity.className)..objectId = model.region!.id)
+              .toPointer());
     }
     parseObject.set(UserProfileEntity.access, model.access);
 

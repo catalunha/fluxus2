@@ -16,6 +16,9 @@ import 'feature/home/home_page.dart';
 import 'feature/procedure/save/procedure_save_page.dart';
 import 'feature/procedure/search/procedure_search_page.dart';
 import 'feature/procedure/select/procedure_select_page.dart';
+import 'feature/region/save/region_save_page.dart';
+import 'feature/region/search/region_search_page.dart';
+import 'feature/region/select/region_select_page.dart';
 import 'feature/splash/splash_page.dart';
 import 'feature/user/login/login_page.dart';
 import 'feature/user/register/email/user_register_email.page.dart';
@@ -121,6 +124,9 @@ class _AppViewState extends State<AppView> {
         '/procedure/save': (_) => const ProcedureSavePage(),
         '/procedure/search': (_) => const ProcedureSearchPage(),
         '/procedure/select': (_) => const ProcedureSelectPage(),
+        '/region/save': (_) => const RegionSavePage(),
+        '/region/search': (_) => const RegionSearchPage(),
+        '/region/select': (_) => const RegionSelectPage(),
       },
       initialRoute: '/',
     );

@@ -99,6 +99,26 @@ class HomePage extends StatelessWidget {
                   )
                 ],
               ),
+              HomeCardModule(
+                title: 'Região',
+                access: const ['admin'],
+                icon: Icons.bubble_chart_outlined,
+                color: Colors.black87,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/region/save');
+                    },
+                    icon: const Icon(Icons.add),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/region/search');
+                    },
+                    icon: const Icon(Icons.search),
+                  )
+                ],
+              ),
             ],
           ),
         ),

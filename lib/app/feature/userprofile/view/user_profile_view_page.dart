@@ -70,6 +70,12 @@ class UserProfileViewPage extends StatelessWidget {
                   inColumn: true,
                 ),
                 AppTextTitleValue(
+                  title: 'Região: ',
+                  value:
+                      '${model.region?.uf}. ${model.region?.city}. ${model.region?.name}',
+                  inColumn: true,
+                ),
+                AppTextTitleValue(
                   title: 'Sexo: ',
                   value: model.isFemale ?? true ? "Feminino" : "Masculino",
                   inColumn: true,
