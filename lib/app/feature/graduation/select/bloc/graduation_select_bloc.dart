@@ -14,16 +14,21 @@ import 'graduation_select_state.dart';
 class GraduationSelectBloc
     extends Bloc<GraduationSelectEvent, GraduationSelectState> {
   final GraduationRepository _repository;
-  GraduationSelectBloc(
-      {required GraduationRepository repository,
-      required UserProfileModel seller})
-      : _repository = repository,
-        super(GraduationSelectState.initial()) {
+  GraduationSelectBloc({
+    required GraduationRepository repository,
+    required UserProfileModel seller,
+    required bool isSingleValue,
+  })  : _repository = repository,
+        super(GraduationSelectState.initial(isSingleValue)) {
     on<GraduationSelectEventStartQuery>(_onGraduationSelectEventStartQuery);
     on<GraduationSelectEventPreviousPage>(_onGraduationSelectEventPreviousPage);
     on<GraduationSelectEventNextPage>(_onGraduationSelectEventNextPage);
     on<GraduationSelectEventFormSubmitted>(
         _onGraduationSelectEventFormSubmitted);
+    on<GraduationSelectEventUpdateSelectedValues>(
+        _onGraduationSelectEventUpdateSelectedValues);
+    // on<GraduationSelectEventRemoveSelected>(
+    //     _onGraduationSelectEventRemoveSelected);
     add(GraduationSelectEventStartQuery());
   }
 
@@ -141,4 +146,24 @@ class GraduationSelectBloc
       emit(state.copyWith(listFiltered: listTemp));
     }
   }
+
+  FutureOr<void> _onGraduationSelectEventUpdateSelectedValues(
+      GraduationSelectEventUpdateSelectedValues event,
+      Emitter<GraduationSelectState> emit) {
+    int index =
+        state.selectedValues.indexWhere((model) => model.id == event.model.id);
+    if (index >= 0) {
+      List<GraduationModel> temp = [...state.selectedValues];
+      temp.removeAt(index);
+      emit(state.copyWith(selectedValues: temp));
+    } else {
+      List<GraduationModel> temp = [...state.selectedValues];
+      temp.add(event.model);
+      emit(state.copyWith(selectedValues: temp));
+    }
+  }
+
+  // FutureOr<void> _onGraduationSelectEventRemoveSelected(
+  //     GraduationSelectEventRemoveSelected event,
+  //     Emitter<GraduationSelectState> emit) {}
 }

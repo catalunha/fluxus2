@@ -11,8 +11,10 @@ import 'bloc/graduation_select_state.dart';
 import 'comp/graduation_card.dart';
 
 class GraduationSelectPage extends StatelessWidget {
+  final bool isSingleValue;
   const GraduationSelectPage({
     Key? key,
+    required this.isSingleValue,
   }) : super(key: key);
 
   @override
@@ -26,6 +28,7 @@ class GraduationSelectPage extends StatelessWidget {
           return GraduationSelectBloc(
             repository: RepositoryProvider.of<GraduationRepository>(context),
             seller: userProfile,
+            isSingleValue: isSingleValue,
           );
         },
         child: const GraduationSelectView(),
@@ -182,6 +185,20 @@ class _GraduationSelectViewState extends State<GraduationSelectView> {
             ),
           ],
         ),
+      ),
+      floatingActionButton:
+          BlocBuilder<GraduationSelectBloc, GraduationSelectState>(
+        builder: (context, state) {
+          return Visibility(
+            visible: !state.isSingleValue,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).pop(state.selectedValues);
+              },
+              child: const Icon(Icons.send),
+            ),
+          );
+        },
       ),
     );
   }

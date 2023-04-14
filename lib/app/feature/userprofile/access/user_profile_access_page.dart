@@ -170,16 +170,19 @@ class _UserProfileAccessViewState extends State<UserProfileAccessView> {
                               onPressed: () async {
                                 var contextTemp =
                                     context.read<UserProfileAccessBloc>();
-                                GraduationModel? result =
-                                    await Navigator.of(context)
-                                            .pushNamed('/graduation/select')
-                                        as GraduationModel?;
+                                List<GraduationModel>? result =
+                                    await Navigator.of(context).pushNamed(
+                                            '/graduation/select',
+                                            arguments: true)
+                                        as List<GraduationModel>?;
                                 if (result != null) {
-                                  contextTemp.add(
-                                    UserProfileAccessEventAddGraduation(
-                                      result,
-                                    ),
-                                  );
+                                  for (var element in result) {
+                                    contextTemp.add(
+                                      UserProfileAccessEventAddGraduation(
+                                        element,
+                                      ),
+                                    );
+                                  }
                                 }
                               },
                               icon: const Icon(Icons.search)),

@@ -16,6 +16,8 @@ class GraduationSelectState {
   final bool firstPage;
   final bool lastPage;
   QueryBuilder<ParseObject> query;
+  final List<GraduationModel> selectedValues;
+  final bool isSingleValue;
 
   GraduationSelectState({
     required this.status,
@@ -27,8 +29,10 @@ class GraduationSelectState {
     required this.firstPage,
     required this.lastPage,
     required this.query,
+    this.selectedValues = const [],
+    this.isSingleValue = true,
   });
-  GraduationSelectState.initial()
+  GraduationSelectState.initial(this.isSingleValue)
       : status = GraduationSelectStateStatus.initial,
         error = '',
         list = [],
@@ -38,7 +42,8 @@ class GraduationSelectState {
         firstPage = true,
         lastPage = false,
         query =
-            QueryBuilder<ParseObject>(ParseObject(GraduationEntity.className));
+            QueryBuilder<ParseObject>(ParseObject(GraduationEntity.className)),
+        selectedValues = const [];
 
   GraduationSelectState copyWith({
     GraduationSelectStateStatus? status,
@@ -50,6 +55,8 @@ class GraduationSelectState {
     bool? firstPage,
     bool? lastPage,
     QueryBuilder<ParseObject>? query,
+    List<GraduationModel>? selectedValues,
+    bool? isSingleValue,
   }) {
     return GraduationSelectState(
       status: status ?? this.status,
@@ -61,6 +68,8 @@ class GraduationSelectState {
       firstPage: firstPage ?? this.firstPage,
       lastPage: lastPage ?? this.lastPage,
       query: query ?? this.query,
+      selectedValues: selectedValues ?? this.selectedValues,
+      isSingleValue: isSingleValue ?? this.isSingleValue,
     );
   }
 
@@ -77,7 +86,9 @@ class GraduationSelectState {
         other.limit == limit &&
         other.firstPage == firstPage &&
         other.lastPage == lastPage &&
-        other.query == query;
+        other.query == query &&
+        listEquals(other.selectedValues, selectedValues) &&
+        other.isSingleValue == isSingleValue;
   }
 
   @override
@@ -90,11 +101,13 @@ class GraduationSelectState {
         limit.hashCode ^
         firstPage.hashCode ^
         lastPage.hashCode ^
-        query.hashCode;
+        query.hashCode ^
+        selectedValues.hashCode ^
+        isSingleValue.hashCode;
   }
 
   @override
   String toString() {
-    return 'GraduationSelectState(status: $status, error: $error, list: $list, listFiltered: $listFiltered, page: $page, limit: $limit, firstPage: $firstPage, lastPage: $lastPage, query: $query)';
+    return 'GraduationSelectState(status: $status, error: $error, list: $list, listFiltered: $listFiltered, page: $page, limit: $limit, firstPage: $firstPage, lastPage: $lastPage, query: $query, selectedValues: $selectedValues, isSingleValue: $isSingleValue)';
   }
 }
