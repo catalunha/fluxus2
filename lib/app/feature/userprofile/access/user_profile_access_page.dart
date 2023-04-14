@@ -277,16 +277,19 @@ class _UserProfileAccessViewState extends State<UserProfileAccessView> {
                               onPressed: () async {
                                 var contextTemp =
                                     context.read<UserProfileAccessBloc>();
-                                ProcedureModel? result =
-                                    await Navigator.of(context)
-                                            .pushNamed('/procedure/select')
-                                        as ProcedureModel?;
+                                List<ProcedureModel>? result =
+                                    await Navigator.of(context).pushNamed(
+                                            '/procedure/select',
+                                            arguments: false)
+                                        as List<ProcedureModel>?;
                                 if (result != null) {
-                                  contextTemp.add(
-                                    UserProfileAccessEventAddProcedure(
-                                      result,
-                                    ),
-                                  );
+                                  for (var element in result) {
+                                    contextTemp.add(
+                                      UserProfileAccessEventAddProcedure(
+                                        element,
+                                      ),
+                                    );
+                                  }
                                 }
                               },
                               icon: const Icon(Icons.search)),

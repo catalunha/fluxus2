@@ -9,8 +9,11 @@ import 'bloc/procedure_select_state.dart';
 import 'comp/procedure_card.dart';
 
 class ProcedureSelectPage extends StatelessWidget {
+  final bool isSingleValue;
+
   const ProcedureSelectPage({
     Key? key,
+    required this.isSingleValue,
   }) : super(key: key);
 
   @override
@@ -21,6 +24,7 @@ class ProcedureSelectPage extends StatelessWidget {
         create: (context) {
           return ProcedureSelectBloc(
             repository: RepositoryProvider.of<ProcedureRepository>(context),
+            isSingleValue: isSingleValue,
           );
         },
         child: const ProcedureSelectView(),
@@ -176,6 +180,20 @@ class _ProcedureSelectViewState extends State<ProcedureSelectView> {
             ),
           ],
         ),
+      ),
+      floatingActionButton:
+          BlocBuilder<ProcedureSelectBloc, ProcedureSelectState>(
+        builder: (context, state) {
+          return Visibility(
+            visible: !state.isSingleValue,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).pop(state.selectedValues);
+              },
+              child: const Icon(Icons.send),
+            ),
+          );
+        },
       ),
     );
   }

@@ -16,7 +16,8 @@ class ProcedureSelectState {
   final bool firstPage;
   final bool lastPage;
   QueryBuilder<ParseObject> query;
-
+  final List<ProcedureModel> selectedValues;
+  final bool isSingleValue;
   ProcedureSelectState({
     required this.status,
     this.error,
@@ -27,8 +28,10 @@ class ProcedureSelectState {
     required this.firstPage,
     required this.lastPage,
     required this.query,
+    required this.selectedValues,
+    required this.isSingleValue,
   });
-  ProcedureSelectState.initial()
+  ProcedureSelectState.initial(this.isSingleValue)
       : status = ProcedureSelectStateStatus.initial,
         error = '',
         list = [],
@@ -38,7 +41,8 @@ class ProcedureSelectState {
         firstPage = true,
         lastPage = false,
         query =
-            QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className));
+            QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className)),
+        selectedValues = const [];
 
   ProcedureSelectState copyWith({
     ProcedureSelectStateStatus? status,
@@ -50,6 +54,8 @@ class ProcedureSelectState {
     bool? firstPage,
     bool? lastPage,
     QueryBuilder<ParseObject>? query,
+    List<ProcedureModel>? selectedValues,
+    bool? isSingleValue,
   }) {
     return ProcedureSelectState(
       status: status ?? this.status,
@@ -61,6 +67,8 @@ class ProcedureSelectState {
       firstPage: firstPage ?? this.firstPage,
       lastPage: lastPage ?? this.lastPage,
       query: query ?? this.query,
+      selectedValues: selectedValues ?? this.selectedValues,
+      isSingleValue: isSingleValue ?? this.isSingleValue,
     );
   }
 
@@ -77,7 +85,9 @@ class ProcedureSelectState {
         other.limit == limit &&
         other.firstPage == firstPage &&
         other.lastPage == lastPage &&
-        other.query == query;
+        other.query == query &&
+        listEquals(other.selectedValues, selectedValues) &&
+        other.isSingleValue == isSingleValue;
   }
 
   @override
@@ -90,11 +100,13 @@ class ProcedureSelectState {
         limit.hashCode ^
         firstPage.hashCode ^
         lastPage.hashCode ^
-        query.hashCode;
+        query.hashCode ^
+        selectedValues.hashCode ^
+        isSingleValue.hashCode;
   }
 
   @override
   String toString() {
-    return 'ProcedureSelectState(status: $status, error: $error, list: $list, listFiltered: $listFiltered, page: $page, limit: $limit, firstPage: $firstPage, lastPage: $lastPage, query: $query)';
+    return 'ProcedureSelectState(status: $status, error: $error, list: $list, listFiltered: $listFiltered, page: $page, limit: $limit, firstPage: $firstPage, lastPage: $lastPage, query: $query, selectedValues: $selectedValues, isSingleValue: $isSingleValue)';
   }
 }

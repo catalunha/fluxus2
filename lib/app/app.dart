@@ -127,9 +127,7 @@ class _AppViewState extends State<AppView> {
         },
         '/expertise/list': (_) => const ExpertiseListPage(),
         '/expertise/save': (_) => const ExpertiseSavePage(),
-        '/expertise/select':
-            // (_) => const ExpertiseSelectPage(),
-            (context) {
+        '/expertise/select': (context) {
           bool isSingleValue =
               ModalRoute.of(context)!.settings.arguments as bool;
 
@@ -139,7 +137,14 @@ class _AppViewState extends State<AppView> {
         },
         '/procedure/save': (_) => const ProcedureSavePage(),
         '/procedure/search': (_) => const ProcedureSearchPage(),
-        '/procedure/select': (_) => const ProcedureSelectPage(),
+        '/procedure/select': (context) {
+          bool isSingleValue =
+              ModalRoute.of(context)!.settings.arguments as bool;
+
+          return ProcedureSelectPage(
+            isSingleValue: isSingleValue,
+          );
+        },
         '/region/save': (_) => const RegionSavePage(),
         '/region/search': (_) => const RegionSearchPage(),
         '/region/select': (_) => const RegionSelectPage(),

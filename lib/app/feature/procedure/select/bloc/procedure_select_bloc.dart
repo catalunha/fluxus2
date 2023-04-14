@@ -13,13 +13,17 @@ import 'procedure_select_state.dart';
 class ProcedureSelectBloc
     extends Bloc<ProcedureSelectEvent, ProcedureSelectState> {
   final ProcedureRepository _repository;
-  ProcedureSelectBloc({required ProcedureRepository repository})
-      : _repository = repository,
-        super(ProcedureSelectState.initial()) {
+  ProcedureSelectBloc({
+    required ProcedureRepository repository,
+    required bool isSingleValue,
+  })  : _repository = repository,
+        super(ProcedureSelectState.initial(isSingleValue)) {
     on<ProcedureSelectEventStartQuery>(_onProcedureSelectEventStartQuery);
     on<ProcedureSelectEventPreviousPage>(_onProcedureSelectEventPreviousPage);
     on<ProcedureSelectEventNextPage>(_onProcedureSelectEventNextPage);
     on<ProcedureSelectEventFormSubmitted>(_onProcedureSelectEventFormSubmitted);
+    on<ProcedureSelectEventUpdateSelectedValues>(
+        _onProcedureSelectEventUpdateSelectedValues);
     add(ProcedureSelectEventStartQuery());
   }
 
@@ -135,6 +139,22 @@ class ProcedureSelectBloc
       List<ProcedureModel> listTemp;
       listTemp = state.list.where((e) => e.name!.contains(event.name)).toList();
       emit(state.copyWith(listFiltered: listTemp));
+    }
+  }
+
+  FutureOr<void> _onProcedureSelectEventUpdateSelectedValues(
+      ProcedureSelectEventUpdateSelectedValues event,
+      Emitter<ProcedureSelectState> emit) {
+    int index =
+        state.selectedValues.indexWhere((model) => model.id == event.model.id);
+    if (index >= 0) {
+      List<ProcedureModel> temp = [...state.selectedValues];
+      temp.removeAt(index);
+      emit(state.copyWith(selectedValues: temp));
+    } else {
+      List<ProcedureModel> temp = [...state.selectedValues];
+      temp.add(event.model);
+      emit(state.copyWith(selectedValues: temp));
     }
   }
 }
