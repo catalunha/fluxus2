@@ -2,9 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../../core/models/expertise_model.dart';
-import '../../../../core/models/graduation_model.dart';
 import '../../../../data/b4a/entity/expertise_entity.dart';
-import '../../../../data/b4a/entity/graduation_entity.dart';
 
 enum ExpertiseSelectStateStatus { initial, loading, success, error }
 
@@ -18,7 +16,8 @@ class ExpertiseSelectState {
   final bool firstPage;
   final bool lastPage;
   QueryBuilder<ParseObject> query;
-
+  final List<ExpertiseModel> selectedValues;
+  final bool isSingleValue;
   ExpertiseSelectState({
     required this.status,
     this.error,
@@ -29,8 +28,10 @@ class ExpertiseSelectState {
     required this.firstPage,
     required this.lastPage,
     required this.query,
+    required this.selectedValues,
+    required this.isSingleValue,
   });
-  ExpertiseSelectState.initial()
+  ExpertiseSelectState.initial(this.isSingleValue)
       : status = ExpertiseSelectStateStatus.initial,
         error = '',
         list = [],
@@ -40,7 +41,8 @@ class ExpertiseSelectState {
         firstPage = true,
         lastPage = false,
         query =
-            QueryBuilder<ParseObject>(ParseObject(ExpertiseEntity.className));
+            QueryBuilder<ParseObject>(ParseObject(ExpertiseEntity.className)),
+        selectedValues = const [];
 
   ExpertiseSelectState copyWith({
     ExpertiseSelectStateStatus? status,
@@ -52,6 +54,8 @@ class ExpertiseSelectState {
     bool? firstPage,
     bool? lastPage,
     QueryBuilder<ParseObject>? query,
+    List<ExpertiseModel>? selectedValues,
+    bool? isSingleValue,
   }) {
     return ExpertiseSelectState(
       status: status ?? this.status,
@@ -63,6 +67,8 @@ class ExpertiseSelectState {
       firstPage: firstPage ?? this.firstPage,
       lastPage: lastPage ?? this.lastPage,
       query: query ?? this.query,
+      selectedValues: selectedValues ?? this.selectedValues,
+      isSingleValue: isSingleValue ?? this.isSingleValue,
     );
   }
 
@@ -79,7 +85,9 @@ class ExpertiseSelectState {
         other.limit == limit &&
         other.firstPage == firstPage &&
         other.lastPage == lastPage &&
-        other.query == query;
+        other.query == query &&
+        listEquals(other.selectedValues, selectedValues) &&
+        other.isSingleValue == isSingleValue;
   }
 
   @override
@@ -92,11 +100,13 @@ class ExpertiseSelectState {
         limit.hashCode ^
         firstPage.hashCode ^
         lastPage.hashCode ^
-        query.hashCode;
+        query.hashCode ^
+        selectedValues.hashCode ^
+        isSingleValue.hashCode;
   }
 
   @override
   String toString() {
-    return 'ExpertiseSelectState(status: $status, error: $error, list: $list, listFiltered: $listFiltered, page: $page, limit: $limit, firstPage: $firstPage, lastPage: $lastPage, query: $query)';
+    return 'ExpertiseSelectState(status: $status, error: $error, list: $list, listFiltered: $listFiltered, page: $page, limit: $limit, firstPage: $firstPage, lastPage: $lastPage, query: $query, selectedValues: $selectedValues, isSingleValue: $isSingleValue)';
   }
 }

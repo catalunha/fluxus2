@@ -135,13 +135,15 @@ class _ProcedureSaveViewState extends State<ProcedureSaveView> {
                               onPressed: () async {
                                 var contextTemp =
                                     context.read<ProcedureSaveBloc>();
-                                ExpertiseModel? result =
-                                    await Navigator.of(context)
-                                            .pushNamed('/expertise/select')
-                                        as ExpertiseModel?;
+                                List<ExpertiseModel>? result =
+                                    await Navigator.of(context).pushNamed(
+                                            '/expertise/select',
+                                            arguments: true)
+                                        as List<ExpertiseModel>?;
                                 if (result != null) {
                                   contextTemp.add(
-                                      ProcedureSaveEventAddExpertise(result));
+                                      ProcedureSaveEventAddExpertise(
+                                          result[0]));
                                 }
                               },
                               icon: const Icon(Icons.search)),

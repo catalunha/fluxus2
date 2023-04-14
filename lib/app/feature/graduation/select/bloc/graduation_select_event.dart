@@ -19,10 +19,3 @@ class GraduationSelectEventUpdateSelectedValues extends GraduationSelectEvent {
     this.model,
   );
 }
-
-// class GraduationSelectEventRemoveSelected extends GraduationSelectEvent {
-//   final GraduationModel model;
-//   GraduationSelectEventRemoveSelected({
-//     required this.model,
-//   });
-// }

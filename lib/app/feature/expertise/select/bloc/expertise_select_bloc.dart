@@ -14,15 +14,18 @@ import 'expertise_select_state.dart';
 class ExpertiseSelectBloc
     extends Bloc<ExpertiseSelectEvent, ExpertiseSelectState> {
   final ExpertiseRepository _repository;
-  ExpertiseSelectBloc(
-      {required ExpertiseRepository repository,
-      required UserProfileModel seller})
-      : _repository = repository,
-        super(ExpertiseSelectState.initial()) {
+  ExpertiseSelectBloc({
+    required ExpertiseRepository repository,
+    required UserProfileModel seller,
+    required bool isSingleValue,
+  })  : _repository = repository,
+        super(ExpertiseSelectState.initial(isSingleValue)) {
     on<ExpertiseSelectEventStartQuery>(_onExpertiseSelectEventStartQuery);
     on<ExpertiseSelectEventPreviousPage>(_onExpertiseSelectEventPreviousPage);
     on<ExpertiseSelectEventNextPage>(_onExpertiseSelectEventNextPage);
     on<ExpertiseSelectEventFormSubmitted>(_onExpertiseSelectEventFormSubmitted);
+    on<ExpertiseSelectEventUpdateSelectedValues>(
+        _onExpertiseSelectEventUpdateSelectedValues);
     add(ExpertiseSelectEventStartQuery());
   }
 
@@ -138,6 +141,22 @@ class ExpertiseSelectBloc
       List<ExpertiseModel> listTemp;
       listTemp = state.list.where((e) => e.name!.contains(event.name)).toList();
       emit(state.copyWith(listFiltered: listTemp));
+    }
+  }
+
+  FutureOr<void> _onExpertiseSelectEventUpdateSelectedValues(
+      ExpertiseSelectEventUpdateSelectedValues event,
+      Emitter<ExpertiseSelectState> emit) {
+    int index =
+        state.selectedValues.indexWhere((model) => model.id == event.model.id);
+    if (index >= 0) {
+      List<ExpertiseModel> temp = [...state.selectedValues];
+      temp.removeAt(index);
+      emit(state.copyWith(selectedValues: temp));
+    } else {
+      List<ExpertiseModel> temp = [...state.selectedValues];
+      temp.add(event.model);
+      emit(state.copyWith(selectedValues: temp));
     }
   }
 }

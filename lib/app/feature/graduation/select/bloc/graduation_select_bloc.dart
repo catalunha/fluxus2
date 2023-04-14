@@ -27,8 +27,7 @@ class GraduationSelectBloc
         _onGraduationSelectEventFormSubmitted);
     on<GraduationSelectEventUpdateSelectedValues>(
         _onGraduationSelectEventUpdateSelectedValues);
-    // on<GraduationSelectEventRemoveSelected>(
-    //     _onGraduationSelectEventRemoveSelected);
+
     add(GraduationSelectEventStartQuery());
   }
 
@@ -162,8 +161,4 @@ class GraduationSelectBloc
       emit(state.copyWith(selectedValues: temp));
     }
   }
-
-  // FutureOr<void> _onGraduationSelectEventRemoveSelected(
-  //     GraduationSelectEventRemoveSelected event,
-  //     Emitter<GraduationSelectState> emit) {}
 }

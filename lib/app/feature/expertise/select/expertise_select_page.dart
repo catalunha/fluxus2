@@ -11,8 +11,11 @@ import 'bloc/expertise_select_state.dart';
 import 'comp/expertise_card.dart';
 
 class ExpertiseSelectPage extends StatelessWidget {
+  final bool isSingleValue;
+
   const ExpertiseSelectPage({
     Key? key,
+    required this.isSingleValue,
   }) : super(key: key);
 
   @override
@@ -26,6 +29,7 @@ class ExpertiseSelectPage extends StatelessWidget {
           return ExpertiseSelectBloc(
             repository: RepositoryProvider.of<ExpertiseRepository>(context),
             seller: userProfile,
+            isSingleValue: isSingleValue,
           );
         },
         child: const ExpertiseSelectView(),
@@ -182,6 +186,20 @@ class _ExpertiseSelectViewState extends State<ExpertiseSelectView> {
             ),
           ],
         ),
+      ),
+      floatingActionButton:
+          BlocBuilder<ExpertiseSelectBloc, ExpertiseSelectState>(
+        builder: (context, state) {
+          return Visibility(
+            visible: !state.isSingleValue,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).pop(state.selectedValues);
+              },
+              child: const Icon(Icons.send),
+            ),
+          );
+        },
       ),
     );
   }

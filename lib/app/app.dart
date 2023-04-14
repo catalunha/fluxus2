@@ -117,11 +117,7 @@ class _AppViewState extends State<AppView> {
         '/userProfile/search': (_) => const UserProfileSearchPage(),
         '/graduation/list': (_) => const GraduationListPage(),
         '/graduation/save': (_) => const GraduationSavePage(),
-        '/graduation/select':
-            // (_) => const GraduationSelectPage(
-            //       isSingleValue: false,
-            //     ),
-            (context) {
+        '/graduation/select': (context) {
           bool isSingleValue =
               ModalRoute.of(context)!.settings.arguments as bool;
 
@@ -131,7 +127,16 @@ class _AppViewState extends State<AppView> {
         },
         '/expertise/list': (_) => const ExpertiseListPage(),
         '/expertise/save': (_) => const ExpertiseSavePage(),
-        '/expertise/select': (_) => const ExpertiseSelectPage(),
+        '/expertise/select':
+            // (_) => const ExpertiseSelectPage(),
+            (context) {
+          bool isSingleValue =
+              ModalRoute.of(context)!.settings.arguments as bool;
+
+          return ExpertiseSelectPage(
+            isSingleValue: isSingleValue,
+          );
+        },
         '/procedure/save': (_) => const ProcedureSavePage(),
         '/procedure/search': (_) => const ProcedureSearchPage(),
         '/procedure/select': (_) => const ProcedureSelectPage(),

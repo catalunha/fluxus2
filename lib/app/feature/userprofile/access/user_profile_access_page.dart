@@ -173,7 +173,7 @@ class _UserProfileAccessViewState extends State<UserProfileAccessView> {
                                 List<GraduationModel>? result =
                                     await Navigator.of(context).pushNamed(
                                             '/graduation/select',
-                                            arguments: true)
+                                            arguments: false)
                                         as List<GraduationModel>?;
                                 if (result != null) {
                                   for (var element in result) {
@@ -224,16 +224,19 @@ class _UserProfileAccessViewState extends State<UserProfileAccessView> {
                             onPressed: () async {
                               var contextTemp =
                                   context.read<UserProfileAccessBloc>();
-                              ExpertiseModel? result =
-                                  await Navigator.of(context)
-                                          .pushNamed('/expertise/select')
-                                      as ExpertiseModel?;
+                              List<ExpertiseModel>? result =
+                                  await Navigator.of(context).pushNamed(
+                                          '/expertise/select',
+                                          arguments: false)
+                                      as List<ExpertiseModel>?;
                               if (result != null) {
-                                contextTemp.add(
-                                  UserProfileAccessEventAddExpertise(
-                                    result,
-                                  ),
-                                );
+                                for (var element in result) {
+                                  contextTemp.add(
+                                    UserProfileAccessEventAddExpertise(
+                                      element,
+                                    ),
+                                  );
+                                }
                               }
                             },
                             icon: const Icon(Icons.search)),
