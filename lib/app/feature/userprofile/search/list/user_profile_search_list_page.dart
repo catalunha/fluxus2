@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/user_profile_search_bloc.dart';
 import '../bloc/user_profile_search_event.dart';
 import '../bloc/user_profile_search_state.dart';
-import 'comp/user_profile_list.dart';
+import 'comp/user_profile_card.dart';
 
 class UserProfileSearchListPage extends StatelessWidget {
   const UserProfileSearchListPage({
@@ -120,8 +120,16 @@ class UserProfileSearchListView extends StatelessWidget {
               constraints: const BoxConstraints(maxWidth: 600),
               child: BlocBuilder<UserProfileSearchBloc, UserProfileSearchState>(
                 builder: (context, state) {
-                  return UserProfileList(
-                    userProfileList: state.userProfileModelList,
+                  var list = state.userProfileModelList;
+
+                  return ListView.builder(
+                    itemCount: list.length,
+                    itemBuilder: (context, index) {
+                      final person = list[index];
+                      return UserProfileCard(
+                        model: person,
+                      );
+                    },
                   );
                 },
               ),

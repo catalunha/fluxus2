@@ -104,7 +104,7 @@ class UserProfileViewPage extends StatelessWidget {
                   inColumn: true,
                 ),
                 AppTextTitleValue(
-                  title: 'Especialidade: ',
+                  title: 'Especialidades: ',
                   value:
                       model.expertises?.map((e) => e.name).toList().join(', '),
                   inColumn: true,

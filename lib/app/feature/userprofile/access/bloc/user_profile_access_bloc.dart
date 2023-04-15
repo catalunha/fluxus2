@@ -149,8 +149,8 @@ class UserProfileAccessBloc
     List<ExpertiseModel> listFinal = [];
     listResult.addAll([...state.expertisesUpdated]);
     listFinal.addAll([...state.expertisesOriginal]);
-    for (var original in state.graduationsOriginal) {
-      int index = state.graduationsUpdated
+    for (var original in state.expertisesOriginal) {
+      int index = state.expertisesUpdated
           .indexWhere((model) => model.id == original.id);
       if (index < 0) {
         await _repository.updateRelationExpertises(
@@ -192,8 +192,8 @@ class UserProfileAccessBloc
     List<ProcedureModel> listFinal = [];
     listResult.addAll([...state.proceduresUpdated]);
     listFinal.addAll([...state.proceduresOriginal]);
-    for (var original in state.graduationsOriginal) {
-      int index = state.graduationsUpdated
+    for (var original in state.proceduresOriginal) {
+      int index = state.proceduresUpdated
           .indexWhere((model) => model.id == original.id);
       if (index < 0) {
         await _repository.updateRelationProcedures(

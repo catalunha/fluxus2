@@ -8,9 +8,8 @@ import '../../bloc/user_profile_search_bloc.dart';
 import '../../../view/user_profile_view_page.dart';
 
 class UserProfileCard extends StatelessWidget {
-  final UserProfileModel userProfile;
-  const UserProfileCard({Key? key, required this.userProfile})
-      : super(key: key);
+  final UserProfileModel model;
+  const UserProfileCard({Key? key, required this.model}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +18,11 @@ class UserProfileCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              userProfile.photo != null && userProfile.photo!.isNotEmpty
+              model.photo != null && model.photo!.isNotEmpty
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
-                        userProfile.photo!,
+                        model.photo!,
                         height: 70,
                         width: 70,
                       ),
@@ -39,38 +38,38 @@ class UserProfileCard extends StatelessWidget {
                   children: [
                     // AppTextTitleValue(
                     //   title: 'Id: ',
-                    //   value: userProfile.id,
+                    //   value: model.id,
                     // ),
                     AppTextTitleValue(
                       title: 'Email: ',
-                      value: userProfile.email,
+                      value: model.email,
                     ),
                     AppTextTitleValue(
                       title: 'Nome: ',
-                      value: '${userProfile.name}',
+                      value: '${model.name}',
                     ),
                     AppTextTitleValue(
                       title: 'Telefone: ',
-                      value: '${userProfile.phone}',
+                      value: '${model.phone}',
                     ),
                     AppTextTitleValue(
                       title: 'CPF: ',
-                      value: '${userProfile.cpf}',
+                      value: '${model.cpf}',
                     ),
                     Wrap(
                       children: [
                         IconButton(
                           onPressed: () {
                             // Navigator.of(context).pushNamed(
-                            //     '/userProfile/access',
-                            //     arguments: userProfile);
+                            //     '/model/access',
+                            //     arguments: model);
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (_) => BlocProvider.value(
                                   value: BlocProvider.of<UserProfileSearchBloc>(
                                       context),
                                   child: UserProfileAccessPage(
-                                      userProfileModel: userProfile),
+                                      userProfileModel: model),
                                 ),
                               ),
                             );
@@ -82,13 +81,13 @@ class UserProfileCard extends StatelessWidget {
                         IconButton(
                           onPressed: () {
                             // Navigator.of(context).pushNamed(
-                            //   '/userProfile/view',
-                            //   arguments: userProfile,
+                            //   '/model/view',
+                            //   arguments: model,
                             // );
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (_) =>
-                                    UserProfileViewPage(model: userProfile),
+                                    UserProfileViewPage(model: model),
                               ),
                             );
                           },
