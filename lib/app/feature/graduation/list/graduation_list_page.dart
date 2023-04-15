@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/repositories/graduation_repository.dart';
+import '../save/graduation_save_page.dart';
 import 'bloc/graduation_list_bloc.dart';
 import 'bloc/graduation_list_event.dart';
 import 'bloc/graduation_list_state.dart';
@@ -136,18 +137,18 @@ class GraduationListView extends StatelessWidget {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //     onPressed: () {
-      //       Navigator.of(context).push(
-      //         MaterialPageRoute(
-      //           builder: (_) => BlocProvider.value(
-      //             value: BlocProvider.of<GraduationListBloc>(context),
-      //             child: const GraduationSavePage(model: null),
-      //           ),
-      //         ),
-      //       );
-      //     },
-      //     child: const Icon(Icons.add)),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => BlocProvider.value(
+                  value: BlocProvider.of<GraduationListBloc>(context),
+                  child: const GraduationSavePage(model: null),
+                ),
+              ),
+            );
+          },
+          child: const Icon(Icons.add)),
     );
   }
 }

@@ -45,12 +45,12 @@ class HomePage extends StatelessWidget {
                 icon: Icons.school,
                 color: Colors.black87,
                 actions: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/graduation/save');
-                    },
-                    icon: const Icon(Icons.add),
-                  ),
+                  // IconButton(
+                  //   onPressed: () {
+                  //     Navigator.of(context).pushNamed('/graduation/save');
+                  //   },
+                  //   icon: const Icon(Icons.add),
+                  // ),
                   IconButton(
                     onPressed: () {
                       Navigator.of(context).pushNamed('/graduation/list');
@@ -65,12 +65,12 @@ class HomePage extends StatelessWidget {
                 icon: Icons.folder_special,
                 color: Colors.black87,
                 actions: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/expertise/save');
-                    },
-                    icon: const Icon(Icons.add),
-                  ),
+                  // IconButton(
+                  //   onPressed: () {
+                  //     Navigator.of(context).pushNamed('/expertise/save');
+                  //   },
+                  //   icon: const Icon(Icons.add),
+                  // ),
                   IconButton(
                     onPressed: () {
                       Navigator.of(context).pushNamed('/expertise/list');
@@ -116,6 +116,26 @@ class HomePage extends StatelessWidget {
                       Navigator.of(context).pushNamed('/region/search');
                     },
                     icon: const Icon(Icons.search),
+                  )
+                ],
+              ),
+              HomeCardModule(
+                title: 'Tipos de Planos de Saúde',
+                access: const ['admin'],
+                icon: Icons.credit_card_rounded,
+                color: Colors.black87,
+                actions: [
+                  // IconButton(
+                  //   onPressed: () {
+                  //     Navigator.of(context).pushNamed('/healthplantype/save');
+                  //   },
+                  //   icon: const Icon(Icons.add),
+                  // ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/healthplantype/list');
+                    },
+                    icon: const Icon(Icons.list),
                   )
                 ],
               ),

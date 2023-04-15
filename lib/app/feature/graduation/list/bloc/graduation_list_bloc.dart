@@ -20,6 +20,7 @@ class GraduationListBloc
     on<GraduationListEventInitialList>(_onGraduationListEventInitial);
     on<GraduationListEventPreviousPage>(_onGraduationListEventPreviousPage);
     on<GraduationListEventNextPage>(_onUserProfileListEventNextPage);
+    on<GraduationListEventAddToList>(_onGraduationListEventAddToList);
     on<GraduationListEventUpdateList>(_onGraduationListEventUpdateList);
     on<GraduationListEventRemoveFromList>(_onGraduationListEventRemoveFromList);
     add(GraduationListEventInitialList());
@@ -123,6 +124,13 @@ class GraduationListBloc
         firstPage: false,
       ));
     }
+  }
+
+  FutureOr<void> _onGraduationListEventAddToList(
+      GraduationListEventAddToList event, Emitter<GraduationListState> emit) {
+    List<GraduationModel> listTemp = [...state.list];
+    listTemp.add(event.model);
+    emit(state.copyWith(list: listTemp));
   }
 
   FutureOr<void> _onGraduationListEventUpdateList(

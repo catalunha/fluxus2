@@ -21,6 +21,7 @@ class HealthPlanTypeListBloc
     on<HealthPlanTypeListEventPreviousPage>(
         _onHealthPlanTypeListEventPreviousPage);
     on<HealthPlanTypeListEventNextPage>(_onUserProfileListEventNextPage);
+    on<HealthPlanTypeListEventAddToList>(_onHealthPlanTypeListEventAddToList);
     on<HealthPlanTypeListEventUpdateList>(_onHealthPlanTypeListEventUpdateList);
     on<HealthPlanTypeListEventRemoveFromList>(
         _onHealthPlanTypeListEventRemoveFromList);
@@ -126,6 +127,14 @@ class HealthPlanTypeListBloc
         firstPage: false,
       ));
     }
+  }
+
+  FutureOr<void> _onHealthPlanTypeListEventAddToList(
+      HealthPlanTypeListEventAddToList event,
+      Emitter<HealthPlanTypeListState> emit) {
+    List<HealthPlanTypeModel> listTemp = [...state.list];
+    listTemp.add(event.model);
+    emit(state.copyWith(list: listTemp));
   }
 
   FutureOr<void> _onHealthPlanTypeListEventUpdateList(

@@ -6,6 +6,13 @@ class HealthPlanTypeListEventNextPage extends HealthPlanTypeListEvent {}
 
 class HealthPlanTypeListEventPreviousPage extends HealthPlanTypeListEvent {}
 
+class HealthPlanTypeListEventAddToList extends HealthPlanTypeListEvent {
+  final HealthPlanTypeModel model;
+  HealthPlanTypeListEventAddToList(
+    this.model,
+  );
+}
+
 class HealthPlanTypeListEventUpdateList extends HealthPlanTypeListEvent {
   final HealthPlanTypeModel model;
   HealthPlanTypeListEventUpdateList(

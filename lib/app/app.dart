@@ -12,6 +12,9 @@ import 'feature/expertise/save/expertise_save_page.dart';
 import 'feature/expertise/select/expertise_select_page.dart';
 import 'feature/graduation/list/graduation_list_page.dart';
 import 'feature/graduation/save/graduation_save_page.dart';
+import 'feature/healthplantype/list/healthplantype_list_page.dart';
+import 'feature/healthplantype/save/healthplantype_save_page.dart';
+import 'feature/healthplantype/select/healthplantype_select_page.dart';
 import 'feature/home/home_page.dart';
 import 'feature/procedure/save/procedure_save_page.dart';
 import 'feature/procedure/search/procedure_search_page.dart';
@@ -148,6 +151,16 @@ class _AppViewState extends State<AppView> {
         '/region/save': (_) => const RegionSavePage(),
         '/region/search': (_) => const RegionSearchPage(),
         '/region/select': (_) => const RegionSelectPage(),
+        '/healthplantype/list': (_) => const HealthPlanTypeListPage(),
+        '/healthplantype/save': (_) => const HealthPlanTypeSavePage(),
+        '/healthplantype/select': (context) {
+          bool isSingleValue =
+              ModalRoute.of(context)!.settings.arguments as bool;
+
+          return HealthPlanTypeSelectPage(
+            isSingleValue: isSingleValue,
+          );
+        },
       },
       initialRoute: '/',
     );

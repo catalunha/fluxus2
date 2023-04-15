@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/repositories/healthplantype_repository.dart';
+import '../save/healthplantype_save_page.dart';
 import 'bloc/healthplantype_list_bloc.dart';
 import 'bloc/healthplantype_list_event.dart';
 import 'bloc/healthplantype_list_state.dart';
@@ -33,7 +34,7 @@ class HealthPlanTypeListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Graduações encontradas'),
+        title: const Text('Tipos de Planos encontrados'),
       ),
       body: BlocListener<HealthPlanTypeListBloc, HealthPlanTypeListState>(
         listenWhen: (previous, current) {
@@ -138,18 +139,18 @@ class HealthPlanTypeListView extends StatelessWidget {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //     onPressed: () {
-      //       Navigator.of(context).push(
-      //         MaterialPageRoute(
-      //           builder: (_) => BlocProvider.value(
-      //             value: BlocProvider.of<HealthPlanTypeListBloc>(context),
-      //             child: const HealthPlanTypeSavePage(model: null),
-      //           ),
-      //         ),
-      //       );
-      //     },
-      //     child: const Icon(Icons.add)),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => BlocProvider.value(
+                  value: BlocProvider.of<HealthPlanTypeListBloc>(context),
+                  child: const HealthPlanTypeSavePage(model: null),
+                ),
+              ),
+            );
+          },
+          child: const Icon(Icons.add)),
     );
   }
 }

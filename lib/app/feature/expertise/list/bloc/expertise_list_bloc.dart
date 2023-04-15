@@ -19,6 +19,7 @@ class ExpertiseListBloc extends Bloc<ExpertiseListEvent, ExpertiseListState> {
     on<ExpertiseListEventInitialList>(_onExpertiseListEventInitial);
     on<ExpertiseListEventPreviousPage>(_onExpertiseListEventPreviousPage);
     on<ExpertiseListEventNextPage>(_onUserProfileListEventNextPage);
+    on<ExpertiseListEventAddToList>(_onExpertiseListEventAddToList);
     on<ExpertiseListEventUpdateList>(_onExpertiseListEventUpdateList);
     on<ExpertiseListEventRemoveFromList>(_onExpertiseListEventRemoveFromList);
     add(ExpertiseListEventInitialList());
@@ -122,6 +123,13 @@ class ExpertiseListBloc extends Bloc<ExpertiseListEvent, ExpertiseListState> {
         firstPage: false,
       ));
     }
+  }
+
+  FutureOr<void> _onExpertiseListEventAddToList(
+      ExpertiseListEventAddToList event, Emitter<ExpertiseListState> emit) {
+    List<ExpertiseModel> listTemp = [...state.list];
+    listTemp.add(event.model);
+    emit(state.copyWith(list: listTemp));
   }
 
   FutureOr<void> _onExpertiseListEventUpdateList(

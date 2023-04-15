@@ -28,7 +28,7 @@ class HomeCardModule extends StatelessWidget {
           padding: const EdgeInsets.all(5.0),
           child: Container(
             width: 150,
-            height: 130,
+            height: 150,
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),

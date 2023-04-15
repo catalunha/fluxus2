@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/repositories/expertise_repository.dart';
+import '../save/expertise_save_page.dart';
 import 'bloc/expertise_list_bloc.dart';
 import 'bloc/expertise_list_event.dart';
 import 'bloc/expertise_list_state.dart';
@@ -136,18 +137,18 @@ class ExpertiseListView extends StatelessWidget {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //     onPressed: () {
-      //       Navigator.of(context).push(
-      //         MaterialPageRoute(
-      //           builder: (_) => BlocProvider.value(
-      //             value: BlocProvider.of<ExpertiseListBloc>(context),
-      //             child: const ExpertiseSavePage(model: null),
-      //           ),
-      //         ),
-      //       );
-      //     },
-      //     child: const Icon(Icons.add)),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => BlocProvider.value(
+                  value: BlocProvider.of<ExpertiseListBloc>(context),
+                  child: const ExpertiseSavePage(model: null),
+                ),
+              ),
+            );
+          },
+          child: const Icon(Icons.add)),
     );
   }
 }

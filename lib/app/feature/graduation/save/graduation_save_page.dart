@@ -88,7 +88,11 @@ class _GraduationSaveViewState extends State<GraduationSaveView> {
           }
           if (state.status == GraduationSaveStateStatus.success) {
             Navigator.of(context).pop();
-            if (widget.model != null) {
+            if (widget.model == null) {
+              context
+                  .read<GraduationListBloc>()
+                  .add(GraduationListEventAddToList(state.model!));
+            } else {
               if (delete) {
                 context
                     .read<GraduationListBloc>()

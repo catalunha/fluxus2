@@ -88,7 +88,11 @@ class _ExpertiseSaveViewState extends State<ExpertiseSaveView> {
           }
           if (state.status == ExpertiseSaveStateStatus.success) {
             Navigator.of(context).pop();
-            if (widget.model != null) {
+            if (widget.model == null) {
+              context
+                  .read<ExpertiseListBloc>()
+                  .add(ExpertiseListEventAddToList(state.model!));
+            } else {
               if (delete) {
                 context
                     .read<ExpertiseListBloc>()

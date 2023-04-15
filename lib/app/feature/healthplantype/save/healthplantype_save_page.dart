@@ -5,7 +5,7 @@ import 'package:validatorless/validatorless.dart';
 import '../../../core/models/healthplantype_model.dart';
 import '../../../core/repositories/healthplantype_repository.dart';
 import '../../utils/app_textformfield.dart';
-import '../list/bloc/graduation_list_bloc.dart';
+import '../list/bloc/healthplantype_list_bloc.dart';
 import '../list/bloc/healthplantype_list_event.dart';
 import 'bloc/healthplantype_save_bloc.dart';
 import 'bloc/healthplantype_save_event.dart';
@@ -56,7 +56,7 @@ class _HealthPlanTypeSaveViewState extends State<HealthPlanTypeSaveView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Graduação'),
+        title: const Text('Tipo de Plano de Saude'),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.cloud_upload),
@@ -90,7 +90,11 @@ class _HealthPlanTypeSaveViewState extends State<HealthPlanTypeSaveView> {
           }
           if (state.status == HealthPlanTypeSaveStateStatus.success) {
             Navigator.of(context).pop();
-            if (widget.model != null) {
+            if (widget.model == null) {
+              context
+                  .read<HealthPlanTypeListBloc>()
+                  .add(HealthPlanTypeListEventAddToList(state.model!));
+            } else {
               if (delete) {
                 context.read<HealthPlanTypeListBloc>().add(
                     HealthPlanTypeListEventRemoveFromList(state.model!.id!));

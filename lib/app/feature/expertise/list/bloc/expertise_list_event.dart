@@ -6,6 +6,13 @@ class ExpertiseListEventNextPage extends ExpertiseListEvent {}
 
 class ExpertiseListEventPreviousPage extends ExpertiseListEvent {}
 
+class ExpertiseListEventAddToList extends ExpertiseListEvent {
+  final ExpertiseModel model;
+  ExpertiseListEventAddToList(
+    this.model,
+  );
+}
+
 class ExpertiseListEventUpdateList extends ExpertiseListEvent {
   final ExpertiseModel model;
   ExpertiseListEventUpdateList(
