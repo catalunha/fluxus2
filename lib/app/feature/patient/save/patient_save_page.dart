@@ -191,7 +191,29 @@ class _PatientSaveViewState extends State<PatientSaveView> {
                         label: 'Seu endereço completo. (Rua X, ..., CEP ..., )',
                         controller: _addressTec,
                       ),
-                      const Text('Selecione a região'),
+                      const Text('Aniversário'),
+                      SizedBox(
+                        width: 300,
+                        height: 100,
+                        child: CupertinoDatePicker(
+                          initialDateTime: _birthday,
+                          mode: CupertinoDatePickerMode.date,
+                          onDateTimeChanged: (DateTime newDate) {
+                            _birthday = newDate;
+                          },
+                        ),
+                      ),
+                      CheckboxListTile(
+                        title: const Text("Sexo feminino ?"),
+                        onChanged: (value) {
+                          setState(() {
+                            isFemale = value ?? true;
+                          });
+                        },
+                        value: isFemale,
+                      ),
+                      const SizedBox(height: 5),
+                      const Text('Selecione a região onde reside'),
                       Row(
                         children: [
                           IconButton(
@@ -216,29 +238,7 @@ class _PatientSaveViewState extends State<PatientSaveView> {
                           ),
                         ],
                       ),
-                      CheckboxListTile(
-                        title: const Text("Sexo feminino ?"),
-                        onChanged: (value) {
-                          setState(() {
-                            isFemale = value ?? true;
-                          });
-                        },
-                        value: isFemale,
-                      ),
-                      const SizedBox(height: 5),
-                      const Text('Aniversário'),
-                      SizedBox(
-                        width: 300,
-                        height: 100,
-                        child: CupertinoDatePicker(
-                          initialDateTime: _birthday,
-                          mode: CupertinoDatePickerMode.date,
-                          onDateTimeChanged: (DateTime newDate) {
-                            _birthday = newDate;
-                          },
-                        ),
-                      ),
-                      const Text('Selecione sua família'),
+                      const Text('Selecione seus famíliares'),
                       Row(
                         children: [
                           IconButton(
@@ -292,7 +292,7 @@ class _PatientSaveViewState extends State<PatientSaveView> {
                           const SizedBox(width: 15)
                         ],
                       ),
-                      const Text('Defina seu plano de saúde'),
+                      const Text('Defina seus planos de saúde'),
                       Row(
                         children: [
                           IconButton(

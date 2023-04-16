@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 
 import '../../../../core/models/healthplan_model.dart';
+import '../../../../core/models/healthplantype_model.dart';
 import '../../../../core/models/patient_model.dart';
 import '../../../../core/repositories/healthplan_repository.dart';
 import '../../../../core/repositories/patient_repository.dart';
@@ -26,6 +27,12 @@ class PatientSaveBloc extends Bloc<PatientSaveEvent, PatientSaveState> {
     on<PatientSaveEventAddHealthPlan>(_onPatientSaveEventAddHealthPlan);
     on<PatientSaveEventUpdateHealthPlan>(_onPatientSaveEventUpdateHealthPlan);
     on<PatientSaveEventRemoveHealthPlan>(_onPatientSaveEventRemoveHealthPlan);
+    if (model == null) {
+      add(PatientSaveEventAddHealthPlan(HealthPlanModel(
+          code: 'particular',
+          healthPlanType:
+              HealthPlanTypeModel(id: 'sMJxUZ8AuA', name: 'Particular'))));
+    }
   }
 
   FutureOr<void> _onPatientSaveEventFormSubmitted(
