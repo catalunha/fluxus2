@@ -58,7 +58,7 @@ class PatientSearchListView extends StatelessWidget {
               List<PatientModel> modelList =
                   context.read<PatientSearchBloc>().state.list;
               Navigator.of(context)
-                  .pushNamed('/userProfile/print', arguments: modelList);
+                  .pushNamed('/patient/print', arguments: modelList);
             },
             icon: const Icon(Icons.print),
           )

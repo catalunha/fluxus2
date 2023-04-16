@@ -8,6 +8,7 @@ import 'core/authentication/authentication.dart';
 import 'core/models/expertise_model.dart';
 import 'core/models/graduation_model.dart';
 import 'core/models/healthplantype_model.dart';
+import 'core/models/patient_model.dart';
 import 'core/models/procedure_model.dart';
 import 'core/models/region_model.dart';
 import 'core/models/user_model.dart';
@@ -27,6 +28,7 @@ import 'feature/healthplantype/print/healthplantype_print_page.dart';
 import 'feature/healthplantype/save/healthplantype_save_page.dart';
 import 'feature/healthplantype/select/healthplantype_select_page.dart';
 import 'feature/home/home_page.dart';
+import 'feature/patient/print/patient_print_page.dart';
 import 'feature/patient/save/patient_save_page.dart';
 import 'feature/patient/search/patient_search_page.dart';
 import 'feature/patient/select/patient_select_page.dart';
@@ -230,6 +232,11 @@ class _AppViewState extends State<AppView> {
           return PatientSelectPage(
             isSingleValue: isSingleValue,
           );
+        },
+        '/patient/print': (context) {
+          List<PatientModel>? modelList =
+              ModalRoute.of(context)!.settings.arguments as List<PatientModel>?;
+          return PatientPrintPage(modelList: modelList ?? []);
         },
       },
       initialRoute: '/',
