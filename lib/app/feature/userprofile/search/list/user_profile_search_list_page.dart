@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/models/user_profile_model.dart';
 import '../bloc/user_profile_search_bloc.dart';
 import '../bloc/user_profile_search_event.dart';
 import '../bloc/user_profile_search_state.dart';
@@ -54,7 +55,10 @@ class UserProfileSearchListView extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              // Get.to(() => UserProfilePrintPage());
+              List<UserProfileModel> modelList =
+                  context.read<UserProfileSearchBloc>().state.list;
+              Navigator.of(context)
+                  .pushNamed('/userProfile/print', arguments: modelList);
             },
             icon: const Icon(Icons.print),
           )
@@ -120,7 +124,7 @@ class UserProfileSearchListView extends StatelessWidget {
               constraints: const BoxConstraints(maxWidth: 600),
               child: BlocBuilder<UserProfileSearchBloc, UserProfileSearchState>(
                 builder: (context, state) {
-                  var list = state.userProfileModelList;
+                  var list = state.list;
 
                   return ListView.builder(
                     itemCount: list.length,

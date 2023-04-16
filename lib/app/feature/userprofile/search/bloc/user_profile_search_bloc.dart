@@ -39,8 +39,7 @@ class UserProfileSearchBloc
           page: state.page - 1,
         ),
       );
-      List<UserProfileModel> userProfileModelListGet =
-          await _userProfileRepository.list(
+      List<UserProfileModel> listGet = await _userProfileRepository.list(
         state.query,
         Pagination(page: state.page, limit: state.limit),
       );
@@ -55,7 +54,7 @@ class UserProfileSearchBloc
       }
       emit(state.copyWith(
         status: UserProfileSearchStateStatus.success,
-        userProfileModelList: userProfileModelListGet,
+        list: listGet,
         lastPage: false,
       ));
     } else {
@@ -72,12 +71,11 @@ class UserProfileSearchBloc
     emit(
       state.copyWith(status: UserProfileSearchStateStatus.loading),
     );
-    List<UserProfileModel> userProfileModelListGet =
-        await _userProfileRepository.list(
+    List<UserProfileModel> listGet = await _userProfileRepository.list(
       state.query,
       Pagination(page: state.page + 1, limit: state.limit),
     );
-    if (userProfileModelListGet.isEmpty) {
+    if (listGet.isEmpty) {
       emit(state.copyWith(
         status: UserProfileSearchStateStatus.success,
         // firstPage: false,
@@ -86,7 +84,7 @@ class UserProfileSearchBloc
     } else {
       emit(state.copyWith(
         status: UserProfileSearchStateStatus.success,
-        userProfileModelList: userProfileModelListGet,
+        list: listGet,
         page: state.page + 1,
         firstPage: false,
       ));
@@ -101,7 +99,7 @@ class UserProfileSearchBloc
       firstPage: true,
       lastPage: false,
       page: 1,
-      userProfileModelList: [],
+      list: [],
       query:
           QueryBuilder<ParseObject>(ParseObject(UserProfileEntity.className)),
     ));
@@ -120,14 +118,13 @@ class UserProfileSearchBloc
         query.whereEqualTo('phone', event.phoneEqualToString);
       }
       query.orderByDescending('updatedAt');
-      List<UserProfileModel> userProfileModelListGet =
-          await _userProfileRepository.list(
+      List<UserProfileModel> listGet = await _userProfileRepository.list(
         query,
         Pagination(page: state.page, limit: state.limit),
       );
       emit(state.copyWith(
         status: UserProfileSearchStateStatus.success,
-        userProfileModelList: userProfileModelListGet,
+        list: listGet,
         query: query,
       ));
     } catch (_) {
@@ -142,13 +139,10 @@ class UserProfileSearchBloc
   FutureOr<void> _onUserProfileSearchEventUpdateList(
       UserProfileSearchEventUpdateList event,
       Emitter<UserProfileSearchState> emit) {
-    int index = state.userProfileModelList
-        .indexWhere((model) => model.id == event.userProfileModel.id);
-    List<UserProfileModel> userProfileModelListTemp = [
-      ...state.userProfileModelList
-    ];
-    userProfileModelListTemp
-        .replaceRange(index, index + 1, [event.userProfileModel]);
-    emit(state.copyWith(userProfileModelList: userProfileModelListTemp));
+    int index =
+        state.list.indexWhere((model) => model.id == event.userProfileModel.id);
+    List<UserProfileModel> listTemp = [...state.list];
+    listTemp.replaceRange(index, index + 1, [event.userProfileModel]);
+    emit(state.copyWith(list: listTemp));
   }
 }

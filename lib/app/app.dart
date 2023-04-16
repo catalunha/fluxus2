@@ -10,6 +10,7 @@ import 'core/models/healthplantype_model.dart';
 import 'core/models/procedure_model.dart';
 import 'core/models/region_model.dart';
 import 'core/models/user_model.dart';
+import 'core/models/user_profile_model.dart';
 import 'core/repositories/user_repository.dart';
 import 'data/b4a/table/user_b4a.dart';
 import 'feature/expertise/list/expertise_list_page.dart';
@@ -35,6 +36,7 @@ import 'feature/region/select/region_select_page.dart';
 import 'feature/splash/splash_page.dart';
 import 'feature/user/login/login_page.dart';
 import 'feature/user/register/email/user_register_email.page.dart';
+import 'feature/userprofile/print/userprofile_print_page.dart';
 import 'feature/userprofile/save/user_profile_save_page.dart';
 import 'feature/userprofile/search/user_profile_search_page.dart';
 
@@ -128,6 +130,12 @@ class _AppViewState extends State<AppView> {
           );
         },
         '/userProfile/search': (_) => const UserProfileSearchPage(),
+        '/userProfile/print': (context) {
+          List<UserProfileModel>? modelList = ModalRoute.of(context)!
+              .settings
+              .arguments as List<UserProfileModel>?;
+          return UserProfilePrintPage(modelList: modelList ?? []);
+        },
         '/graduation/list': (_) => const GraduationListPage(),
         '/graduation/save': (_) => const GraduationSavePage(),
         '/graduation/select': (context) {

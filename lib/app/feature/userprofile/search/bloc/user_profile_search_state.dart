@@ -9,7 +9,7 @@ enum UserProfileSearchStateStatus { initial, loading, success, error }
 class UserProfileSearchState {
   final UserProfileSearchStateStatus status;
   final String? error;
-  final List<UserProfileModel> userProfileModelList;
+  final List<UserProfileModel> list;
   final int page;
   final int limit;
   final bool firstPage;
@@ -18,7 +18,7 @@ class UserProfileSearchState {
   UserProfileSearchState({
     required this.status,
     this.error,
-    required this.userProfileModelList,
+    required this.list,
     required this.page,
     required this.limit,
     required this.lastPage,
@@ -29,7 +29,7 @@ class UserProfileSearchState {
   UserProfileSearchState.initial()
       : status = UserProfileSearchStateStatus.initial,
         error = '',
-        userProfileModelList = [],
+        list = [],
         page = 1,
         limit = 2,
         firstPage = true,
@@ -40,7 +40,7 @@ class UserProfileSearchState {
   UserProfileSearchState copyWith({
     UserProfileSearchStateStatus? status,
     String? error,
-    List<UserProfileModel>? userProfileModelList,
+    List<UserProfileModel>? list,
     int? page,
     int? limit,
     bool? lastPage,
@@ -50,7 +50,7 @@ class UserProfileSearchState {
     return UserProfileSearchState(
       status: status ?? this.status,
       error: error ?? this.error,
-      userProfileModelList: userProfileModelList ?? this.userProfileModelList,
+      list: list ?? this.list,
       page: page ?? this.page,
       limit: limit ?? this.limit,
       lastPage: lastPage ?? this.lastPage,
@@ -66,7 +66,7 @@ class UserProfileSearchState {
     return other is UserProfileSearchState &&
         other.status == status &&
         other.error == error &&
-        listEquals(other.userProfileModelList, userProfileModelList) &&
+        listEquals(other.list, list) &&
         other.page == page &&
         other.limit == limit &&
         other.lastPage == lastPage &&
@@ -78,7 +78,7 @@ class UserProfileSearchState {
   int get hashCode {
     return status.hashCode ^
         error.hashCode ^
-        userProfileModelList.hashCode ^
+        list.hashCode ^
         page.hashCode ^
         limit.hashCode ^
         lastPage.hashCode ^
