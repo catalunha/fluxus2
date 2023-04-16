@@ -20,11 +20,14 @@ import 'feature/expertise/select/expertise_select_page.dart';
 import 'feature/graduation/list/graduation_list_page.dart';
 import 'feature/graduation/print/graduation_print_page.dart';
 import 'feature/graduation/save/graduation_save_page.dart';
+import 'feature/healthplan/save/healthplan_save_page.dart';
 import 'feature/healthplantype/list/healthplantype_list_page.dart';
 import 'feature/healthplantype/print/healthplantype_print_page.dart';
 import 'feature/healthplantype/save/healthplantype_save_page.dart';
 import 'feature/healthplantype/select/healthplantype_select_page.dart';
 import 'feature/home/home_page.dart';
+import 'feature/patient/save/patient_save_page.dart';
+import 'feature/patient/select/patient_select_page.dart';
 import 'feature/procedure/print/procedure_print_page.dart';
 import 'feature/procedure/save/procedure_save_page.dart';
 import 'feature/procedure/search/procedure_search_page.dart';
@@ -207,6 +210,16 @@ class _AppViewState extends State<AppView> {
               .settings
               .arguments as List<HealthPlanTypeModel>?;
           return HealthPlanTypePrintPage(modelList: modelList ?? []);
+        },
+        '/healthplan/save': (_) => const HealthPlanSavePage(),
+        '/patient/save': (_) => const PatientSavePage(),
+        '/patient/select': (context) {
+          bool isSingleValue =
+              ModalRoute.of(context)!.settings.arguments as bool;
+
+          return PatientSelectPage(
+            isSingleValue: isSingleValue,
+          );
         },
       },
       initialRoute: '/',

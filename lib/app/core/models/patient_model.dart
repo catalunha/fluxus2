@@ -7,8 +7,8 @@ import 'region_model.dart';
 
 // Paciente
 class PatientModel {
-  final String id;
-  final String email;
+  final String? id;
+  final String? email;
   final String? phone;
   final String? nickname;
   final String? name;

@@ -139,6 +139,26 @@ class HomePage extends StatelessWidget {
                   )
                 ],
               ),
+              HomeCardModule(
+                title: 'Pacientes',
+                access: const ['admin'],
+                icon: Icons.personal_injury,
+                color: Colors.black87,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/patient/save');
+                    },
+                    icon: const Icon(Icons.add),
+                  ),
+                  // IconButton(
+                  //   onPressed: () {
+                  //     Navigator.of(context).pushNamed('/healthplantype/list');
+                  //   },
+                  //   icon: const Icon(Icons.list),
+                  // )
+                ],
+              ),
             ],
           ),
         ),
