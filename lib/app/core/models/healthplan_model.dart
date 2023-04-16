@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'healthplantype_model.dart';
 
+/// Plano de Saude do paciente
 class HealthPlanModel {
   final String? id;
   final HealthPlanTypeModel? healthPlanType;
