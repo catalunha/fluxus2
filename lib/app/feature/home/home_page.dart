@@ -151,12 +151,12 @@ class HomePage extends StatelessWidget {
                     },
                     icon: const Icon(Icons.add),
                   ),
-                  // IconButton(
-                  //   onPressed: () {
-                  //     Navigator.of(context).pushNamed('/healthplantype/list');
-                  //   },
-                  //   icon: const Icon(Icons.list),
-                  // )
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/patient/search');
+                    },
+                    icon: const Icon(Icons.search),
+                  )
                 ],
               ),
             ],

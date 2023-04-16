@@ -9,6 +9,8 @@ import '../../../core/models/region_model.dart';
 import '../../../core/repositories/healthplan_repository.dart';
 import '../../../core/repositories/patient_repository.dart';
 import '../../utils/app_textformfield.dart';
+import '../search/bloc/patient_search_bloc.dart';
+import '../search/bloc/patient_search_event.dart';
 import 'bloc/patient_save_bloc.dart';
 import 'bloc/patient_save_event.dart';
 import 'bloc/patient_save_state.dart';
@@ -120,17 +122,20 @@ class _PatientSaveViewState extends State<PatientSaveView> {
           }
           if (state.status == PatientSaveStateStatus.success) {
             Navigator.of(context).pop();
-            //        if (widget.model != null) {
-            //   if (delete) {
-            //     context
-            //         .read<ProcedureSearchBloc>()
-            //         .add(ProcedureSearchEventRemoveFromList(state.model!.id!));
-            //   } else {
-            //     context
-            //         .read<ProcedureSearchBloc>()
-            //         .add(ProcedureSearchEventUpdateList(state.model!));
-            //   }
-            // }
+            if (widget.model != null) {
+              if (delete) {
+                context
+                    .read<PatientSearchBloc>()
+                    .add(PatientSearchEventRemoveFromList(state.model!));
+              } else {
+                context
+                    .read<PatientSearchBloc>()
+                    .add(PatientSearchEventUpdateList(state.model!));
+              }
+            }
+            Navigator.of(context).pop();
+          }
+          if (state.status == PatientSaveStateStatus.updated) {
             Navigator.of(context).pop();
           }
           if (state.status == PatientSaveStateStatus.loading) {
@@ -153,29 +158,10 @@ class _PatientSaveViewState extends State<PatientSaveView> {
                   child: Column(
                     children: [
                       AppTextFormField(
-                        label: 'email',
-                        controller: _emailTec,
-                        validator: Validatorless.email('Email inválido'),
-                      ),
-                      AppTextFormField(
-                        label: '* Seu nome curto ou apelido',
-                        controller: _nicknameTec,
-                        validator:
-                            Validatorless.required('Nome curto é obrigatório'),
-                      ),
-                      AppTextFormField(
                         label: '* Seu nome',
                         controller: _nameTec,
                         validator: Validatorless.required(
                             'Nome completo é obrigatório'),
-                      ),
-                      AppTextFormField(
-                        label: '* Seu CPF. Apenas números',
-                        controller: _cpfTec,
-                        validator: Validatorless.multiple([
-                          Validatorless.required('CPF é obrigatório'),
-                          Validatorless.cpf('Número de CPF é inválido')
-                        ]),
                       ),
                       AppTextFormField(
                           label: '* Seu telefone. Formato: DDDNÚMERO',
@@ -185,6 +171,22 @@ class _PatientSaveViewState extends State<PatientSaveView> {
                                 'Apenas números. Formato: DDDNÚMERO'),
                             Validatorless.required('Telefone é obrigatório'),
                           ])),
+                      const Divider(height: 5),
+                      AppTextFormField(
+                        label: 'Seu nome curto ou apelido',
+                        controller: _nicknameTec,
+                      ),
+                      AppTextFormField(
+                        label: 'email',
+                        controller: _emailTec,
+                        validator: Validatorless.email('Email inválido'),
+                      ),
+                      AppTextFormField(
+                        label: 'Seu CPF. Apenas números',
+                        controller: _cpfTec,
+                        validator: Validatorless.multiple(
+                            [Validatorless.cpf('Número de CPF é inválido')]),
+                      ),
                       AppTextFormField(
                         label: 'Seu endereço completo. (Rua X, ..., CEP ..., )',
                         controller: _addressTec,
@@ -314,12 +316,12 @@ class _PatientSaveViewState extends State<PatientSaveView> {
                             builder: (context, state) {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: state.healthPlansOriginal
+                                children: state.healthPlansUpdated
                                     .map(
                                       (e) => Row(
                                         children: [
                                           IconButton(
-                                            icon: const Icon(Icons.delete),
+                                            icon: const Icon(Icons.edit),
                                             onPressed: () async {
                                               var contextTemp = context
                                                   .read<PatientSaveBloc>();
@@ -331,7 +333,7 @@ class _PatientSaveViewState extends State<PatientSaveView> {
                                                       as HealthPlanModel?;
                                               if (result != null) {
                                                 contextTemp.add(
-                                                  PatientSaveEventAddHealthPlan(
+                                                  PatientSaveEventUpdateHealthPlan(
                                                     result,
                                                   ),
                                                 );

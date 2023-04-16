@@ -24,10 +24,6 @@ class PatientViewPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const AppTextTitleValue(
-                  title: 'Foto:',
-                  value: '',
-                ),
                 AppTextTitleValue(
                   title: 'E-mail: ',
                   value: model.email,

@@ -20,8 +20,8 @@ class PatientModel {
   final List<PatientModel>? family;
   final List<HealthPlanModel>? healthPlans;
   PatientModel({
-    required this.id,
-    required this.email,
+    this.id,
+    this.email,
     this.phone,
     this.nickname,
     this.name,
@@ -46,7 +46,7 @@ class PatientModel {
     String? address,
     RegionModel? region,
     List<PatientModel>? family,
-    List<HealthPlanModel>? healthPlan,
+    List<HealthPlanModel>? healthPlans,
   }) {
     return PatientModel(
       id: id ?? this.id,
@@ -60,15 +60,19 @@ class PatientModel {
       address: address ?? this.address,
       region: region ?? this.region,
       family: family ?? this.family,
-      healthPlans: healthPlan ?? healthPlans,
+      healthPlans: healthPlans ?? this.healthPlans,
     );
   }
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
 
-    result.addAll({'id': id});
-    result.addAll({'email': email});
+    if (id != null) {
+      result.addAll({'id': id});
+    }
+    if (email != null) {
+      result.addAll({'email': email});
+    }
     if (phone != null) {
       result.addAll({'phone': phone});
     }
@@ -98,7 +102,7 @@ class PatientModel {
     }
     if (healthPlans != null) {
       result
-          .addAll({'healthPlan': healthPlans!.map((x) => x.toMap()).toList()});
+          .addAll({'healthPlans': healthPlans!.map((x) => x.toMap()).toList()});
     }
 
     return result;
@@ -106,8 +110,8 @@ class PatientModel {
 
   factory PatientModel.fromMap(Map<String, dynamic> map) {
     return PatientModel(
-      id: map['id'] ?? '',
-      email: map['email'] ?? '',
+      id: map['id'],
+      email: map['email'],
       phone: map['phone'],
       nickname: map['nickname'],
       name: map['name'],
@@ -122,9 +126,9 @@ class PatientModel {
           ? List<PatientModel>.from(
               map['family']?.map((x) => PatientModel.fromMap(x)))
           : null,
-      healthPlans: map['healthPlan'] != null
+      healthPlans: map['healthPlans'] != null
           ? List<HealthPlanModel>.from(
-              map['healthPlan']?.map((x) => HealthPlanModel.fromMap(x)))
+              map['healthPlans']?.map((x) => HealthPlanModel.fromMap(x)))
           : null,
     );
   }
@@ -136,7 +140,7 @@ class PatientModel {
 
   @override
   String toString() {
-    return 'PatientModel(id: $id, email: $email, phone: $phone, nickname: $nickname, name: $name, cpf: $cpf, isFemale: $isFemale, birthday: $birthday, address: $address, region: $region, family: $family, healthPlan: $healthPlans)';
+    return 'PatientModel(id: $id, email: $email, phone: $phone, nickname: $nickname, name: $name, cpf: $cpf, isFemale: $isFemale, birthday: $birthday, address: $address, region: $region, family: $family, healthPlans: $healthPlans)';
   }
 
   @override

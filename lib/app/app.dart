@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fluxus2/app/core/models/healthplan_model.dart';
 import 'package:fluxus2/app/feature/graduation/select/graduation_select_page.dart';
 
 import 'core/authentication/authentication.dart';
@@ -27,6 +28,7 @@ import 'feature/healthplantype/save/healthplantype_save_page.dart';
 import 'feature/healthplantype/select/healthplantype_select_page.dart';
 import 'feature/home/home_page.dart';
 import 'feature/patient/save/patient_save_page.dart';
+import 'feature/patient/search/patient_search_page.dart';
 import 'feature/patient/select/patient_select_page.dart';
 import 'feature/procedure/print/procedure_print_page.dart';
 import 'feature/procedure/save/procedure_save_page.dart';
@@ -211,7 +213,15 @@ class _AppViewState extends State<AppView> {
               .arguments as List<HealthPlanTypeModel>?;
           return HealthPlanTypePrintPage(modelList: modelList ?? []);
         },
-        '/healthplan/save': (_) => const HealthPlanSavePage(),
+        '/healthplan/save': (context) {
+          HealthPlanModel? model =
+              ModalRoute.of(context)!.settings.arguments as HealthPlanModel?;
+
+          return HealthPlanSavePage(
+            model: model,
+          );
+        },
+        '/patient/search': (_) => const PatientSearchPage(),
         '/patient/save': (_) => const PatientSavePage(),
         '/patient/select': (context) {
           bool isSingleValue =

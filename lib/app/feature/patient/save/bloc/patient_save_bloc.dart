@@ -34,9 +34,15 @@ class PatientSaveBloc extends Bloc<PatientSaveEvent, PatientSaveState> {
     emit(state.copyWith(status: PatientSaveStateStatus.loading));
     try {
       PatientModel model;
+      String? nickname = event.nickname;
+      String? name = event.name ?? '';
+      nickname = nickname != null && nickname.isNotEmpty
+          ? nickname
+          : name.split(' ')[0];
       if (state.model == null) {
-        model = state.model!.copyWith(
-          nickname: event.nickname,
+        model = PatientModel(
+          nickname: nickname,
+          email: event.email,
           name: event.name,
           cpf: event.cpf,
           phone: event.phone,
@@ -47,6 +53,7 @@ class PatientSaveBloc extends Bloc<PatientSaveEvent, PatientSaveState> {
         );
       } else {
         model = state.model!.copyWith(
+          email: event.email,
           nickname: event.nickname,
           name: event.name,
           cpf: event.cpf,
@@ -64,15 +71,16 @@ class PatientSaveBloc extends Bloc<PatientSaveEvent, PatientSaveState> {
       model = model.copyWith(
         id: patientId,
         family: familyResults,
-        healthPlan: healthPlansResults,
+        healthPlans: healthPlansResults,
       );
 
       emit(
           state.copyWith(model: model, status: PatientSaveStateStatus.success));
-    } catch (_) {
+    } catch (e) {
+      print(e);
       emit(state.copyWith(
           status: PatientSaveStateStatus.error,
-          error: 'Erro ao salvar dados no seu perfil'));
+          error: 'Erro ao salvar dados do paciente'));
     }
   }
 
@@ -176,7 +184,10 @@ class PatientSaveBloc extends Bloc<PatientSaveEvent, PatientSaveState> {
       await _healthPlanRepository.delete(healthPlanTemp.id!);
       List<HealthPlanModel> temp = [...state.healthPlansUpdated];
       temp.removeWhere((element) => element == event.model);
-      emit(state.copyWith(healthPlansUpdated: temp));
+      emit(state.copyWith(
+        healthPlansUpdated: temp,
+        status: PatientSaveStateStatus.updated,
+      ));
     } catch (_) {
       emit(state.copyWith(
           status: PatientSaveStateStatus.error,

@@ -137,9 +137,9 @@ class ProcedureSearchBloc
       Emitter<ProcedureSearchState> emit) {
     int index = state.list.indexWhere((model) => model.id == event.model.id);
     if (index >= 0) {
-      List<ProcedureModel> addressModelListTemp = [...state.list];
-      addressModelListTemp.replaceRange(index, index + 1, [event.model]);
-      emit(state.copyWith(list: addressModelListTemp));
+      List<ProcedureModel> temp = [...state.list];
+      temp.replaceRange(index, index + 1, [event.model]);
+      emit(state.copyWith(list: temp));
     }
   }
 
@@ -148,9 +148,9 @@ class ProcedureSearchBloc
       Emitter<ProcedureSearchState> emit) {
     int index = state.list.indexWhere((model) => model.id == event.modelId);
     if (index >= 0) {
-      List<ProcedureModel> addressModelListTemp = [...state.list];
-      addressModelListTemp.removeAt(index);
-      emit(state.copyWith(list: addressModelListTemp));
+      List<ProcedureModel> temp = [...state.list];
+      temp.removeAt(index);
+      emit(state.copyWith(list: temp));
     }
   }
 }

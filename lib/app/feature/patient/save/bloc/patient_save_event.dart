@@ -5,6 +5,7 @@ import '../../../../core/models/region_model.dart';
 abstract class PatientSaveEvent {}
 
 class PatientSaveEventFormSubmitted extends PatientSaveEvent {
+  final String? email;
   final String? name;
   final String? nickname;
   final String? cpf;
@@ -13,6 +14,7 @@ class PatientSaveEventFormSubmitted extends PatientSaveEvent {
   final bool? isFemale;
   final DateTime? birthday;
   PatientSaveEventFormSubmitted({
+    this.email,
     this.name,
     this.nickname,
     this.cpf,
