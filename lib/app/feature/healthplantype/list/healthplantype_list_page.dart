@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/models/healthplantype_model.dart';
 import '../../../core/repositories/healthplantype_repository.dart';
 import '../save/healthplantype_save_page.dart';
 import 'bloc/healthplantype_list_bloc.dart';
@@ -35,6 +36,17 @@ class HealthPlanTypeListView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tipos de Planos encontrados'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              List<HealthPlanTypeModel> modelList =
+                  context.read<HealthPlanTypeListBloc>().state.list;
+              Navigator.of(context)
+                  .pushNamed('/healthplantype/print', arguments: modelList);
+            },
+            icon: const Icon(Icons.print),
+          )
+        ],
       ),
       body: BlocListener<HealthPlanTypeListBloc, HealthPlanTypeListState>(
         listenWhen: (previous, current) {

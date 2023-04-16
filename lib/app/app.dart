@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluxus2/app/feature/graduation/select/graduation_select_page.dart';
 
 import 'core/authentication/authentication.dart';
+import 'core/models/healthplantype_model.dart';
 import 'core/models/user_model.dart';
 import 'core/repositories/user_repository.dart';
 import 'data/b4a/table/user_b4a.dart';
@@ -13,6 +14,7 @@ import 'feature/expertise/select/expertise_select_page.dart';
 import 'feature/graduation/list/graduation_list_page.dart';
 import 'feature/graduation/save/graduation_save_page.dart';
 import 'feature/healthplantype/list/healthplantype_list_page.dart';
+import 'feature/healthplantype/print/healthplantype_print_page.dart';
 import 'feature/healthplantype/save/healthplantype_save_page.dart';
 import 'feature/healthplantype/select/healthplantype_select_page.dart';
 import 'feature/home/home_page.dart';
@@ -160,6 +162,12 @@ class _AppViewState extends State<AppView> {
           return HealthPlanTypeSelectPage(
             isSingleValue: isSingleValue,
           );
+        },
+        '/healthplantype/print': (context) {
+          List<HealthPlanTypeModel>? modelList = ModalRoute.of(context)!
+              .settings
+              .arguments as List<HealthPlanTypeModel>?;
+          return HealthPlanTypePrintPage(modelList: modelList ?? []);
         },
       },
       initialRoute: '/',
