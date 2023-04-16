@@ -7,6 +7,8 @@ import 'core/authentication/authentication.dart';
 import 'core/models/expertise_model.dart';
 import 'core/models/graduation_model.dart';
 import 'core/models/healthplantype_model.dart';
+import 'core/models/procedure_model.dart';
+import 'core/models/region_model.dart';
 import 'core/models/user_model.dart';
 import 'core/repositories/user_repository.dart';
 import 'data/b4a/table/user_b4a.dart';
@@ -22,9 +24,11 @@ import 'feature/healthplantype/print/healthplantype_print_page.dart';
 import 'feature/healthplantype/save/healthplantype_save_page.dart';
 import 'feature/healthplantype/select/healthplantype_select_page.dart';
 import 'feature/home/home_page.dart';
+import 'feature/procedure/print/procedure_print_page.dart';
 import 'feature/procedure/save/procedure_save_page.dart';
 import 'feature/procedure/search/procedure_search_page.dart';
 import 'feature/procedure/select/procedure_select_page.dart';
+import 'feature/region/print/region_print_page.dart';
 import 'feature/region/save/region_save_page.dart';
 import 'feature/region/search/region_search_page.dart';
 import 'feature/region/select/region_select_page.dart';
@@ -166,9 +170,20 @@ class _AppViewState extends State<AppView> {
             isSingleValue: isSingleValue,
           );
         },
+        '/procedure/print': (context) {
+          List<ProcedureModel>? modelList = ModalRoute.of(context)!
+              .settings
+              .arguments as List<ProcedureModel>?;
+          return ProcedurePrintPage(modelList: modelList ?? []);
+        },
         '/region/save': (_) => const RegionSavePage(),
         '/region/search': (_) => const RegionSearchPage(),
         '/region/select': (_) => const RegionSelectPage(),
+        '/region/print': (context) {
+          List<RegionModel>? modelList =
+              ModalRoute.of(context)!.settings.arguments as List<RegionModel>?;
+          return RegionPrintPage(modelList: modelList ?? []);
+        },
         '/healthplantype/list': (_) => const HealthPlanTypeListPage(),
         '/healthplantype/save': (_) => const HealthPlanTypeSavePage(),
         '/healthplantype/select': (context) {

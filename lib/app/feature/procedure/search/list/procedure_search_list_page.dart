@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/models/procedure_model.dart';
 import '../bloc/procedure_search_bloc.dart';
 import '../bloc/procedure_search_event.dart';
 import '../bloc/procedure_search_state.dart';
@@ -24,7 +25,18 @@ class ProcedureSearchListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Endereços encontrados'),
+        title: const Text('Procedimentos encontrados'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              List<ProcedureModel> modelList =
+                  context.read<ProcedureSearchBloc>().state.list;
+              Navigator.of(context)
+                  .pushNamed('/procedure/print', arguments: modelList);
+            },
+            icon: const Icon(Icons.print),
+          )
+        ],
       ),
       body: Column(
         children: [

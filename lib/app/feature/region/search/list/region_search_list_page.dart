@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/models/region_model.dart';
 import '../bloc/region_search_bloc.dart';
 import '../bloc/region_search_event.dart';
 import '../bloc/region_search_state.dart';
@@ -25,6 +26,17 @@ class RegionSearchListView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Regiões encontradas'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              List<RegionModel> modelList =
+                  context.read<RegionSearchBloc>().state.list;
+              Navigator.of(context)
+                  .pushNamed('/region/print', arguments: modelList);
+            },
+            icon: const Icon(Icons.print),
+          )
+        ],
       ),
       body: Column(
         children: [
