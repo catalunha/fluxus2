@@ -17,61 +17,67 @@ class ProcedureCard extends StatelessWidget {
     final dateFormat = DateFormat('dd/MM/y');
 
     return Card(
-      child: Column(
-        children: [
-          AppTextTitleValue(
-            title: 'Id: ',
-            value: model.id,
-          ),
-          AppTextTitleValue(
-            title: 'Codigo: ',
-            value: model.code,
-          ),
-          AppTextTitleValue(
-            title: 'Nome: ',
-            value: model.name,
-          ),
-          AppTextTitleValue(
-            title: 'Custo: ',
-            value: model.cost?.toString(),
-          ),
-          AppTextTitleValue(
-            title: 'Especialidade: ',
-            value: model.expertise?.name,
-            inColumn: true,
-          ),
-          Wrap(
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => BlocProvider.value(
-                        value: BlocProvider.of<ProcedureSearchBloc>(context),
-                        child: ProcedureSavePage(model: model),
-                      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // AppTextTitleValue(
+            //   title: 'Id: ',
+            //   value: model.id,
+            // ),
+            AppTextTitleValue(
+              title: 'Codigo: ',
+              value: model.code,
+            ),
+            AppTextTitleValue(
+              title: 'Nome: ',
+              value: model.name,
+            ),
+            AppTextTitleValue(
+              title: 'Custo: ',
+              value: model.cost?.toString(),
+            ),
+            AppTextTitleValue(
+              title: 'Especialidade: ',
+              value: model.expertise?.name,
+            ),
+            Center(
+              child: Wrap(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => BlocProvider.value(
+                            value:
+                                BlocProvider.of<ProcedureSearchBloc>(context),
+                            child: ProcedureSavePage(model: model),
+                          ),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.edit,
                     ),
-                  );
-                },
-                icon: const Icon(
-                  Icons.edit,
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => ProcedureViewPage(model: model),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => ProcedureViewPage(model: model),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.assignment_ind_outlined,
                     ),
-                  );
-                },
-                icon: const Icon(
-                  Icons.assignment_ind_outlined,
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

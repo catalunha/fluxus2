@@ -56,7 +56,8 @@ class _HealthPlanTypeSaveViewState extends State<HealthPlanTypeSaveView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tipo de Plano de Saude'),
+        title: Text(
+            '${widget.model == null ? "Criar" : "Editar"} Tipo de Plano de Saude'),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.cloud_upload),

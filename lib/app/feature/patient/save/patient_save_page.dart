@@ -88,7 +88,7 @@ class _PatientSaveViewState extends State<PatientSaveView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editar este paciente'),
+        title: Text('${widget.model == null ? "Criar" : "Editar"} Paciente'),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.cloud_upload),
@@ -158,13 +158,13 @@ class _PatientSaveViewState extends State<PatientSaveView> {
                   child: Column(
                     children: [
                       AppTextFormField(
-                        label: '* Seu nome',
+                        label: 'Seu nome *',
                         controller: _nameTec,
                         validator: Validatorless.required(
                             'Nome completo é obrigatório'),
                       ),
                       AppTextFormField(
-                          label: '* Seu telefone. Formato: DDDNÚMERO',
+                          label: 'Seu telefone. Formato: DDDNÚMERO *',
                           controller: _phoneTec,
                           validator: Validatorless.multiple([
                             Validatorless.number(
@@ -191,7 +191,7 @@ class _PatientSaveViewState extends State<PatientSaveView> {
                         label: 'Seu endereço completo. (Rua X, ..., CEP ..., )',
                         controller: _addressTec,
                       ),
-                      const Text('Selecione a região *'),
+                      const Text('Selecione a região'),
                       Row(
                         children: [
                           IconButton(

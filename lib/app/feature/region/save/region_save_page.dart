@@ -61,7 +61,7 @@ class _RegionSaveViewState extends State<RegionSaveView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Adicionar ou Editar Região'),
+        title: Text('${widget.model == null ? "Criar" : "Editar"} Região'),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.cloud_upload),

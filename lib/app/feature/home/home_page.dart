@@ -80,27 +80,27 @@ class HomePage extends StatelessWidget {
                 ],
               ),
               HomeCardModule(
-                title: 'Procedimentos',
+                title: 'Tipos de Planos de Saúde',
                 access: const ['admin'],
-                icon: Icons.construction_sharp,
+                icon: Icons.credit_card_rounded,
                 color: Colors.black87,
                 actions: [
+                  // IconButton(
+                  //   onPressed: () {
+                  //     Navigator.of(context).pushNamed('/healthplantype/save');
+                  //   },
+                  //   icon: const Icon(Icons.add),
+                  // ),
                   IconButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/procedure/save');
+                      Navigator.of(context).pushNamed('/healthplantype/list');
                     },
-                    icon: const Icon(Icons.add),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/procedure/search');
-                    },
-                    icon: const Icon(Icons.search),
+                    icon: const Icon(Icons.list),
                   )
                 ],
               ),
               HomeCardModule(
-                title: 'Região',
+                title: 'Regiões',
                 access: const ['admin'],
                 icon: Icons.bubble_chart_outlined,
                 color: Colors.black87,
@@ -120,22 +120,22 @@ class HomePage extends StatelessWidget {
                 ],
               ),
               HomeCardModule(
-                title: 'Tipos de Planos de Saúde',
+                title: 'Procedimentos',
                 access: const ['admin'],
-                icon: Icons.credit_card_rounded,
+                icon: Icons.construction_sharp,
                 color: Colors.black87,
                 actions: [
-                  // IconButton(
-                  //   onPressed: () {
-                  //     Navigator.of(context).pushNamed('/healthplantype/save');
-                  //   },
-                  //   icon: const Icon(Icons.add),
-                  // ),
                   IconButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/healthplantype/list');
+                      Navigator.of(context).pushNamed('/procedure/save');
                     },
-                    icon: const Icon(Icons.list),
+                    icon: const Icon(Icons.add),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/procedure/search');
+                    },
+                    icon: const Icon(Icons.search),
                   )
                 ],
               ),

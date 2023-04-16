@@ -60,7 +60,8 @@ class _ProcedureSaveViewState extends State<ProcedureSaveView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Procedimento'),
+        title:
+            Text('${widget.model == null ? "Criar" : "Editar"} Procedimento'),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.cloud_upload),

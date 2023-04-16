@@ -54,7 +54,7 @@ class _GraduationSaveViewState extends State<GraduationSaveView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Graduação'),
+        title: Text('${widget.model == null ? "Criar" : "Editar"} Graduação'),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.cloud_upload),

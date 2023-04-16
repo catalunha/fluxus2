@@ -17,94 +17,93 @@ class PatientCard extends StatelessWidget {
     final dateFormat = DateFormat('dd/MM/y');
 
     return Card(
-      child: Column(
-        children: [
-          AppTextTitleValue(
-            title: 'Email: ',
-            value: model.email,
-          ),
-          AppTextTitleValue(
-            title: 'Nome: ',
-            value: '${model.name}',
-          ),
-          AppTextTitleValue(
-            title: 'Nome curto: ',
-            value: model.nickname,
-            inColumn: true,
-          ),
-          AppTextTitleValue(
-            title: 'Telefone: ',
-            value: '${model.phone}',
-          ),
-          AppTextTitleValue(
-            title: 'CPF: ',
-            value: '${model.cpf}',
-          ),
-          AppTextTitleValue(
-            title: 'Endereço: ',
-            value: model.address,
-            inColumn: true,
-          ),
-          AppTextTitleValue(
-            title: 'Região: ',
-            value:
-                '${model.region?.uf}. ${model.region?.city}. ${model.region?.name}',
-            inColumn: true,
-          ),
-          AppTextTitleValue(
-            title: 'Sexo: ',
-            value: model.isFemale ?? true ? "Feminino" : "Masculino",
-            inColumn: true,
-          ),
-          AppTextTitleValue(
-            title: 'Aniversário: ',
-            value: model.birthday == null
-                ? '...'
-                : dateFormat.format(model.birthday!),
-            inColumn: true,
-          ),
-          AppTextTitleValue(
-            title: 'Familiares: ',
-            value: model.family?.map((e) => e.name).toList().join(', '),
-            inColumn: true,
-          ),
-          AppTextTitleValue(
-            title: 'Plano de Saúde: ',
-            value: model.healthPlans?.map((e) => e.code).toList().join(', '),
-            inColumn: true,
-          ),
-          Wrap(
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => BlocProvider.value(
-                        value: BlocProvider.of<PatientSearchBloc>(context),
-                        child: PatientSavePage(model: model),
-                      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AppTextTitleValue(
+              title: 'Email: ',
+              value: model.email,
+            ),
+            AppTextTitleValue(
+              title: 'Nome: ',
+              value: '${model.name}',
+            ),
+            AppTextTitleValue(
+              title: 'Nome curto: ',
+              value: model.nickname,
+            ),
+            AppTextTitleValue(
+              title: 'Telefone: ',
+              value: '${model.phone}',
+            ),
+            AppTextTitleValue(
+              title: 'CPF: ',
+              value: '${model.cpf}',
+            ),
+            AppTextTitleValue(
+              title: 'Endereço: ',
+              value: model.address,
+            ),
+            AppTextTitleValue(
+              title: 'Região: ',
+              value:
+                  '${model.region?.uf}. ${model.region?.city}. ${model.region?.name}',
+            ),
+            AppTextTitleValue(
+              title: 'Sexo: ',
+              value: model.isFemale ?? true ? "Feminino" : "Masculino",
+            ),
+            AppTextTitleValue(
+              title: 'Aniversário: ',
+              value: model.birthday == null
+                  ? '...'
+                  : dateFormat.format(model.birthday!),
+            ),
+            AppTextTitleValue(
+              title: 'Familiares: ',
+              value: model.family?.map((e) => e.name).toList().join(', '),
+            ),
+            AppTextTitleValue(
+              title: 'Plano de Saúde: ',
+              value: model.healthPlans?.map((e) => e.code).toList().join(', '),
+            ),
+            Center(
+              child: Wrap(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => BlocProvider.value(
+                            value: BlocProvider.of<PatientSearchBloc>(context),
+                            child: PatientSavePage(model: model),
+                          ),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.edit,
                     ),
-                  );
-                },
-                icon: const Icon(
-                  Icons.edit,
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => PatientViewPage(model: model),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => PatientViewPage(model: model),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.assignment_ind_outlined,
                     ),
-                  );
-                },
-                icon: const Icon(
-                  Icons.assignment_ind_outlined,
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -14,56 +14,62 @@ class RegionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Column(
-        children: [
-          AppTextTitleValue(
-            title: 'Id: ',
-            value: model.id,
-          ),
-          AppTextTitleValue(
-            title: 'Estado: ',
-            value: model.uf,
-          ),
-          AppTextTitleValue(
-            title: 'Cidade: ',
-            value: model.city,
-          ),
-          AppTextTitleValue(
-            title: 'Nome: ',
-            value: model.name,
-          ),
-          Wrap(
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => BlocProvider.value(
-                        value: BlocProvider.of<RegionSearchBloc>(context),
-                        child: RegionSavePage(model: model),
-                      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // AppTextTitleValue(
+            //   title: 'Id: ',
+            //   value: model.id,
+            // ),
+            AppTextTitleValue(
+              title: 'Estado: ',
+              value: model.uf,
+            ),
+            AppTextTitleValue(
+              title: 'Cidade: ',
+              value: model.city,
+            ),
+            AppTextTitleValue(
+              title: 'Nome: ',
+              value: model.name,
+            ),
+            Center(
+              child: Wrap(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => BlocProvider.value(
+                            value: BlocProvider.of<RegionSearchBloc>(context),
+                            child: RegionSavePage(model: model),
+                          ),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.edit,
                     ),
-                  );
-                },
-                icon: const Icon(
-                  Icons.edit,
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => RegionViewPage(model: model),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => RegionViewPage(model: model),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.assignment_ind_outlined,
                     ),
-                  );
-                },
-                icon: const Icon(
-                  Icons.assignment_ind_outlined,
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

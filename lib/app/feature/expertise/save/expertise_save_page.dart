@@ -54,7 +54,8 @@ class _ExpertiseSaveViewState extends State<ExpertiseSaveView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Especialidade'),
+        title:
+            Text('${widget.model == null ? "Criar" : "Editar"} Especialidade'),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.cloud_upload),

@@ -16,72 +16,61 @@ class PatientViewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Dados do paciente')),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 600),
-          child: SingleChildScrollView(
+      body: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 600),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppTextTitleValue(
                   title: 'E-mail: ',
                   value: model.email,
-                  inColumn: true,
                 ),
                 AppTextTitleValue(
                   title: 'Nome curto: ',
                   value: model.nickname,
-                  inColumn: true,
                 ),
                 AppTextTitleValue(
                   title: 'Nome completo: ',
                   value: model.name,
-                  inColumn: true,
                 ),
                 AppTextTitleValue(
                   title: 'CPF: ',
                   value: model.cpf,
-                  inColumn: true,
                 ),
                 AppTextTitleValue(
                   title: 'Telefone: ',
                   value: model.phone,
-                  inColumn: true,
                 ),
                 AppTextTitleValue(
                   title: 'Endereço: ',
                   value: model.address,
-                  inColumn: true,
                 ),
                 AppTextTitleValue(
                   title: 'Região: ',
                   value:
                       '${model.region?.uf}. ${model.region?.city}. ${model.region?.name}',
-                  inColumn: true,
                 ),
                 AppTextTitleValue(
                   title: 'Sexo: ',
                   value: model.isFemale ?? true ? "Feminino" : "Masculino",
-                  inColumn: true,
                 ),
                 AppTextTitleValue(
                   title: 'Aniversário: ',
                   value: model.birthday == null
                       ? '...'
                       : dateFormat.format(model.birthday!),
-                  inColumn: true,
                 ),
                 AppTextTitleValue(
                   title: 'Familiares: ',
                   value: model.family?.map((e) => e.name).toList().join(', '),
-                  inColumn: true,
                 ),
                 AppTextTitleValue(
                   title: 'Plano de Saúde: ',
                   value:
                       model.healthPlans?.map((e) => e.code).toList().join(', '),
-                  inColumn: true,
                 ),
               ],
             ),
