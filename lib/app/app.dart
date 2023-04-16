@@ -4,11 +4,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluxus2/app/feature/graduation/select/graduation_select_page.dart';
 
 import 'core/authentication/authentication.dart';
+import 'core/models/expertise_model.dart';
 import 'core/models/healthplantype_model.dart';
 import 'core/models/user_model.dart';
 import 'core/repositories/user_repository.dart';
 import 'data/b4a/table/user_b4a.dart';
 import 'feature/expertise/list/expertise_list_page.dart';
+import 'feature/expertise/print/expertise_print_page.dart';
 import 'feature/expertise/save/expertise_save_page.dart';
 import 'feature/expertise/select/expertise_select_page.dart';
 import 'feature/graduation/list/graduation_list_page.dart';
@@ -139,6 +141,12 @@ class _AppViewState extends State<AppView> {
           return ExpertiseSelectPage(
             isSingleValue: isSingleValue,
           );
+        },
+        '/expertise/print': (context) {
+          List<ExpertiseModel>? modelList = ModalRoute.of(context)!
+              .settings
+              .arguments as List<ExpertiseModel>?;
+          return ExpertisePrintPage(modelList: modelList ?? []);
         },
         '/procedure/save': (_) => const ProcedureSavePage(),
         '/procedure/search': (_) => const ProcedureSearchPage(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/models/expertise_model.dart';
 import '../../../core/repositories/expertise_repository.dart';
 import '../save/expertise_save_page.dart';
 import 'bloc/expertise_list_bloc.dart';
@@ -34,6 +35,17 @@ class ExpertiseListView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Especialidades encontradas'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              List<ExpertiseModel> modelList =
+                  context.read<ExpertiseListBloc>().state.list;
+              Navigator.of(context)
+                  .pushNamed('/expertise/print', arguments: modelList);
+            },
+            icon: const Icon(Icons.print),
+          )
+        ],
       ),
       body: BlocListener<ExpertiseListBloc, ExpertiseListState>(
         listenWhen: (previous, current) {
