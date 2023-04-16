@@ -5,6 +5,7 @@ import 'package:fluxus2/app/feature/graduation/select/graduation_select_page.dar
 
 import 'core/authentication/authentication.dart';
 import 'core/models/expertise_model.dart';
+import 'core/models/graduation_model.dart';
 import 'core/models/healthplantype_model.dart';
 import 'core/models/user_model.dart';
 import 'core/repositories/user_repository.dart';
@@ -14,6 +15,7 @@ import 'feature/expertise/print/expertise_print_page.dart';
 import 'feature/expertise/save/expertise_save_page.dart';
 import 'feature/expertise/select/expertise_select_page.dart';
 import 'feature/graduation/list/graduation_list_page.dart';
+import 'feature/graduation/print/graduation_print_page.dart';
 import 'feature/graduation/save/graduation_save_page.dart';
 import 'feature/healthplantype/list/healthplantype_list_page.dart';
 import 'feature/healthplantype/print/healthplantype_print_page.dart';
@@ -131,6 +133,12 @@ class _AppViewState extends State<AppView> {
           return GraduationSelectPage(
             isSingleValue: isSingleValue,
           );
+        },
+        '/graduation/print': (context) {
+          List<GraduationModel>? modelList = ModalRoute.of(context)!
+              .settings
+              .arguments as List<GraduationModel>?;
+          return GraduationPrintPage(modelList: modelList ?? []);
         },
         '/expertise/list': (_) => const ExpertiseListPage(),
         '/expertise/save': (_) => const ExpertiseSavePage(),

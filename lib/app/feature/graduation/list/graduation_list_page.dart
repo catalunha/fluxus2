@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/models/graduation_model.dart';
 import '../../../core/repositories/graduation_repository.dart';
 import '../save/graduation_save_page.dart';
 import 'bloc/graduation_list_bloc.dart';
@@ -34,6 +35,17 @@ class GraduationListView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Graduações encontradas'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              List<GraduationModel> modelList =
+                  context.read<GraduationListBloc>().state.list;
+              Navigator.of(context)
+                  .pushNamed('/graduation/print', arguments: modelList);
+            },
+            icon: const Icon(Icons.print),
+          )
+        ],
       ),
       body: BlocListener<GraduationListBloc, GraduationListState>(
         listenWhen: (previous, current) {
