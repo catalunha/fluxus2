@@ -7,11 +7,11 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
-import '../../../core/models/graduation_model.dart';
+import '../../../core/models/room_model.dart';
 
-class GraduationPrintPage extends StatelessWidget {
-  final List<GraduationModel> modelList;
-  const GraduationPrintPage({
+class RoomPrintPage extends StatelessWidget {
+  final List<RoomModel> modelList;
+  const RoomPrintPage({
     Key? key,
     required this.modelList,
   }) : super(key: key);
@@ -26,7 +26,7 @@ class GraduationPrintPage extends StatelessWidget {
         canChangeOrientation: false,
         canChangePageFormat: false,
         canDebug: false,
-        pdfFileName: 'Graduation',
+        pdfFileName: 'Room',
         build: (format) => makePdf(),
       ),
     );
@@ -48,7 +48,7 @@ class GraduationPrintPage extends StatelessWidget {
         build: (pw.Context context) => <pw.Widget>[
           pw.Header(
             level: 1,
-            child: pw.Text('Relatório de Graduações'),
+            child: pw.Text('Relatório de Salas'),
           ),
           ...body(),
         ],
@@ -67,7 +67,7 @@ class GraduationPrintPage extends StatelessWidget {
     return lineList;
   }
 
-  userBody(GraduationModel model) {
+  userBody(RoomModel model) {
     final dateFormat = DateFormat('dd/MM/y HH:mm');
 
     return pw.Column(

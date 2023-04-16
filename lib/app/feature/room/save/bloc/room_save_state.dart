@@ -1,25 +1,25 @@
-import '../../../../core/models/graduation_model.dart';
+import '../../../../core/models/room_model.dart';
 
-enum GraduationSaveStateStatus { initial, loading, success, error }
+enum RoomSaveStateStatus { initial, loading, success, error }
 
-class GraduationSaveState {
-  final GraduationSaveStateStatus status;
+class RoomSaveState {
+  final RoomSaveStateStatus status;
   final String? error;
-  final GraduationModel? model;
-  GraduationSaveState({
+  final RoomModel? model;
+  RoomSaveState({
     required this.status,
     this.error,
     this.model,
   });
-  GraduationSaveState.initial(this.model)
-      : status = GraduationSaveStateStatus.initial,
+  RoomSaveState.initial(this.model)
+      : status = RoomSaveStateStatus.initial,
         error = '';
-  GraduationSaveState copyWith({
-    GraduationSaveStateStatus? status,
+  RoomSaveState copyWith({
+    RoomSaveStateStatus? status,
     String? error,
-    GraduationModel? model,
+    RoomModel? model,
   }) {
-    return GraduationSaveState(
+    return RoomSaveState(
       status: status ?? this.status,
       error: error ?? this.error,
       model: model ?? this.model,
@@ -30,7 +30,7 @@ class GraduationSaveState {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is GraduationSaveState &&
+    return other is RoomSaveState &&
         other.status == status &&
         other.error == error &&
         other.model == model;

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/models/graduation_model.dart';
+import '../../../../core/models/room_model.dart';
 import '../../../utils/app_text_title_value.dart';
-import '../../save/graduation_save_page.dart';
-import '../bloc/graduation_list_bloc.dart';
+import '../../save/room_save_page.dart';
+import '../bloc/room_list_bloc.dart';
 
-class GraduationCard extends StatelessWidget {
-  final GraduationModel model;
-  const GraduationCard({Key? key, required this.model}) : super(key: key);
+class RoomCard extends StatelessWidget {
+  final RoomModel model;
+  const RoomCard({Key? key, required this.model}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +35,8 @@ class GraduationCard extends StatelessWidget {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (_) => BlocProvider.value(
-                            value: BlocProvider.of<GraduationListBloc>(context),
-                            child: GraduationSavePage(model: model),
+                            value: BlocProvider.of<RoomListBloc>(context),
+                            child: RoomSavePage(model: model),
                           ),
                         ),
                       );

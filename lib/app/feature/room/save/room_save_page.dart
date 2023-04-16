@@ -2,29 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:validatorless/validatorless.dart';
 
-import '../../../core/models/graduation_model.dart';
-import '../../../core/repositories/graduation_repository.dart';
+import '../../../core/models/room_model.dart';
+import '../../../core/repositories/room_repository.dart';
 import '../../utils/app_textformfield.dart';
-import '../list/bloc/graduation_list_bloc.dart';
-import '../list/bloc/graduation_list_event.dart';
-import 'bloc/graduation_save_bloc.dart';
-import 'bloc/graduation_save_event.dart';
-import 'bloc/graduation_save_state.dart';
+import '../list/bloc/room_list_bloc.dart';
+import '../list/bloc/room_list_event.dart';
+import 'bloc/room_save_bloc.dart';
+import 'bloc/room_save_event.dart';
+import 'bloc/room_save_state.dart';
 
-class GraduationSavePage extends StatelessWidget {
-  final GraduationModel? model;
+class RoomSavePage extends StatelessWidget {
+  final RoomModel? model;
 
-  const GraduationSavePage({super.key, this.model});
+  const RoomSavePage({super.key, this.model});
 
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-      create: (context) => GraduationRepository(),
+      create: (context) => RoomRepository(),
       child: BlocProvider(
-        create: (context) => GraduationSaveBloc(
+        create: (context) => RoomSaveBloc(
             model: model,
-            repository: RepositoryProvider.of<GraduationRepository>(context)),
-        child: GraduationSaveView(
+            repository: RepositoryProvider.of<RoomRepository>(context)),
+        child: RoomSaveView(
           model: model,
         ),
       ),
@@ -32,15 +32,15 @@ class GraduationSavePage extends StatelessWidget {
   }
 }
 
-class GraduationSaveView extends StatefulWidget {
-  final GraduationModel? model;
-  const GraduationSaveView({Key? key, required this.model}) : super(key: key);
+class RoomSaveView extends StatefulWidget {
+  final RoomModel? model;
+  const RoomSaveView({Key? key, required this.model}) : super(key: key);
 
   @override
-  State<GraduationSaveView> createState() => _GraduationSaveViewState();
+  State<RoomSaveView> createState() => _RoomSaveViewState();
 }
 
-class _GraduationSaveViewState extends State<GraduationSaveView> {
+class _RoomSaveViewState extends State<RoomSaveView> {
   final _formKey = GlobalKey<FormState>();
   final _nameTEC = TextEditingController();
   bool delete = false;
@@ -60,14 +60,14 @@ class _GraduationSaveViewState extends State<GraduationSaveView> {
         child: const Icon(Icons.cloud_upload),
         onPressed: () async {
           if (delete) {
-            context.read<GraduationSaveBloc>().add(
-                  GraduationSaveEventDelete(),
+            context.read<RoomSaveBloc>().add(
+                  RoomSaveEventDelete(),
                 );
           } else {
             final formValid = _formKey.currentState?.validate() ?? false;
             if (formValid) {
-              context.read<GraduationSaveBloc>().add(
-                    GraduationSaveEventFormSubmitted(
+              context.read<RoomSaveBloc>().add(
+                    RoomSaveEventFormSubmitted(
                       name: _nameTEC.text,
                     ),
                   );
@@ -75,37 +75,37 @@ class _GraduationSaveViewState extends State<GraduationSaveView> {
           }
         },
       ),
-      body: BlocListener<GraduationSaveBloc, GraduationSaveState>(
+      body: BlocListener<RoomSaveBloc, RoomSaveState>(
         listenWhen: (previous, current) {
           return previous.status != current.status;
         },
         listener: (context, state) async {
-          if (state.status == GraduationSaveStateStatus.error) {
+          if (state.status == RoomSaveStateStatus.error) {
             Navigator.of(context).pop();
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(SnackBar(content: Text(state.error ?? '...')));
           }
-          if (state.status == GraduationSaveStateStatus.success) {
+          if (state.status == RoomSaveStateStatus.success) {
             Navigator.of(context).pop();
             if (widget.model == null) {
               context
-                  .read<GraduationListBloc>()
-                  .add(GraduationListEventAddToList(state.model!));
+                  .read<RoomListBloc>()
+                  .add(RoomListEventAddToList(state.model!));
             } else {
               if (delete) {
                 context
-                    .read<GraduationListBloc>()
-                    .add(GraduationListEventRemoveFromList(state.model!.id!));
+                    .read<RoomListBloc>()
+                    .add(RoomListEventRemoveFromList(state.model!.id!));
               } else {
                 context
-                    .read<GraduationListBloc>()
-                    .add(GraduationListEventUpdateList(state.model!));
+                    .read<RoomListBloc>()
+                    .add(RoomListEventUpdateList(state.model!));
               }
             }
             Navigator.of(context).pop();
           }
-          if (state.status == GraduationSaveStateStatus.loading) {
+          if (state.status == RoomSaveStateStatus.loading) {
             await showDialog(
               barrierDismissible: false,
               context: context,

@@ -3,16 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/authentication/authentication.dart';
 import '../../../core/models/user_profile_model.dart';
-import '../../../core/repositories/graduation_repository.dart';
+import '../../../core/repositories/room_repository.dart';
 import '../../utils/app_textformfield.dart';
-import 'bloc/graduation_select_bloc.dart';
-import 'bloc/graduation_select_event.dart';
-import 'bloc/graduation_select_state.dart';
-import 'comp/graduation_card.dart';
+import 'bloc/room_select_bloc.dart';
+import 'bloc/room_select_event.dart';
+import 'bloc/room_select_state.dart';
+import 'comp/room_card.dart';
 
-class GraduationSelectPage extends StatelessWidget {
+class RoomSelectPage extends StatelessWidget {
   final bool isSingleValue;
-  const GraduationSelectPage({
+  const RoomSelectPage({
     Key? key,
     required this.isSingleValue,
   }) : super(key: key);
@@ -20,31 +20,31 @@ class GraduationSelectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-      create: (context) => GraduationRepository(),
+      create: (context) => RoomRepository(),
       child: BlocProvider(
         create: (context) {
           UserProfileModel userProfile =
               context.read<AuthenticationBloc>().state.user!.userProfile!;
-          return GraduationSelectBloc(
-            repository: RepositoryProvider.of<GraduationRepository>(context),
+          return RoomSelectBloc(
+            repository: RepositoryProvider.of<RoomRepository>(context),
             seller: userProfile,
             isSingleValue: isSingleValue,
           );
         },
-        child: const GraduationSelectView(),
+        child: const RoomSelectView(),
       ),
     );
   }
 }
 
-class GraduationSelectView extends StatefulWidget {
-  const GraduationSelectView({Key? key}) : super(key: key);
+class RoomSelectView extends StatefulWidget {
+  const RoomSelectView({Key? key}) : super(key: key);
 
   @override
-  State<GraduationSelectView> createState() => _GraduationSelectViewState();
+  State<RoomSelectView> createState() => _RoomSelectViewState();
 }
 
-class _GraduationSelectViewState extends State<GraduationSelectView> {
+class _RoomSelectViewState extends State<RoomSelectView> {
   final _formKey = GlobalKey<FormState>();
   final _nameTEC = TextEditingController();
 
@@ -60,21 +60,21 @@ class _GraduationSelectViewState extends State<GraduationSelectView> {
       appBar: AppBar(
         title: const Text('Selecione uma graduação'),
       ),
-      body: BlocListener<GraduationSelectBloc, GraduationSelectState>(
+      body: BlocListener<RoomSelectBloc, RoomSelectState>(
         listenWhen: (previous, current) {
           return previous.status != current.status;
         },
         listener: (context, state) async {
-          if (state.status == GraduationSelectStateStatus.error) {
+          if (state.status == RoomSelectStateStatus.error) {
             Navigator.of(context).pop();
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(SnackBar(content: Text(state.error ?? '...')));
           }
-          if (state.status == GraduationSelectStateStatus.success) {
+          if (state.status == RoomSelectStateStatus.success) {
             Navigator.of(context).pop();
           }
-          if (state.status == GraduationSelectStateStatus.loading) {
+          if (state.status == RoomSelectStateStatus.loading) {
             await showDialog(
               barrierDismissible: false,
               context: context,
@@ -96,15 +96,16 @@ class _GraduationSelectViewState extends State<GraduationSelectView> {
                       controller: _nameTEC,
                       onChange: (value) {
                         context
-                            .read<GraduationSelectBloc>()
-                            .add(GraduationSelectEventFormSubmitted(value));
+                            .read<RoomSelectBloc>()
+                            .add(RoomSelectEventFormSubmitted(value));
                       },
                     ),
                   ),
                   IconButton(
                     onPressed: () {
-                      context.read<GraduationSelectBloc>().add(
-                          GraduationSelectEventFormSubmitted(_nameTEC.text));
+                      context
+                          .read<RoomSelectBloc>()
+                          .add(RoomSelectEventFormSubmitted(_nameTEC.text));
                     },
                     icon: const Icon(Icons.youtube_searched_for_sharp),
                   )
@@ -114,15 +115,15 @@ class _GraduationSelectViewState extends State<GraduationSelectView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                BlocBuilder<GraduationSelectBloc, GraduationSelectState>(
+                BlocBuilder<RoomSelectBloc, RoomSelectState>(
                   builder: (context, state) {
                     return InkWell(
                       onTap: state.firstPage
                           ? null
                           : () {
                               context
-                                  .read<GraduationSelectBloc>()
-                                  .add(GraduationSelectEventPreviousPage());
+                                  .read<RoomSelectBloc>()
+                                  .add(RoomSelectEventPreviousPage());
                             },
                       child: Card(
                         color: state.firstPage ? Colors.black : Colors.black45,
@@ -138,15 +139,15 @@ class _GraduationSelectViewState extends State<GraduationSelectView> {
                     );
                   },
                 ),
-                BlocBuilder<GraduationSelectBloc, GraduationSelectState>(
+                BlocBuilder<RoomSelectBloc, RoomSelectState>(
                   builder: (context, state) {
                     return InkWell(
                       onTap: state.lastPage
                           ? null
                           : () {
                               context
-                                  .read<GraduationSelectBloc>()
-                                  .add(GraduationSelectEventNextPage());
+                                  .read<RoomSelectBloc>()
+                                  .add(RoomSelectEventNextPage());
                             },
                       child: Card(
                         color: state.lastPage ? Colors.black : Colors.black45,
@@ -167,14 +168,14 @@ class _GraduationSelectViewState extends State<GraduationSelectView> {
             Expanded(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 600),
-                child: BlocBuilder<GraduationSelectBloc, GraduationSelectState>(
+                child: BlocBuilder<RoomSelectBloc, RoomSelectState>(
                   builder: (context, state) {
                     var list = state.listFiltered;
                     return ListView.builder(
                       itemCount: list.length,
                       itemBuilder: (context, index) {
                         final item = list[index];
-                        return GraduationCard(
+                        return RoomCard(
                           model: item,
                         );
                       },
@@ -186,8 +187,7 @@ class _GraduationSelectViewState extends State<GraduationSelectView> {
           ],
         ),
       ),
-      floatingActionButton:
-          BlocBuilder<GraduationSelectBloc, GraduationSelectState>(
+      floatingActionButton: BlocBuilder<RoomSelectBloc, RoomSelectState>(
         builder: (context, state) {
           return Visibility(
             visible: !state.isSingleValue,
