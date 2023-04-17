@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/models/room_model.dart';
+import '../../../../core/models/Status_model.dart';
 import '../../../utils/app_text_title_value.dart';
-import '../../save/room_save_page.dart';
-import '../bloc/room_list_bloc.dart';
+import '../../save/Status_save_page.dart';
+import '../bloc/Status_list_bloc.dart';
 
-class RoomCard extends StatelessWidget {
-  final RoomModel model;
-  const RoomCard({Key? key, required this.model}) : super(key: key);
+class StatusCard extends StatelessWidget {
+  final StatusModel model;
+  const StatusCard({Key? key, required this.model}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +19,13 @@ class RoomCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // AppTextTitleValue(
+            //   title: 'Id: ',
+            //   value: model.id,
+            // ),
             AppTextTitleValue(
               title: 'Nome: ',
               value: model.name,
-            ),
-            AppTextTitleValue(
-              title: 'Disponível: ',
-              value: model.isActive ?? true ? "Sim" : "Não",
             ),
             Center(
               child: Wrap(
@@ -35,8 +35,8 @@ class RoomCard extends StatelessWidget {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (_) => BlocProvider.value(
-                            value: BlocProvider.of<RoomListBloc>(context),
-                            child: RoomSavePage(model: model),
+                            value: BlocProvider.of<StatusListBloc>(context),
+                            child: StatusSavePage(model: model),
                           ),
                         ),
                       );

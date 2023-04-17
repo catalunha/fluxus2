@@ -2,29 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:validatorless/validatorless.dart';
 
-import '../../../core/models/room_model.dart';
-import '../../../core/repositories/room_repository.dart';
+import '../../../core/models/Status_model.dart';
+import '../../../core/repositories/Status_repository.dart';
 import '../../utils/app_textformfield.dart';
-import '../list/bloc/room_list_bloc.dart';
-import '../list/bloc/room_list_event.dart';
-import 'bloc/room_save_bloc.dart';
-import 'bloc/room_save_event.dart';
-import 'bloc/room_save_state.dart';
+import '../list/bloc/Status_list_bloc.dart';
+import '../list/bloc/Status_list_event.dart';
+import 'bloc/Status_save_bloc.dart';
+import 'bloc/Status_save_event.dart';
+import 'bloc/Status_save_state.dart';
 
-class RoomSavePage extends StatelessWidget {
-  final RoomModel? model;
+class StatusSavePage extends StatelessWidget {
+  final StatusModel? model;
 
-  const RoomSavePage({super.key, this.model});
+  const StatusSavePage({super.key, this.model});
 
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-      create: (context) => RoomRepository(),
+      create: (context) => StatusRepository(),
       child: BlocProvider(
-        create: (context) => RoomSaveBloc(
+        create: (context) => StatusSaveBloc(
             model: model,
-            repository: RepositoryProvider.of<RoomRepository>(context)),
-        child: RoomSaveView(
+            repository: RepositoryProvider.of<StatusRepository>(context)),
+        child: StatusSaveView(
           model: model,
         ),
       ),
@@ -32,83 +32,80 @@ class RoomSavePage extends StatelessWidget {
   }
 }
 
-class RoomSaveView extends StatefulWidget {
-  final RoomModel? model;
-  const RoomSaveView({Key? key, required this.model}) : super(key: key);
+class StatusSaveView extends StatefulWidget {
+  final StatusModel? model;
+  const StatusSaveView({Key? key, required this.model}) : super(key: key);
 
   @override
-  State<RoomSaveView> createState() => _RoomSaveViewState();
+  State<StatusSaveView> createState() => _StatusSaveViewState();
 }
 
-class _RoomSaveViewState extends State<RoomSaveView> {
+class _StatusSaveViewState extends State<StatusSaveView> {
   final _formKey = GlobalKey<FormState>();
   final _nameTEC = TextEditingController();
   bool delete = false;
-  bool isActive = true;
   @override
   void initState() {
     super.initState();
     _nameTEC.text = widget.model?.name ?? "";
-    isActive = widget.model?.isActive ?? true;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.model == null ? "Criar" : "Editar"} Sala'),
+        title: Text('${widget.model == null ? "Criar" : "Editar"} Graduação'),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.cloud_upload),
         onPressed: () async {
           if (delete) {
-            context.read<RoomSaveBloc>().add(
-                  RoomSaveEventDelete(),
+            context.read<StatusSaveBloc>().add(
+                  StatusSaveEventDelete(),
                 );
           } else {
             final formValid = _formKey.currentState?.validate() ?? false;
             if (formValid) {
-              context.read<RoomSaveBloc>().add(
-                    RoomSaveEventFormSubmitted(
+              context.read<StatusSaveBloc>().add(
+                    StatusSaveEventFormSubmitted(
                       name: _nameTEC.text,
-                      isActive: isActive,
                     ),
                   );
             }
           }
         },
       ),
-      body: BlocListener<RoomSaveBloc, RoomSaveState>(
+      body: BlocListener<StatusSaveBloc, StatusSaveState>(
         listenWhen: (previous, current) {
           return previous.status != current.status;
         },
         listener: (context, state) async {
-          if (state.status == RoomSaveStateStatus.error) {
+          if (state.status == StatusSaveStateStatus.error) {
             Navigator.of(context).pop();
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(SnackBar(content: Text(state.error ?? '...')));
           }
-          if (state.status == RoomSaveStateStatus.success) {
+          if (state.status == StatusSaveStateStatus.success) {
             Navigator.of(context).pop();
             if (widget.model == null) {
               context
-                  .read<RoomListBloc>()
-                  .add(RoomListEventAddToList(state.model!));
+                  .read<StatusListBloc>()
+                  .add(StatusListEventAddToList(state.model!));
             } else {
               if (delete) {
                 context
-                    .read<RoomListBloc>()
-                    .add(RoomListEventRemoveFromList(state.model!.id!));
+                    .read<StatusListBloc>()
+                    .add(StatusListEventRemoveFromList(state.model!.id!));
               } else {
                 context
-                    .read<RoomListBloc>()
-                    .add(RoomListEventUpdateList(state.model!));
+                    .read<StatusListBloc>()
+                    .add(StatusListEventUpdateList(state.model!));
               }
             }
             Navigator.of(context).pop();
           }
-          if (state.status == RoomSaveStateStatus.loading) {
+          if (state.status == StatusSaveStateStatus.loading) {
             await showDialog(
               barrierDismissible: false,
               context: context,
@@ -132,16 +129,6 @@ class _RoomSaveViewState extends State<RoomSaveView> {
                         label: 'Nome',
                         controller: _nameTEC,
                         validator: Validatorless.required('Nome é obrigatório'),
-                      ),
-                      CheckboxListTile(
-                        // tileColor: delete ? Colors.red : null,
-                        title: const Text("Sala disponível ?"),
-                        value: isActive,
-                        onChanged: (value) {
-                          setState(() {
-                            isActive = value ?? true;
-                          });
-                        },
                       ),
                       if (widget.model != null)
                         CheckboxListTile(

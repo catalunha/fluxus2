@@ -1,67 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/models/room_model.dart';
-import '../../../core/repositories/room_repository.dart';
-import '../save/room_save_page.dart';
-import 'bloc/room_list_bloc.dart';
-import 'bloc/room_list_event.dart';
-import 'bloc/room_list_state.dart';
-import 'comp/room_card.dart';
+import '../../../core/models/Status_model.dart';
+import '../../../core/repositories/Status_repository.dart';
+import '../save/Status_save_page.dart';
+import 'bloc/Status_list_bloc.dart';
+import 'bloc/Status_list_event.dart';
+import 'bloc/Status_list_state.dart';
+import 'comp/Status_card.dart';
 
-class RoomListPage extends StatelessWidget {
-  const RoomListPage({
+class StatusListPage extends StatelessWidget {
+  const StatusListPage({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-      create: (context) => RoomRepository(),
+      create: (context) => StatusRepository(),
       child: BlocProvider(
-        create: (context) => RoomListBloc(
-            repository: RepositoryProvider.of<RoomRepository>(context)),
-        child: const RoomListView(),
+        create: (context) => StatusListBloc(
+            repository: RepositoryProvider.of<StatusRepository>(context)),
+        child: const StatusListView(),
       ),
     );
   }
 }
 
-class RoomListView extends StatelessWidget {
-  const RoomListView({Key? key}) : super(key: key);
+class StatusListView extends StatelessWidget {
+  const StatusListView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Salas encontradas'),
+        title: const Text('Graduações encontradas'),
         actions: [
           IconButton(
             onPressed: () {
-              List<RoomModel> modelList =
-                  context.read<RoomListBloc>().state.list;
+              List<StatusModel> modelList =
+                  context.read<StatusListBloc>().state.list;
               Navigator.of(context)
-                  .pushNamed('/Room/print', arguments: modelList);
+                  .pushNamed('/Status/print', arguments: modelList);
             },
             icon: const Icon(Icons.print),
           )
         ],
       ),
-      body: BlocListener<RoomListBloc, RoomListState>(
+      body: BlocListener<StatusListBloc, StatusListState>(
         listenWhen: (previous, current) {
           return previous.status != current.status;
         },
         listener: (context, state) async {
-          if (state.status == RoomListStateStatus.error) {
+          if (state.status == StatusListStateStatus.error) {
             Navigator.of(context).pop();
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(SnackBar(content: Text(state.error ?? '...')));
           }
-          if (state.status == RoomListStateStatus.success) {
+          if (state.status == StatusListStateStatus.success) {
             Navigator.of(context).pop();
           }
-          if (state.status == RoomListStateStatus.loading) {
+          if (state.status == StatusListStateStatus.loading) {
             await showDialog(
               barrierDismissible: false,
               context: context,
@@ -76,15 +76,15 @@ class RoomListView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                BlocBuilder<RoomListBloc, RoomListState>(
+                BlocBuilder<StatusListBloc, StatusListState>(
                   builder: (context, state) {
                     return InkWell(
                       onTap: state.firstPage
                           ? null
                           : () {
                               context
-                                  .read<RoomListBloc>()
-                                  .add(RoomListEventPreviousPage());
+                                  .read<StatusListBloc>()
+                                  .add(StatusListEventPreviousPage());
                             },
                       child: Card(
                         color: state.firstPage ? Colors.black : Colors.black45,
@@ -100,15 +100,15 @@ class RoomListView extends StatelessWidget {
                     );
                   },
                 ),
-                BlocBuilder<RoomListBloc, RoomListState>(
+                BlocBuilder<StatusListBloc, StatusListState>(
                   builder: (context, state) {
                     return InkWell(
                       onTap: state.lastPage
                           ? null
                           : () {
                               context
-                                  .read<RoomListBloc>()
-                                  .add(RoomListEventNextPage());
+                                  .read<StatusListBloc>()
+                                  .add(StatusListEventNextPage());
                             },
                       child: Card(
                         color: state.lastPage ? Colors.black : Colors.black45,
@@ -129,7 +129,7 @@ class RoomListView extends StatelessWidget {
             Expanded(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 600),
-                child: BlocBuilder<RoomListBloc, RoomListState>(
+                child: BlocBuilder<StatusListBloc, StatusListState>(
                   builder: (context, state) {
                     var list = state.list;
 
@@ -137,7 +137,7 @@ class RoomListView extends StatelessWidget {
                       itemCount: list.length,
                       itemBuilder: (context, index) {
                         final item = list[index];
-                        return RoomCard(
+                        return StatusCard(
                           model: item,
                         );
                       },
@@ -154,8 +154,8 @@ class RoomListView extends StatelessWidget {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (_) => BlocProvider.value(
-                  value: BlocProvider.of<RoomListBloc>(context),
-                  child: const RoomSavePage(model: null),
+                  value: BlocProvider.of<StatusListBloc>(context),
+                  child: const StatusSavePage(model: null),
                 ),
               ),
             );

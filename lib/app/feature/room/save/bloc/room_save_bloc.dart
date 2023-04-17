@@ -24,13 +24,10 @@ class RoomSaveBloc extends Bloc<RoomSaveEvent, RoomSaveState> {
     try {
       RoomModel model;
       if (state.model == null) {
-        model = RoomModel(
-          name: event.name,
-        );
+        model = RoomModel(name: event.name, isActive: event.isActive);
       } else {
-        model = state.model!.copyWith(
-          name: event.name,
-        );
+        model =
+            state.model!.copyWith(name: event.name, isActive: event.isActive);
       }
       String modelId = await _repository.update(model);
 
