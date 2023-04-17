@@ -199,6 +199,26 @@ class HomePage extends StatelessWidget {
                   )
                 ],
               ),
+              HomeCardModule(
+                title: 'Atendimentos',
+                access: const ['admin'],
+                icon: Icons.book,
+                color: Colors.black87,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/attendance/save');
+                    },
+                    icon: const Icon(Icons.add),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/attendance/search');
+                    },
+                    icon: const Icon(Icons.search),
+                  )
+                ],
+              ),
             ],
           ),
         ),

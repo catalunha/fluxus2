@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/models/attendance_model.dart';
-import '../../select/comp/attendance_card.dart';
 import '../bloc/attendance_search_bloc.dart';
 import '../bloc/attendance_search_event.dart';
 import '../bloc/attendance_search_state.dart';
+import 'comp/attendance_card.dart';
 
 class AttendanceSearchListPage extends StatelessWidget {
   const AttendanceSearchListPage({
@@ -25,7 +25,7 @@ class AttendanceSearchListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Regiões encontradas'),
+        title: const Text('Atendimentos encontrados'),
         actions: [
           IconButton(
             onPressed: () {

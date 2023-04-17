@@ -39,9 +39,9 @@ class AttendanceSearchView extends StatefulWidget {
 
 class _SearchPageState extends State<AttendanceSearchView> {
   final _formKey = GlobalKey<FormState>();
-  bool _ufContainsBool = false;
-  bool _nameContainsBool = false;
-  bool _cityContainsBool = false;
+  final bool _ufContainsBool = false;
+  final bool _nameContainsBool = false;
+  final bool _cityContainsBool = false;
   final _ufContainsTEC = TextEditingController();
   final _nameContainsTEC = TextEditingController();
   final _cityContainsTEC = TextEditingController();
@@ -58,7 +58,7 @@ class _SearchPageState extends State<AttendanceSearchView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Buscando regiões'),
+        title: const Text('Buscando atendimentos'),
       ),
       body: BlocListener<AttendanceSearchBloc, AttendanceSearchState>(
         listenWhen: (previous, current) {
@@ -91,83 +91,83 @@ class _SearchPageState extends State<AttendanceSearchView> {
               child: Form(
                 key: _formKey,
                 child: Column(
-                  children: [
-                    Card(
-                      child: Column(
-                        children: [
-                          const Text('por uf'),
-                          Row(
-                            children: [
-                              Checkbox(
-                                value: _ufContainsBool,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _ufContainsBool = value!;
-                                  });
-                                },
-                              ),
-                              Expanded(
-                                child: AppTextFormField(
-                                  label: 'que contem',
-                                  controller: _ufContainsTEC,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Card(
-                      child: Column(
-                        children: [
-                          const Text('por Cidade'),
-                          Row(
-                            children: [
-                              Checkbox(
-                                value: _cityContainsBool,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _cityContainsBool = value!;
-                                  });
-                                },
-                              ),
-                              Expanded(
-                                child: AppTextFormField(
-                                  label: 'que contem',
-                                  controller: _cityContainsTEC,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Card(
-                      child: Column(
-                        children: [
-                          const Text('por nome'),
-                          Row(
-                            children: [
-                              Checkbox(
-                                value: _nameContainsBool,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _nameContainsBool = value!;
-                                  });
-                                },
-                              ),
-                              Expanded(
-                                child: AppTextFormField(
-                                  label: 'que contém',
-                                  controller: _nameContainsTEC,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 70)
+                  children: const [
+                    // Card(
+                    //   child: Column(
+                    //     children: [
+                    //       const Text('por uf'),
+                    //       Row(
+                    //         children: [
+                    //           Checkbox(
+                    //             value: _ufContainsBool,
+                    //             onChanged: (value) {
+                    //               setState(() {
+                    //                 _ufContainsBool = value!;
+                    //               });
+                    //             },
+                    //           ),
+                    //           Expanded(
+                    //             child: AppTextFormField(
+                    //               label: 'que contem',
+                    //               controller: _ufContainsTEC,
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // Card(
+                    //   child: Column(
+                    //     children: [
+                    //       const Text('por Cidade'),
+                    //       Row(
+                    //         children: [
+                    //           Checkbox(
+                    //             value: _cityContainsBool,
+                    //             onChanged: (value) {
+                    //               setState(() {
+                    //                 _cityContainsBool = value!;
+                    //               });
+                    //             },
+                    //           ),
+                    //           Expanded(
+                    //             child: AppTextFormField(
+                    //               label: 'que contem',
+                    //               controller: _cityContainsTEC,
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // Card(
+                    //   child: Column(
+                    //     children: [
+                    //       const Text('por nome'),
+                    //       Row(
+                    //         children: [
+                    //           Checkbox(
+                    //             value: _nameContainsBool,
+                    //             onChanged: (value) {
+                    //               setState(() {
+                    //                 _nameContainsBool = value!;
+                    //               });
+                    //             },
+                    //           ),
+                    //           Expanded(
+                    //             child: AppTextFormField(
+                    //               label: 'que contém',
+                    //               controller: _nameContainsTEC,
+                    //             ),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    SizedBox(height: 70)
                   ],
                 ),
               ),

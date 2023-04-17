@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluxus2/app/core/models/healthplan_model.dart';
 
 import 'core/authentication/authentication.dart';
+import 'core/models/attendance_model.dart';
 import 'core/models/expertise_model.dart';
 import 'core/models/healthplantype_model.dart';
 import 'core/models/office_model.dart';
@@ -15,6 +16,10 @@ import 'core/models/user_model.dart';
 import 'core/models/user_profile_model.dart';
 import 'core/repositories/user_repository.dart';
 import 'data/b4a/table/user_b4a.dart';
+import 'feature/attendance/print/attendance_print_page.dart';
+import 'feature/attendance/save/attendance_save_page.dart';
+import 'feature/attendance/search/attendance_search_page.dart';
+import 'feature/attendance/select/attendance_select_page.dart';
 import 'feature/expertise/list/expertise_list_page.dart';
 import 'feature/expertise/print/expertise_print_page.dart';
 import 'feature/expertise/save/expertise_save_page.dart';
@@ -54,6 +59,7 @@ import 'feature/user/register/email/user_register_email.page.dart';
 import 'feature/userprofile/print/userprofile_print_page.dart';
 import 'feature/userprofile/save/user_profile_save_page.dart';
 import 'feature/userprofile/search/user_profile_search_page.dart';
+import 'feature/userprofile/select/user_profile_select_page.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
@@ -150,6 +156,14 @@ class _AppViewState extends State<AppView> {
               .settings
               .arguments as List<UserProfileModel>?;
           return UserProfilePrintPage(modelList: modelList ?? []);
+        },
+        '/userProfile/select': (context) {
+          bool isSingleValue =
+              ModalRoute.of(context)!.settings.arguments as bool;
+
+          return UserProfileSelectPage(
+            isSingleValue: isSingleValue,
+          );
         },
         '/office/list': (_) => const OfficeListPage(),
         '/office/save': (_) => const OfficeSavePage(),
@@ -269,6 +283,22 @@ class _AppViewState extends State<AppView> {
           return StatusSelectPage(
             isSingleValue: isSingleValue,
           );
+        },
+        '/attendance/save': (_) => const AttendanceSavePage(),
+        '/attendance/search': (_) => const AttendanceSearchPage(),
+        '/attendance/select': (context) {
+          bool isSingleValue =
+              ModalRoute.of(context)!.settings.arguments as bool;
+
+          return AttendanceSelectPage(
+            isSingleValue: isSingleValue,
+          );
+        },
+        '/attendance/print': (context) {
+          List<AttendanceModel>? modelList = ModalRoute.of(context)!
+              .settings
+              .arguments as List<AttendanceModel>?;
+          return AttendancePrintPage(modelList: modelList ?? []);
         },
       },
       initialRoute: '/',

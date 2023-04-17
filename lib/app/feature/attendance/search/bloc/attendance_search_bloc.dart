@@ -51,7 +51,7 @@ class AttendanceSearchBloc
       //   query.whereContains(AttendanceEntity.name, event.nameContainsString);
       // }
 
-      // query.orderByAscending('name');
+      query.orderByDescending('updatedAt');
       List<AttendanceModel> modelListGet = await _repository.list(
         query,
         Pagination(page: state.page, limit: state.limit),
@@ -63,7 +63,7 @@ class AttendanceSearchBloc
         query: query,
       ));
     } catch (e) {
-      //print(e);
+      print(e);
       emit(
         state.copyWith(
             status: AttendanceSearchStateStatus.error,

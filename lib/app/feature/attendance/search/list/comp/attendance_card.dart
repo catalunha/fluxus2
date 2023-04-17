@@ -70,7 +70,7 @@ class AttendanceCard extends StatelessWidget {
                   : dateFormatHM.format(model.attendance!),
             ),
             AppTextTitleValue(
-              title: 'Descrição',
+              title: 'Descrição: ',
               value: model.description,
             ),
             AppTextTitleValue(

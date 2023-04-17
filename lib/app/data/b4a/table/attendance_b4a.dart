@@ -11,6 +11,21 @@ class AttendanceB4a {
       QueryBuilder<ParseObject> query, Pagination pagination) async {
     query.setAmountToSkip((pagination.page - 1) * pagination.limit);
     query.setLimit(pagination.limit);
+    query.includeObject([
+      'professional',
+      'professional.region',
+      'procedure',
+      'procedure.expertise',
+      'patient',
+      'patient.region',
+      'healthPlan',
+      'healthPlan.healthPlanType',
+      'status',
+      'event',
+      'evolution',
+      'invoice',
+    ]);
+
     return query;
   }
 

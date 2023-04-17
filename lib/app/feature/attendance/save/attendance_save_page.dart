@@ -7,6 +7,8 @@ import '../../../core/models/patient_model.dart';
 import '../../../core/models/user_profile_model.dart';
 import '../../../core/repositories/attendance_repository.dart';
 import '../../utils/app_textformfield.dart';
+import '../search/bloc/attendance_search_bloc.dart';
+import '../search/bloc/attendance_search_event.dart';
 import 'bloc/attendance_save_bloc.dart';
 import 'bloc/attendance_save_event.dart';
 import 'bloc/attendance_save_state.dart';
@@ -100,17 +102,17 @@ class _AttendanceSaveViewState extends State<AttendanceSaveView> {
           }
           if (state.status == AttendanceSaveStateStatus.success) {
             Navigator.of(context).pop();
-            // if (widget.model != null) {
-            //   if (delete) {
-            //     context
-            //         .read<AttendanceSearchBloc>()
-            //         .add(AttendanceSearchEventRemoveFromList(state.model!.id!));
-            //   } else {
-            //     context
-            //         .read<AttendanceSearchBloc>()
-            //         .add(AttendanceSearchEventUpdateList(state.model!));
-            //   }
-            // }
+            if (widget.model != null) {
+              if (delete) {
+                context
+                    .read<AttendanceSearchBloc>()
+                    .add(AttendanceSearchEventRemoveFromList(state.model!.id!));
+              } else {
+                context
+                    .read<AttendanceSearchBloc>()
+                    .add(AttendanceSearchEventUpdateList(state.model!));
+              }
+            }
             Navigator.of(context).pop();
           }
           if (state.status == AttendanceSaveStateStatus.updated) {
@@ -143,14 +145,15 @@ class _AttendanceSaveViewState extends State<AttendanceSaveView> {
                               onPressed: () async {
                                 var contextTemp =
                                     context.read<AttendanceSaveBloc>();
-                                UserProfileModel? result =
-                                    await Navigator.of(context)
-                                            .pushNamed('/userProfile/select')
-                                        as UserProfileModel?;
+                                List<UserProfileModel>? result =
+                                    await Navigator.of(context).pushNamed(
+                                            '/userProfile/select',
+                                            arguments: true)
+                                        as List<UserProfileModel>?;
                                 if (result != null) {
                                   contextTemp.add(
                                       AttendanceSaveEventSetProfessional(
-                                          result));
+                                          result[0]));
                                 }
                               },
                               icon: const Icon(Icons.search)),
@@ -183,7 +186,7 @@ class _AttendanceSaveViewState extends State<AttendanceSaveView> {
                                               );
                                         },
                                       ),
-                                      Text('${e.code}'),
+                                      Text('${e.code}.${e.hashCode}'),
                                       IconButton(
                                         icon: const Icon(Icons.delete),
                                         onPressed: () {
@@ -210,13 +213,13 @@ class _AttendanceSaveViewState extends State<AttendanceSaveView> {
                               onPressed: () async {
                                 var contextTemp =
                                     context.read<AttendanceSaveBloc>();
-                                PatientModel? result =
-                                    await Navigator.of(context)
-                                            .pushNamed('/patient/select')
-                                        as PatientModel?;
+                                List<PatientModel>? result =
+                                    await Navigator.of(context).pushNamed(
+                                        '/patient/select',
+                                        arguments: true) as List<PatientModel>?;
                                 if (result != null) {
                                   contextTemp.add(
-                                      AttendanceSaveEventSetPatient(result));
+                                      AttendanceSaveEventSetPatient(result[0]));
                                 }
                               },
                               icon: const Icon(Icons.search)),
@@ -228,33 +231,37 @@ class _AttendanceSaveViewState extends State<AttendanceSaveView> {
                         ],
                       ),
                       const Text('Selecione um plano de saúde *'),
-                      BlocBuilder<AttendanceSaveBloc, AttendanceSaveState>(
-                        builder: (context, state) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: state.healthPlans
-                                .map(
-                                  (e) => Row(
-                                    children: [
-                                      Text('${e.code}'),
-                                      IconButton(
-                                        icon: const Icon(Icons.delete),
-                                        onPressed: () {
-                                          context
-                                              .read<AttendanceSaveBloc>()
-                                              .add(
-                                                AttendanceSaveEventRemoveHealthPlan(
-                                                  e,
-                                                ),
-                                              );
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                )
-                                .toList(),
-                          );
-                        },
+                      Padding(
+                        padding: const EdgeInsets.only(left: 18.0),
+                        child: BlocBuilder<AttendanceSaveBloc,
+                            AttendanceSaveState>(
+                          builder: (context, state) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: state.healthPlans
+                                  .map(
+                                    (e) => Row(
+                                      children: [
+                                        Text('${e.code}'),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          onPressed: () {
+                                            context
+                                                .read<AttendanceSaveBloc>()
+                                                .add(
+                                                  AttendanceSaveEventRemoveHealthPlan(
+                                                    e,
+                                                  ),
+                                                );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                          },
+                        ),
                       ),
                       AppTextFormField(
                         label: 'Número da autorização',
@@ -272,6 +279,11 @@ class _AttendanceSaveViewState extends State<AttendanceSaveView> {
                           },
                         ),
                       ),
+                      AppTextFormField(
+                        label: 'Descrição',
+                        controller: _descriptionTEC,
+                      ),
+                      const SizedBox(height: 10),
                       const Text('Data limite desta autorização'),
                       SizedBox(
                         width: 300,

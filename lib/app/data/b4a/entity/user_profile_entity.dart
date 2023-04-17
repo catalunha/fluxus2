@@ -31,8 +31,8 @@ class UserProfileEntity {
   static const String procedures = 'procedures';
 
   Future<UserProfileModel> toModel(ParseObject parseObject) async {
-    //+++ get graduation
-    List<OfficeModel> graduationList = [];
+    //+++ get office
+    List<OfficeModel> officeList = [];
     {
       QueryBuilder<ParseObject> queryOffice =
           QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className));
@@ -41,11 +41,11 @@ class UserProfileEntity {
       final ParseResponse parseResponse = await queryOffice.query();
       if (parseResponse.success && parseResponse.results != null) {
         for (var e in parseResponse.results!) {
-          graduationList.add(OfficeEntity().toModel(e as ParseObject));
+          officeList.add(OfficeEntity().toModel(e as ParseObject));
         }
       }
     }
-    //--- get graduation
+    //--- get office
     //+++ get expertise
     List<ExpertiseModel> expertiseList = [];
     {
@@ -101,7 +101,7 @@ class UserProfileEntity {
       region: parseObject.get(UserProfileEntity.region) != null
           ? RegionEntity().toModel(parseObject.get(UserProfileEntity.region))
           : null,
-      offices: graduationList,
+      offices: officeList,
       expertises: expertiseList,
       procedures: procedureList,
     );

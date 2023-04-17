@@ -112,8 +112,12 @@ class AttendanceSaveBloc
   FutureOr<void> _onAttendanceSaveEventDuplicateProcedure(
       AttendanceSaveEventDuplicateProcedure event,
       Emitter<AttendanceSaveState> emit) {
+    // List<ProcedureModel> temp = [...state.procedures];
+    // temp.add(event.model);
+    // emit(state.copyWith(procedures: temp));
     List<ProcedureModel> temp = [...state.procedures];
-    temp.add(event.model);
+    var index = temp.indexOf(event.model);
+    temp.insert(index, event.model);
     emit(state.copyWith(procedures: temp));
   }
 
@@ -121,7 +125,8 @@ class AttendanceSaveBloc
       AttendanceSaveEventRemoveProcedure event,
       Emitter<AttendanceSaveState> emit) {
     List<ProcedureModel> temp = [...state.procedures];
-    temp.removeWhere((element) => element.id == event.model.id);
+    temp.remove(event.model);
+    // temp.removeWhere((element) => element.hashCode == event.model.hashCode);
     emit(state.copyWith(procedures: temp));
   }
 
