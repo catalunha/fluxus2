@@ -7,7 +7,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
-import '../../../core/models/Status_model.dart';
+import '../../../core/models/status_model.dart';
 
 class StatusPrintPage extends StatelessWidget {
   final List<StatusModel> modelList;
@@ -48,7 +48,7 @@ class StatusPrintPage extends StatelessWidget {
         build: (pw.Context context) => <pw.Widget>[
           pw.Header(
             level: 1,
-            child: pw.Text('Relatório de Graduações'),
+            child: pw.Text('Relatório de Status'),
           ),
           ...body(),
         ],
@@ -68,8 +68,6 @@ class StatusPrintPage extends StatelessWidget {
   }
 
   userBody(StatusModel model) {
-    final dateFormat = DateFormat('dd/MM/y HH:mm');
-
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
@@ -80,10 +78,11 @@ class StatusPrintPage extends StatelessWidget {
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Text('Nome: ${model.name}'),
+              pw.Text('Descrição: ${model.description}'),
             ],
           ))
         ]),
-        // pw.Divider(),
+        pw.Divider(),
       ],
     );
   }

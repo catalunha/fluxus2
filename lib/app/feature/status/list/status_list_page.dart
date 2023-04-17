@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/models/Status_model.dart';
-import '../../../core/repositories/Status_repository.dart';
-import '../save/Status_save_page.dart';
-import 'bloc/Status_list_bloc.dart';
-import 'bloc/Status_list_event.dart';
-import 'bloc/Status_list_state.dart';
-import 'comp/Status_card.dart';
+import '../../../core/models/status_model.dart';
+import '../../../core/repositories/status_repository.dart';
+import '../save/status_save_page.dart';
+import 'bloc/status_list_bloc.dart';
+import 'bloc/status_list_event.dart';
+import 'bloc/status_list_state.dart';
+import 'comp/status_card.dart';
 
 class StatusListPage extends StatelessWidget {
   const StatusListPage({
@@ -34,14 +34,14 @@ class StatusListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Graduações encontradas'),
+        title: const Text('Status encontrados'),
         actions: [
           IconButton(
             onPressed: () {
               List<StatusModel> modelList =
                   context.read<StatusListBloc>().state.list;
               Navigator.of(context)
-                  .pushNamed('/Status/print', arguments: modelList);
+                  .pushNamed('/status/print', arguments: modelList);
             },
             icon: const Icon(Icons.print),
           )

@@ -36,13 +36,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
       }
     } on B4aException catch (e) {
-      print(e);
+      //print(e);
       emit(state.copyWith(
           status: LoginStateStatus.error,
           user: null,
           error: '${e.message} (${e.where} -> ${e.originalError})'));
     } catch (e) {
-      print(e);
+      //print(e);
       emit(state.copyWith(
           status: LoginStateStatus.error,
           user: null,

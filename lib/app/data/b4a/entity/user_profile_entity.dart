@@ -30,7 +30,7 @@ class UserProfileEntity {
   static const String expertises = 'expertises';
   static const String procedures = 'procedures';
 
-  Future<UserProfileModel> fromParse(ParseObject parseObject) async {
+  Future<UserProfileModel> toModel(ParseObject parseObject) async {
     //+++ get graduation
     List<GraduationModel> graduationList = [];
     {

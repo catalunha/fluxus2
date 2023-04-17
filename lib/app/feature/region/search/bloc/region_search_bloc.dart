@@ -60,7 +60,7 @@ class RegionSearchBloc extends Bloc<RegionSearchEvent, RegionSearchState> {
         query: query,
       ));
     } catch (e) {
-      print(e);
+      //print(e);
       emit(
         state.copyWith(
             status: RegionSearchStateStatus.error,

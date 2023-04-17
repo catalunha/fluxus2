@@ -68,8 +68,6 @@ class HealthPlanTypePrintPage extends StatelessWidget {
   }
 
   userBody(HealthPlanTypeModel model) {
-    final dateFormat = DateFormat('dd/MM/y HH:mm');
-
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [

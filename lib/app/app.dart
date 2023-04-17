@@ -11,7 +11,7 @@ import 'core/models/healthplantype_model.dart';
 import 'core/models/patient_model.dart';
 import 'core/models/procedure_model.dart';
 import 'core/models/region_model.dart';
-import 'core/models/room_model.dart';
+import 'core/models/status_model.dart';
 import 'core/models/user_model.dart';
 import 'core/models/user_profile_model.dart';
 import 'core/repositories/user_repository.dart';
@@ -42,10 +42,13 @@ import 'feature/region/save/region_save_page.dart';
 import 'feature/region/search/region_search_page.dart';
 import 'feature/region/select/region_select_page.dart';
 import 'feature/room/list/room_list_page.dart';
-import 'feature/room/print/room_print_page.dart';
 import 'feature/room/save/room_save_page.dart';
 import 'feature/room/select/room_select_page.dart';
 import 'feature/splash/splash_page.dart';
+import 'feature/status/list/status_list_page.dart';
+import 'feature/status/print/status_print_page.dart';
+import 'feature/status/save/status_save_page.dart';
+import 'feature/status/select/status_select_page.dart';
 import 'feature/user/login/login_page.dart';
 import 'feature/user/register/email/user_register_email.page.dart';
 import 'feature/userprofile/print/userprofile_print_page.dart';
@@ -253,10 +256,20 @@ class _AppViewState extends State<AppView> {
             isSingleValue: isSingleValue,
           );
         },
-        '/room/print': (context) {
-          List<RoomModel>? modelList =
-              ModalRoute.of(context)!.settings.arguments as List<RoomModel>?;
-          return RoomPrintPage(modelList: modelList ?? []);
+        '/status/print': (context) {
+          List<StatusModel>? modelList =
+              ModalRoute.of(context)!.settings.arguments as List<StatusModel>?;
+          return StatusPrintPage(modelList: modelList ?? []);
+        },
+        '/status/list': (_) => const StatusListPage(),
+        '/status/save': (_) => const StatusSavePage(),
+        '/status/select': (context) {
+          bool isSingleValue =
+              ModalRoute.of(context)!.settings.arguments as bool;
+
+          return StatusSelectPage(
+            isSingleValue: isSingleValue,
+          );
         },
       },
       initialRoute: '/',

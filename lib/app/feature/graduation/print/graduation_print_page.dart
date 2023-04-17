@@ -68,8 +68,6 @@ class GraduationPrintPage extends StatelessWidget {
   }
 
   userBody(GraduationModel model) {
-    final dateFormat = DateFormat('dd/MM/y HH:mm');
-
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [

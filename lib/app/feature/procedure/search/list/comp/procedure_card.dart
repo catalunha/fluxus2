@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../../core/models/procedure_model.dart';
 import '../../../../utils/app_text_title_value.dart';
@@ -14,8 +13,6 @@ class ProcedureCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormat = DateFormat('dd/MM/y');
-
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),

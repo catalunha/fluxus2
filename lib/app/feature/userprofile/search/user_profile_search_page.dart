@@ -63,7 +63,7 @@ class _SearchPageState extends State<UserProfileSearchView> {
           return previous.status != current.status;
         },
         listener: (context, state) async {
-          print('++++++++++++++++ search -------------------');
+          //print('++++++++++++++++ search -------------------');
 
           if (state.status == UserProfileSearchStateStatus.error) {
             Navigator.of(context).pop();
@@ -72,11 +72,11 @@ class _SearchPageState extends State<UserProfileSearchView> {
               ..showSnackBar(SnackBar(content: Text(state.error ?? '...')));
           }
           if (state.status == UserProfileSearchStateStatus.success) {
-            print('success');
+            //print('success');
             Navigator.of(context).pop();
           }
           if (state.status == UserProfileSearchStateStatus.loading) {
-            print('loading');
+            //print('loading');
 
             await showDialog(
               barrierDismissible: false,

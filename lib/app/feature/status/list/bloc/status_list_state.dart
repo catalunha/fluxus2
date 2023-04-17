@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
-import '../../../../core/models/Status_model.dart';
-import '../../../../data/b4a/entity/Status_entity.dart';
+import '../../../../core/models/status_model.dart';
+import '../../../../data/b4a/entity/status_entity.dart';
 
 enum StatusListStateStatus { initial, loading, success, error }
 

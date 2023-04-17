@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/authentication/authentication.dart';
 import '../../../core/models/user_profile_model.dart';
-import '../../../core/repositories/Status_repository.dart';
+import '../../../core/repositories/status_repository.dart';
 import '../../utils/app_textformfield.dart';
-import 'bloc/Status_select_bloc.dart';
-import 'bloc/Status_select_event.dart';
-import 'bloc/Status_select_state.dart';
-import 'comp/Status_card.dart';
+import '../list/comp/status_card.dart';
+import 'bloc/status_select_bloc.dart';
+import 'bloc/status_select_event.dart';
+import 'bloc/status_select_state.dart';
 
 class StatusSelectPage extends StatelessWidget {
   final bool isSingleValue;

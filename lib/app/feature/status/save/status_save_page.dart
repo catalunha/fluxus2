@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:validatorless/validatorless.dart';
 
-import '../../../core/models/Status_model.dart';
-import '../../../core/repositories/Status_repository.dart';
+import '../../../core/models/status_model.dart';
+import '../../../core/repositories/status_repository.dart';
 import '../../utils/app_textformfield.dart';
-import '../list/bloc/Status_list_bloc.dart';
-import '../list/bloc/Status_list_event.dart';
-import 'bloc/Status_save_bloc.dart';
-import 'bloc/Status_save_event.dart';
-import 'bloc/Status_save_state.dart';
+import '../list/bloc/status_list_bloc.dart';
+import '../list/bloc/status_list_event.dart';
+import 'bloc/status_save_bloc.dart';
+import 'bloc/status_save_event.dart';
+import 'bloc/status_save_state.dart';
 
 class StatusSavePage extends StatelessWidget {
   final StatusModel? model;
@@ -43,18 +43,20 @@ class StatusSaveView extends StatefulWidget {
 class _StatusSaveViewState extends State<StatusSaveView> {
   final _formKey = GlobalKey<FormState>();
   final _nameTEC = TextEditingController();
+  final _descriptionTEC = TextEditingController();
   bool delete = false;
   @override
   void initState() {
     super.initState();
     _nameTEC.text = widget.model?.name ?? "";
+    _descriptionTEC.text = widget.model?.description ?? "";
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.model == null ? "Criar" : "Editar"} Graduação'),
+        title: Text('${widget.model == null ? "Criar" : "Editar"} Status'),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.cloud_upload),
@@ -69,6 +71,7 @@ class _StatusSaveViewState extends State<StatusSaveView> {
               context.read<StatusSaveBloc>().add(
                     StatusSaveEventFormSubmitted(
                       name: _nameTEC.text,
+                      description: _descriptionTEC.text,
                     ),
                   );
             }
@@ -129,6 +132,12 @@ class _StatusSaveViewState extends State<StatusSaveView> {
                         label: 'Nome',
                         controller: _nameTEC,
                         validator: Validatorless.required('Nome é obrigatório'),
+                      ),
+                      AppTextFormField(
+                        label: 'Descrição',
+                        controller: _descriptionTEC,
+                        validator:
+                            Validatorless.required('Descrição é obrigatório'),
                       ),
                       if (widget.model != null)
                         CheckboxListTile(

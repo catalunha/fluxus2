@@ -37,7 +37,7 @@ class UserRegisterEmailBloc
           status: UserRegisterEmailStateStatus.error,
           error: '${e.message} (${e.where} -> ${e.originalError}'));
     } catch (e) {
-      print(e);
+      //print(e);
       emit(state.copyWith(
           status: UserRegisterEmailStateStatus.error,
           error: 'Erro desconhecido em registrar seu cadastro'));

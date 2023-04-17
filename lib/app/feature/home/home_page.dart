@@ -120,6 +120,26 @@ class HomePage extends StatelessWidget {
                 ],
               ),
               HomeCardModule(
+                title: 'Status',
+                access: const ['admin'],
+                icon: Icons.start,
+                color: Colors.black87,
+                actions: [
+                  // IconButton(
+                  //   onPressed: () {
+                  //     Navigator.of(context).pushNamed('/healthplantype/save');
+                  //   },
+                  //   icon: const Icon(Icons.add),
+                  // ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/status/list');
+                    },
+                    icon: const Icon(Icons.list),
+                  )
+                ],
+              ),
+              HomeCardModule(
                 title: 'Regiões',
                 access: const ['admin'],
                 icon: Icons.bubble_chart_outlined,

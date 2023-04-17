@@ -27,7 +27,7 @@ class AppNumberFormField extends StatelessWidget {
         onChanged: onChanged,
         // onChanged: (value) {
         //   controller!.text = '${double.parse(controller!.text) + 1}';
-        //   //print(value);
+        //   ////print(value);
         // },
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         inputFormatters: <TextInputFormatter>[

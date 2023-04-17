@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/models/Status_model.dart';
-import '../bloc/Status_select_bloc.dart';
-import '../bloc/Status_select_event.dart';
-import '../bloc/Status_select_state.dart';
+import '../../../../core/models/status_model.dart';
+import '../bloc/status_select_bloc.dart';
+import '../bloc/status_select_event.dart';
+import '../bloc/status_select_state.dart';
 
 class StatusCard extends StatelessWidget {
   final StatusModel model;

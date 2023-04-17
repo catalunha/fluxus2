@@ -45,7 +45,6 @@ class _HealthPlanSaveViewState extends State<HealthPlanSaveView> {
   final _formKey = GlobalKey<FormState>();
   final _descriptionTEC = TextEditingController();
   final _codeTEC = TextEditingController();
-  final _costTEC = TextEditingController();
   bool delete = false;
   DateTime _due = DateTime.now();
 

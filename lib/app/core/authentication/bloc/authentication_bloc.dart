@@ -42,7 +42,7 @@ class AuthenticationBloc
   FutureOr<void> _onAuthenticationEventLoginRequested(
       AuthenticationEventLoginRequested event,
       Emitter<AuthenticationState> emit) {
-    print('onAuthenticationEventReceiveUser');
+    //print('onAuthenticationEventReceiveUser');
     emit(AuthenticationState.authenticated(event.user));
   }
 
@@ -70,13 +70,13 @@ class AuthenticationBloc
         }
       }
     } on B4aException catch (e) {
-      print('+++ _onAuthenticationEventInitial');
-      print(e);
+      //print('+++ _onAuthenticationEventInitial');
+      //print(e);
       emit(state.copyWith(
           status: AuthenticationStatus.databaseError, error: e.toString()));
     } catch (e) {
-      print('+++ _onAuthenticationEventInitial');
-      print(e);
+      //print('+++ _onAuthenticationEventInitial');
+      //print(e);
       emit(state.copyWith(
           status: AuthenticationStatus.unauthenticated,
           error: 'Erro desconhecido na inicialização'));

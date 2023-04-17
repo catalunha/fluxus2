@@ -58,8 +58,8 @@ class _UserRegisterEmailViewState extends State<UserRegisterEmailView> {
                   ..showSnackBar(SnackBar(content: Text(state.error ?? '...')));
               }
               if (state.status == UserRegisterEmailStateStatus.success) {
-                Navigator.of(context).pop();
                 var contextTemp = Navigator.of(context);
+                Navigator.of(context).pop();
                 await showDialog(
                   barrierDismissible: false,
                   context: context,
@@ -90,13 +90,15 @@ class _UserRegisterEmailViewState extends State<UserRegisterEmailView> {
                 contextTemp.pop();
               }
               if (state.status == UserRegisterEmailStateStatus.loading) {
-                await showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (BuildContext context) {
-                    return const Center(child: CircularProgressIndicator());
-                  },
-                );
+                if (context.mounted) {
+                  await showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const Center(child: CircularProgressIndicator());
+                    },
+                  );
+                }
               }
             },
             child: Center(

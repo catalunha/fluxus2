@@ -48,7 +48,6 @@ class RegionSelectView extends StatefulWidget {
 }
 
 class _RegionSelectViewState extends State<RegionSelectView> {
-  final _formKey = GlobalKey<FormState>();
   final _nameTEC = TextEditingController();
 
   @override

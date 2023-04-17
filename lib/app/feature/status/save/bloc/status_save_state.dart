@@ -1,4 +1,4 @@
-import '../../../../core/models/Status_model.dart';
+import '../../../../core/models/status_model.dart';
 
 enum StatusSaveStateStatus { initial, loading, success, error }
 

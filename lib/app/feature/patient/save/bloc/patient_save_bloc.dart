@@ -84,7 +84,7 @@ class PatientSaveBloc extends Bloc<PatientSaveEvent, PatientSaveState> {
       emit(
           state.copyWith(model: model, status: PatientSaveStateStatus.success));
     } catch (e) {
-      print(e);
+      //print(e);
       emit(state.copyWith(
           status: PatientSaveStateStatus.error,
           error: 'Erro ao salvar dados do paciente'));

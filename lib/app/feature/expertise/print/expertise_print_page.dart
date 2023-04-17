@@ -68,8 +68,6 @@ class ExpertisePrintPage extends StatelessWidget {
   }
 
   userBody(ExpertiseModel model) {
-    final dateFormat = DateFormat('dd/MM/y HH:mm');
-
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [

@@ -21,9 +21,9 @@ class InitBack4app {
       }
       throw Exception();
     } catch (e) {
-      print('+++ InitBack4app.init');
-      print(e);
-      print('--- InitBack4app.init');
+      //print('+++ InitBack4app.init');
+      //print(e);
+      //print('--- InitBack4app.init');
       throw B4aException('Erro em inicializar o banco de dados',
           where: 'InitBack4app.init');
     }

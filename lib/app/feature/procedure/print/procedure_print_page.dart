@@ -68,8 +68,6 @@ class ProcedurePrintPage extends StatelessWidget {
   }
 
   userBody(ProcedureModel model) {
-    final dateFormat = DateFormat('dd/MM/y HH:mm');
-
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [

@@ -41,7 +41,6 @@ class ProcedureSelectView extends StatefulWidget {
 }
 
 class _ProcedureSelectViewState extends State<ProcedureSelectView> {
-  final _formKey = GlobalKey<FormState>();
   final _nameTEC = TextEditingController();
 
   @override

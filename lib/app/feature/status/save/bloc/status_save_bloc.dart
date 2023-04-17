@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 
-import '../../../../core/models/Status_model.dart';
-import '../../../../core/repositories/Status_repository.dart';
-import 'Status_save_event.dart';
-import 'Status_save_state.dart';
+import '../../../../core/models/status_model.dart';
+import '../../../../core/repositories/status_repository.dart';
+import 'status_save_event.dart';
+import 'status_save_state.dart';
 
 class StatusSaveBloc extends Bloc<StatusSaveEvent, StatusSaveState> {
   final StatusRepository _repository;
@@ -26,10 +26,12 @@ class StatusSaveBloc extends Bloc<StatusSaveEvent, StatusSaveState> {
       if (state.model == null) {
         model = StatusModel(
           name: event.name,
+          description: event.description,
         );
       } else {
         model = state.model!.copyWith(
           name: event.name,
+          description: event.description,
         );
       }
       String modelId = await _repository.update(model);

@@ -41,7 +41,6 @@ class PatientSelectView extends StatefulWidget {
 }
 
 class _PatientSelectViewState extends State<PatientSelectView> {
-  final _formKey = GlobalKey<FormState>();
   final _nameTEC = TextEditingController();
 
   @override

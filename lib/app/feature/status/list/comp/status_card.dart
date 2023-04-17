@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/models/Status_model.dart';
+import '../../../../core/models/status_model.dart';
 import '../../../utils/app_text_title_value.dart';
-import '../../save/Status_save_page.dart';
-import '../bloc/Status_list_bloc.dart';
+import '../../save/status_save_page.dart';
+import '../bloc/status_list_bloc.dart';
 
 class StatusCard extends StatelessWidget {
   final StatusModel model;
@@ -26,6 +26,10 @@ class StatusCard extends StatelessWidget {
             AppTextTitleValue(
               title: 'Nome: ',
               value: model.name,
+            ),
+            AppTextTitleValue(
+              title: 'Descrição: ',
+              value: model.description,
             ),
             Center(
               child: Wrap(
