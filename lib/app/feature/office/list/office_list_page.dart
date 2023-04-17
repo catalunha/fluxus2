@@ -1,34 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/models/graduation_model.dart';
-import '../../../core/repositories/graduation_repository.dart';
-import '../save/graduation_save_page.dart';
-import 'bloc/graduation_list_bloc.dart';
-import 'bloc/graduation_list_event.dart';
-import 'bloc/graduation_list_state.dart';
-import 'comp/graduation_card.dart';
+import '../../../core/models/office_model.dart';
+import '../../../core/repositories/office_repository.dart';
+import '../save/office_save_page.dart';
+import '../select/comp/office_card.dart';
+import 'bloc/office_list_bloc.dart';
+import 'bloc/office_list_event.dart';
+import 'bloc/office_list_state.dart';
 
-class GraduationListPage extends StatelessWidget {
-  const GraduationListPage({
+class OfficeListPage extends StatelessWidget {
+  const OfficeListPage({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-      create: (context) => GraduationRepository(),
+      create: (context) => OfficeRepository(),
       child: BlocProvider(
-        create: (context) => GraduationListBloc(
-            repository: RepositoryProvider.of<GraduationRepository>(context)),
-        child: const GraduationListView(),
+        create: (context) => OfficeListBloc(
+            repository: RepositoryProvider.of<OfficeRepository>(context)),
+        child: const OfficeListView(),
       ),
     );
   }
 }
 
-class GraduationListView extends StatelessWidget {
-  const GraduationListView({Key? key}) : super(key: key);
+class OfficeListView extends StatelessWidget {
+  const OfficeListView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +38,8 @@ class GraduationListView extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              List<GraduationModel> modelList =
-                  context.read<GraduationListBloc>().state.list;
+              List<OfficeModel> modelList =
+                  context.read<OfficeListBloc>().state.list;
               Navigator.of(context)
                   .pushNamed('/graduation/print', arguments: modelList);
             },
@@ -47,21 +47,21 @@ class GraduationListView extends StatelessWidget {
           )
         ],
       ),
-      body: BlocListener<GraduationListBloc, GraduationListState>(
+      body: BlocListener<OfficeListBloc, OfficeListState>(
         listenWhen: (previous, current) {
           return previous.status != current.status;
         },
         listener: (context, state) async {
-          if (state.status == GraduationListStateStatus.error) {
+          if (state.status == OfficeListStateStatus.error) {
             Navigator.of(context).pop();
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(SnackBar(content: Text(state.error ?? '...')));
           }
-          if (state.status == GraduationListStateStatus.success) {
+          if (state.status == OfficeListStateStatus.success) {
             Navigator.of(context).pop();
           }
-          if (state.status == GraduationListStateStatus.loading) {
+          if (state.status == OfficeListStateStatus.loading) {
             await showDialog(
               barrierDismissible: false,
               context: context,
@@ -76,15 +76,15 @@ class GraduationListView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                BlocBuilder<GraduationListBloc, GraduationListState>(
+                BlocBuilder<OfficeListBloc, OfficeListState>(
                   builder: (context, state) {
                     return InkWell(
                       onTap: state.firstPage
                           ? null
                           : () {
                               context
-                                  .read<GraduationListBloc>()
-                                  .add(GraduationListEventPreviousPage());
+                                  .read<OfficeListBloc>()
+                                  .add(OfficeListEventPreviousPage());
                             },
                       child: Card(
                         color: state.firstPage ? Colors.black : Colors.black45,
@@ -100,15 +100,15 @@ class GraduationListView extends StatelessWidget {
                     );
                   },
                 ),
-                BlocBuilder<GraduationListBloc, GraduationListState>(
+                BlocBuilder<OfficeListBloc, OfficeListState>(
                   builder: (context, state) {
                     return InkWell(
                       onTap: state.lastPage
                           ? null
                           : () {
                               context
-                                  .read<GraduationListBloc>()
-                                  .add(GraduationListEventNextPage());
+                                  .read<OfficeListBloc>()
+                                  .add(OfficeListEventNextPage());
                             },
                       child: Card(
                         color: state.lastPage ? Colors.black : Colors.black45,
@@ -129,7 +129,7 @@ class GraduationListView extends StatelessWidget {
             Expanded(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 600),
-                child: BlocBuilder<GraduationListBloc, GraduationListState>(
+                child: BlocBuilder<OfficeListBloc, OfficeListState>(
                   builder: (context, state) {
                     var list = state.list;
 
@@ -137,7 +137,7 @@ class GraduationListView extends StatelessWidget {
                       itemCount: list.length,
                       itemBuilder: (context, index) {
                         final item = list[index];
-                        return GraduationCard(
+                        return OfficeCard(
                           model: item,
                         );
                       },
@@ -154,8 +154,8 @@ class GraduationListView extends StatelessWidget {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (_) => BlocProvider.value(
-                  value: BlocProvider.of<GraduationListBloc>(context),
-                  child: const GraduationSavePage(model: null),
+                  value: BlocProvider.of<OfficeListBloc>(context),
+                  child: const OfficeSavePage(model: null),
                 ),
               ),
             );

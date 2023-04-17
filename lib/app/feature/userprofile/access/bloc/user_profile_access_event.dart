@@ -1,5 +1,5 @@
 import '../../../../core/models/expertise_model.dart';
-import '../../../../core/models/graduation_model.dart';
+import '../../../../core/models/office_model.dart';
 import '../../../../core/models/procedure_model.dart';
 
 abstract class UserProfileAccessEvent {}
@@ -18,16 +18,16 @@ class UserProfileAccessEventUpdateAccess extends UserProfileAccessEvent {
   });
 }
 
-class UserProfileAccessEventAddGraduation extends UserProfileAccessEvent {
-  final GraduationModel model;
-  UserProfileAccessEventAddGraduation(
+class UserProfileAccessEventAddOffice extends UserProfileAccessEvent {
+  final OfficeModel model;
+  UserProfileAccessEventAddOffice(
     this.model,
   );
 }
 
-class UserProfileAccessEventRemoveGraduation extends UserProfileAccessEvent {
-  final GraduationModel model;
-  UserProfileAccessEventRemoveGraduation(
+class UserProfileAccessEventRemoveOffice extends UserProfileAccessEvent {
+  final OfficeModel model;
+  UserProfileAccessEventRemoveOffice(
     this.model,
   );
 }

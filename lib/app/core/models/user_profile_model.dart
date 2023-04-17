@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 import 'expertise_model.dart';
-import 'graduation_model.dart';
+import 'office_model.dart';
 import 'procedure_model.dart';
 import 'region_model.dart';
 
@@ -24,7 +24,7 @@ class UserProfileModel {
   final DateTime? birthday;
   final String? address;
   final RegionModel? region;
-  final List<GraduationModel>? graduations; // especialidade
+  final List<OfficeModel>? offices; // cargos
   final List<ExpertiseModel>? expertises; // especialidade
   final List<ProcedureModel>? procedures; // procedimentos
   UserProfileModel({
@@ -42,7 +42,7 @@ class UserProfileModel {
     this.birthday,
     this.address,
     this.region,
-    this.graduations,
+    this.offices,
     this.expertises,
     this.procedures,
   });
@@ -62,7 +62,7 @@ class UserProfileModel {
     DateTime? birthday,
     String? address,
     RegionModel? region,
-    List<GraduationModel>? graduations,
+    List<OfficeModel>? offices,
     List<ExpertiseModel>? expertises,
     List<ProcedureModel>? procedures,
   }) {
@@ -81,7 +81,7 @@ class UserProfileModel {
       birthday: birthday ?? this.birthday,
       address: address ?? this.address,
       region: region ?? this.region,
-      graduations: graduations ?? this.graduations,
+      offices: offices ?? this.offices,
       expertises: expertises ?? this.expertises,
       procedures: procedures ?? this.procedures,
     );
@@ -106,7 +106,7 @@ class UserProfileModel {
         other.birthday == birthday &&
         other.address == address &&
         other.region == region &&
-        listEquals(other.graduations, graduations) &&
+        listEquals(other.offices, offices) &&
         listEquals(other.expertises, expertises) &&
         listEquals(other.procedures, procedures);
   }
@@ -127,14 +127,14 @@ class UserProfileModel {
         birthday.hashCode ^
         address.hashCode ^
         region.hashCode ^
-        graduations.hashCode ^
+        offices.hashCode ^
         expertises.hashCode ^
         procedures.hashCode;
   }
 
   @override
   String toString() {
-    return 'UserProfileModel(id: $id, email: $email, isActive: $isActive, access: $access, nickname: $nickname, name: $name, cpf: $cpf, register: $register, phone: $phone, photo: $photo, isFemale: $isFemale, birthday: $birthday, address: $address, region: $region, graduations: $graduations, expertises: $expertises, procedures: $procedures)';
+    return 'UserProfileModel(id: $id, email: $email, isActive: $isActive, access: $access, nickname: $nickname, name: $name, cpf: $cpf, register: $register, phone: $phone, photo: $photo, isFemale: $isFemale, birthday: $birthday, address: $address, region: $region, offices: $offices, expertises: $expertises, procedures: $procedures)';
   }
 
   Map<String, dynamic> toMap() {
@@ -174,9 +174,8 @@ class UserProfileModel {
     if (region != null) {
       result.addAll({'region': region!.toMap()});
     }
-    if (graduations != null) {
-      result
-          .addAll({'graduations': graduations!.map((x) => x.toMap()).toList()});
+    if (offices != null) {
+      result.addAll({'offices': offices!.map((x) => x.toMap()).toList()});
     }
     if (expertises != null) {
       result.addAll({'expertises': expertises!.map((x) => x.toMap()).toList()});
@@ -206,9 +205,9 @@ class UserProfileModel {
           : null,
       address: map['address'],
       region: map['region'] != null ? RegionModel.fromMap(map['region']) : null,
-      graduations: map['graduations'] != null
-          ? List<GraduationModel>.from(
-              map['graduations']?.map((x) => GraduationModel.fromMap(x)))
+      offices: map['offices'] != null
+          ? List<OfficeModel>.from(
+              map['offices']?.map((x) => OfficeModel.fromMap(x)))
           : null,
       expertises: map['expertises'] != null
           ? List<ExpertiseModel>.from(

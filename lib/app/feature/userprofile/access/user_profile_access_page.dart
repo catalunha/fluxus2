@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/models/expertise_model.dart';
-import '../../../core/models/graduation_model.dart';
+import '../../../core/models/office_model.dart';
 import '../../../core/models/procedure_model.dart';
 import '../../../core/models/user_profile_model.dart';
 import '../../../core/repositories/user_profile_repository.dart';
@@ -170,15 +170,14 @@ class _UserProfileAccessViewState extends State<UserProfileAccessView> {
                               onPressed: () async {
                                 var contextTemp =
                                     context.read<UserProfileAccessBloc>();
-                                List<GraduationModel>? result =
+                                List<OfficeModel>? result =
                                     await Navigator.of(context).pushNamed(
-                                            '/graduation/select',
-                                            arguments: false)
-                                        as List<GraduationModel>?;
+                                        '/office/select',
+                                        arguments: false) as List<OfficeModel>?;
                                 if (result != null) {
                                   for (var element in result) {
                                     contextTemp.add(
-                                      UserProfileAccessEventAddGraduation(
+                                      UserProfileAccessEventAddOffice(
                                         element,
                                       ),
                                     );
@@ -191,7 +190,7 @@ class _UserProfileAccessViewState extends State<UserProfileAccessView> {
                             builder: (context, state) {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: state.graduationsUpdated
+                                children: state.officesUpdated
                                     .map(
                                       (e) => Row(
                                         children: [
@@ -202,7 +201,7 @@ class _UserProfileAccessViewState extends State<UserProfileAccessView> {
                                               context
                                                   .read<UserProfileAccessBloc>()
                                                   .add(
-                                                    UserProfileAccessEventRemoveGraduation(
+                                                    UserProfileAccessEventRemoveOffice(
                                                       e,
                                                     ),
                                                   );

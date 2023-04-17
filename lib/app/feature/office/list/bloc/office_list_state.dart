@@ -1,22 +1,22 @@
 import 'package:flutter/foundation.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
-import '../../../../core/models/graduation_model.dart';
-import '../../../../data/b4a/entity/graduation_entity.dart';
+import '../../../../core/models/office_model.dart';
+import '../../../../data/b4a/entity/office_entity.dart';
 
-enum GraduationListStateStatus { initial, loading, success, error }
+enum OfficeListStateStatus { initial, loading, success, error }
 
-class GraduationListState {
-  final GraduationListStateStatus status;
+class OfficeListState {
+  final OfficeListStateStatus status;
   final String? error;
-  final List<GraduationModel> list;
+  final List<OfficeModel> list;
   final int page;
   final int limit;
   final bool firstPage;
   final bool lastPage;
   QueryBuilder<ParseObject> query;
 
-  GraduationListState({
+  OfficeListState({
     required this.status,
     this.error,
     required this.list,
@@ -26,28 +26,27 @@ class GraduationListState {
     required this.lastPage,
     required this.query,
   });
-  GraduationListState.initial()
-      : status = GraduationListStateStatus.initial,
+  OfficeListState.initial()
+      : status = OfficeListStateStatus.initial,
         error = '',
         list = [],
         page = 1,
         limit = 2,
         firstPage = true,
         lastPage = false,
-        query =
-            QueryBuilder<ParseObject>(ParseObject(GraduationEntity.className));
+        query = QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className));
 
-  GraduationListState copyWith({
-    GraduationListStateStatus? status,
+  OfficeListState copyWith({
+    OfficeListStateStatus? status,
     String? error,
-    List<GraduationModel>? list,
+    List<OfficeModel>? list,
     int? page,
     int? limit,
     bool? firstPage,
     bool? lastPage,
     QueryBuilder<ParseObject>? query,
   }) {
-    return GraduationListState(
+    return OfficeListState(
       status: status ?? this.status,
       error: error ?? this.error,
       list: list ?? this.list,
@@ -63,7 +62,7 @@ class GraduationListState {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is GraduationListState &&
+    return other is OfficeListState &&
         other.status == status &&
         other.error == error &&
         listEquals(other.list, list) &&
@@ -88,6 +87,6 @@ class GraduationListState {
 
   @override
   String toString() {
-    return 'GraduationListState(status: $status, error: $error, list: $list, page: $page, limit: $limit, firstPage: $firstPage, lastPage: $lastPage, query: $query)';
+    return 'OfficeListState(status: $status, error: $error, list: $list, page: $page, limit: $limit, firstPage: $firstPage, lastPage: $lastPage, query: $query)';
   }
 }

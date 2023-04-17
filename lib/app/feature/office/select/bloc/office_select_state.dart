@@ -1,25 +1,25 @@
 import 'package:flutter/foundation.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
-import '../../../../core/models/graduation_model.dart';
-import '../../../../data/b4a/entity/graduation_entity.dart';
+import '../../../../core/models/office_model.dart';
+import '../../../../data/b4a/entity/office_entity.dart';
 
-enum GraduationSelectStateStatus { initial, loading, success, error }
+enum OfficeSelectStateStatus { initial, loading, success, error }
 
-class GraduationSelectState {
-  final GraduationSelectStateStatus status;
+class OfficeSelectState {
+  final OfficeSelectStateStatus status;
   final String? error;
-  final List<GraduationModel> list;
-  final List<GraduationModel> listFiltered;
+  final List<OfficeModel> list;
+  final List<OfficeModel> listFiltered;
   final int page;
   final int limit;
   final bool firstPage;
   final bool lastPage;
   QueryBuilder<ParseObject> query;
-  final List<GraduationModel> selectedValues;
+  final List<OfficeModel> selectedValues;
   final bool isSingleValue;
 
-  GraduationSelectState({
+  OfficeSelectState({
     required this.status,
     this.error,
     required this.list,
@@ -32,8 +32,8 @@ class GraduationSelectState {
     this.selectedValues = const [],
     this.isSingleValue = true,
   });
-  GraduationSelectState.initial(this.isSingleValue)
-      : status = GraduationSelectStateStatus.initial,
+  OfficeSelectState.initial(this.isSingleValue)
+      : status = OfficeSelectStateStatus.initial,
         error = '',
         list = [],
         listFiltered = [],
@@ -41,24 +41,23 @@ class GraduationSelectState {
         limit = 2,
         firstPage = true,
         lastPage = false,
-        query =
-            QueryBuilder<ParseObject>(ParseObject(GraduationEntity.className)),
+        query = QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className)),
         selectedValues = const [];
 
-  GraduationSelectState copyWith({
-    GraduationSelectStateStatus? status,
+  OfficeSelectState copyWith({
+    OfficeSelectStateStatus? status,
     String? error,
-    List<GraduationModel>? list,
-    List<GraduationModel>? listFiltered,
+    List<OfficeModel>? list,
+    List<OfficeModel>? listFiltered,
     int? page,
     int? limit,
     bool? firstPage,
     bool? lastPage,
     QueryBuilder<ParseObject>? query,
-    List<GraduationModel>? selectedValues,
+    List<OfficeModel>? selectedValues,
     bool? isSingleValue,
   }) {
-    return GraduationSelectState(
+    return OfficeSelectState(
       status: status ?? this.status,
       error: error ?? this.error,
       list: list ?? this.list,
@@ -77,7 +76,7 @@ class GraduationSelectState {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is GraduationSelectState &&
+    return other is OfficeSelectState &&
         other.status == status &&
         other.error == error &&
         listEquals(other.list, list) &&
@@ -108,6 +107,6 @@ class GraduationSelectState {
 
   @override
   String toString() {
-    return 'GraduationSelectState(status: $status, error: $error, list: $list, listFiltered: $listFiltered, page: $page, limit: $limit, firstPage: $firstPage, lastPage: $lastPage, query: $query, selectedValues: $selectedValues, isSingleValue: $isSingleValue)';
+    return 'OfficeSelectState(status: $status, error: $error, list: $list, listFiltered: $listFiltered, page: $page, limit: $limit, firstPage: $firstPage, lastPage: $lastPage, query: $query, selectedValues: $selectedValues, isSingleValue: $isSingleValue)';
   }
 }

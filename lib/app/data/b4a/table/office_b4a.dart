@@ -1,12 +1,12 @@
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
-import '../../../core/models/graduation_model.dart';
+import '../../../core/models/office_model.dart';
 import '../../utils/pagination.dart';
 import '../b4a_exception.dart';
-import '../entity/graduation_entity.dart';
+import '../entity/office_entity.dart';
 import '../utils/parse_error_translate.dart';
 
-class GraduationB4a {
+class OfficeB4a {
   Future<QueryBuilder<ParseObject>> getQueryAll(
       QueryBuilder<ParseObject> query, Pagination pagination) async {
     query.setAmountToSkip((pagination.page - 1) * pagination.limit);
@@ -14,7 +14,7 @@ class GraduationB4a {
     return query;
   }
 
-  Future<List<GraduationModel>> list(
+  Future<List<OfficeModel>> list(
     QueryBuilder<ParseObject> query,
     Pagination pagination,
   ) async {
@@ -23,10 +23,10 @@ class GraduationB4a {
     ParseResponse? parseResponse;
     try {
       parseResponse = await query2.query();
-      List<GraduationModel> listTemp = <GraduationModel>[];
+      List<OfficeModel> listTemp = <OfficeModel>[];
       if (parseResponse.success && parseResponse.results != null) {
         for (var element in parseResponse.results!) {
-          listTemp.add(GraduationEntity().toModel(element));
+          listTemp.add(OfficeEntity().toModel(element));
         }
         return listTemp;
       } else {
@@ -37,15 +37,15 @@ class GraduationB4a {
           ParseErrorTranslate.translate(parseResponse!.error!);
       throw B4aException(
         errorTranslated,
-        where: 'GraduationRepositoryB4a.list',
+        where: 'OfficeRepositoryB4a.list',
         originalError:
             '${parseResponse.error!.code} -${parseResponse.error!.message}',
       );
     }
   }
 
-  Future<String> update(GraduationModel model) async {
-    final parseObject = await GraduationEntity().toParse(model);
+  Future<String> update(OfficeModel model) async {
+    final parseObject = await OfficeEntity().toParse(model);
     ParseResponse? parseResponse;
     try {
       parseResponse = await parseObject.save();
@@ -62,7 +62,7 @@ class GraduationB4a {
           ParseErrorTranslate.translate(parseResponse!.error!);
       throw B4aException(
         errorTranslated,
-        where: 'GraduationRepositoryB4a.update',
+        where: 'OfficeRepositoryB4a.update',
         originalError:
             '${parseResponse.error!.code} -${parseResponse.error!.message}',
       );
@@ -70,7 +70,7 @@ class GraduationB4a {
   }
 
   Future<bool> delete(String modelId) async {
-    final parseObject = ParseObject(GraduationEntity.className);
+    final parseObject = ParseObject(OfficeEntity.className);
     parseObject.objectId = modelId;
     ParseResponse? parseResponse;
 
@@ -86,7 +86,7 @@ class GraduationB4a {
           ParseErrorTranslate.translate(parseResponse!.error!);
       throw B4aException(
         errorTranslated,
-        where: 'GraduationRepositoryB4a.delete',
+        where: 'OfficeRepositoryB4a.delete',
         originalError:
             '${parseResponse.error!.code} -${parseResponse.error!.message}',
       );

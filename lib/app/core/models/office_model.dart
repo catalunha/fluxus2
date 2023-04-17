@@ -1,20 +1,20 @@
 import 'dart:convert';
 
 /// Graduação
-class GraduationModel {
+class OfficeModel {
   final String? id;
   final String? name;
 
-  GraduationModel({
+  OfficeModel({
     this.id,
     this.name,
   });
 
-  GraduationModel copyWith({
+  OfficeModel copyWith({
     String? id,
     String? name,
   }) {
-    return GraduationModel(
+    return OfficeModel(
       id: id ?? this.id,
       name: name ?? this.name,
     );
@@ -33,8 +33,8 @@ class GraduationModel {
     return result;
   }
 
-  factory GraduationModel.fromMap(Map<String, dynamic> map) {
-    return GraduationModel(
+  factory OfficeModel.fromMap(Map<String, dynamic> map) {
+    return OfficeModel(
       id: map['id'],
       name: map['name'],
     );
@@ -42,17 +42,17 @@ class GraduationModel {
 
   String toJson() => json.encode(toMap());
 
-  factory GraduationModel.fromJson(String source) =>
-      GraduationModel.fromMap(json.decode(source));
+  factory OfficeModel.fromJson(String source) =>
+      OfficeModel.fromMap(json.decode(source));
 
   @override
-  String toString() => 'GraduationModel(id: $id, name: $name)';
+  String toString() => 'OfficeModel(id: $id, name: $name)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is GraduationModel && other.id == id && other.name == name;
+    return other is OfficeModel && other.id == id && other.name == name;
   }
 
   @override

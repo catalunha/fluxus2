@@ -1,11 +1,11 @@
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../core/models/expertise_model.dart';
-import '../../../core/models/graduation_model.dart';
+import '../../../core/models/office_model.dart';
 import '../../../core/models/procedure_model.dart';
 import '../../../core/models/user_profile_model.dart';
 import 'expertise_entity.dart';
-import 'graduation_entity.dart';
+import 'office_entity.dart';
 import 'procedure_entity.dart';
 import 'region_entity.dart';
 
@@ -26,22 +26,22 @@ class UserProfileEntity {
   static const String address = 'address';
   static const String region = 'region';
   static const String access = 'access';
-  static const String graduations = 'graduations';
+  static const String offices = 'offices';
   static const String expertises = 'expertises';
   static const String procedures = 'procedures';
 
   Future<UserProfileModel> toModel(ParseObject parseObject) async {
     //+++ get graduation
-    List<GraduationModel> graduationList = [];
+    List<OfficeModel> graduationList = [];
     {
-      QueryBuilder<ParseObject> queryGraduation =
-          QueryBuilder<ParseObject>(ParseObject(GraduationEntity.className));
-      queryGraduation.whereRelatedTo(UserProfileEntity.graduations,
+      QueryBuilder<ParseObject> queryOffice =
+          QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className));
+      queryOffice.whereRelatedTo(UserProfileEntity.offices,
           UserProfileEntity.className, parseObject.objectId!);
-      final ParseResponse parseResponse = await queryGraduation.query();
+      final ParseResponse parseResponse = await queryOffice.query();
       if (parseResponse.success && parseResponse.results != null) {
         for (var e in parseResponse.results!) {
-          graduationList.add(GraduationEntity().toModel(e as ParseObject));
+          graduationList.add(OfficeEntity().toModel(e as ParseObject));
         }
       }
     }
@@ -101,7 +101,7 @@ class UserProfileEntity {
       region: parseObject.get(UserProfileEntity.region) != null
           ? RegionEntity().toModel(parseObject.get(UserProfileEntity.region))
           : null,
-      graduations: graduationList,
+      offices: graduationList,
       expertises: expertiseList,
       procedures: procedureList,
     );
@@ -154,7 +154,7 @@ class UserProfileEntity {
     return parseObject;
   }
 
-  ParseObject? toParseRelationGraduations({
+  ParseObject? toParseRelationOffices({
     required String objectId,
     required List<String> ids,
     required bool add,
@@ -162,25 +162,25 @@ class UserProfileEntity {
     final parseObject = ParseObject(UserProfileEntity.className);
     parseObject.objectId = objectId;
     if (ids.isEmpty) {
-      parseObject.unset(UserProfileEntity.graduations);
+      parseObject.unset(UserProfileEntity.offices);
       return parseObject;
     }
     if (add) {
       parseObject.addRelation(
-        UserProfileEntity.graduations,
+        UserProfileEntity.offices,
         ids
             .map(
               (element) =>
-                  ParseObject(GraduationEntity.className)..objectId = element,
+                  ParseObject(OfficeEntity.className)..objectId = element,
             )
             .toList(),
       );
     } else {
       parseObject.removeRelation(
-          UserProfileEntity.graduations,
+          UserProfileEntity.offices,
           ids
               .map((element) =>
-                  ParseObject(GraduationEntity.className)..objectId = element)
+                  ParseObject(OfficeEntity.className)..objectId = element)
               .toList());
     }
     return parseObject;

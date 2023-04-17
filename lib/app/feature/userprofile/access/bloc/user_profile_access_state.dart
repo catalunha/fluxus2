@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../../../../core/models/expertise_model.dart';
-import '../../../../core/models/graduation_model.dart';
+import '../../../../core/models/office_model.dart';
 import '../../../../core/models/procedure_model.dart';
 import '../../../../core/models/user_profile_model.dart';
 
@@ -12,8 +12,8 @@ class UserProfileAccessState {
   final String? error;
   final List<String> access;
   final UserProfileModel model;
-  final List<GraduationModel> graduationsOriginal;
-  final List<GraduationModel> graduationsUpdated;
+  final List<OfficeModel> officesOriginal;
+  final List<OfficeModel> officesUpdated;
   final List<ExpertiseModel> expertisesOriginal;
   final List<ExpertiseModel> expertisesUpdated;
   final List<ProcedureModel> proceduresOriginal;
@@ -23,8 +23,8 @@ class UserProfileAccessState {
     this.error,
     required this.access,
     required this.model,
-    this.graduationsOriginal = const [],
-    this.graduationsUpdated = const [],
+    this.officesOriginal = const [],
+    this.officesUpdated = const [],
     this.expertisesOriginal = const [],
     this.expertisesUpdated = const [],
     this.proceduresOriginal = const [],
@@ -34,8 +34,8 @@ class UserProfileAccessState {
       : status = UserProfileAccessStateStatus.initial,
         error = '',
         access = model.access,
-        graduationsOriginal = model.graduations ?? [],
-        graduationsUpdated = model.graduations ?? [],
+        officesOriginal = model.offices ?? [],
+        officesUpdated = model.offices ?? [],
         expertisesOriginal = model.expertises ?? [],
         expertisesUpdated = model.expertises ?? [],
         proceduresOriginal = model.procedures ?? [],
@@ -46,8 +46,8 @@ class UserProfileAccessState {
     String? error,
     List<String>? access,
     UserProfileModel? model,
-    List<GraduationModel>? graduationsOriginal,
-    List<GraduationModel>? graduationsUpdated,
+    List<OfficeModel>? officesOriginal,
+    List<OfficeModel>? officesUpdated,
     List<ExpertiseModel>? expertisesOriginal,
     List<ExpertiseModel>? expertisesUpdated,
     List<ProcedureModel>? proceduresOriginal,
@@ -58,8 +58,8 @@ class UserProfileAccessState {
       error: error ?? this.error,
       access: access ?? this.access,
       model: model ?? this.model,
-      graduationsOriginal: graduationsOriginal ?? this.graduationsOriginal,
-      graduationsUpdated: graduationsUpdated ?? this.graduationsUpdated,
+      officesOriginal: officesOriginal ?? this.officesOriginal,
+      officesUpdated: officesUpdated ?? this.officesUpdated,
       expertisesOriginal: expertisesOriginal ?? this.expertisesOriginal,
       expertisesUpdated: expertisesUpdated ?? this.expertisesUpdated,
       proceduresOriginal: proceduresOriginal ?? this.proceduresOriginal,
@@ -76,8 +76,8 @@ class UserProfileAccessState {
         other.error == error &&
         listEquals(other.access, access) &&
         other.model == model &&
-        listEquals(other.graduationsOriginal, graduationsOriginal) &&
-        listEquals(other.graduationsUpdated, graduationsUpdated) &&
+        listEquals(other.officesOriginal, officesOriginal) &&
+        listEquals(other.officesUpdated, officesUpdated) &&
         listEquals(other.expertisesOriginal, expertisesOriginal) &&
         listEquals(other.expertisesUpdated, expertisesUpdated) &&
         listEquals(other.proceduresOriginal, proceduresOriginal) &&
@@ -90,8 +90,8 @@ class UserProfileAccessState {
         error.hashCode ^
         access.hashCode ^
         model.hashCode ^
-        graduationsOriginal.hashCode ^
-        graduationsUpdated.hashCode ^
+        officesOriginal.hashCode ^
+        officesUpdated.hashCode ^
         expertisesOriginal.hashCode ^
         expertisesUpdated.hashCode ^
         proceduresOriginal.hashCode ^
@@ -100,6 +100,6 @@ class UserProfileAccessState {
 
   @override
   String toString() {
-    return 'UserProfileAccessState(status: $status, error: $error, access: $access, model: $model, graduationsOriginal: $graduationsOriginal, graduationsUpdated: $graduationsUpdated, expertisesOriginal: $expertisesOriginal, expertisesUpdated: $expertisesUpdated, proceduresOriginal: $proceduresOriginal, proceduresUpdated: $proceduresUpdated)';
+    return 'UserProfileAccessState(status: $status, error: $error, access: $access, model: $model, officesOriginal: $officesOriginal, officesUpdated: $officesUpdated, expertisesOriginal: $expertisesOriginal, expertisesUpdated: $expertisesUpdated, proceduresOriginal: $proceduresOriginal, proceduresUpdated: $proceduresUpdated)';
   }
 }

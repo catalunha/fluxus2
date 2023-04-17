@@ -88,12 +88,12 @@ class UserProfileB4a {
     }
   }
 
-  Future<void> updateRelationGraduations(
+  Future<void> updateRelationOffices(
       {required String objectId,
       required List<String> ids,
       required bool add}) async {
     final parseObject = UserProfileEntity()
-        .toParseRelationGraduations(objectId: objectId, ids: ids, add: add);
+        .toParseRelationOffices(objectId: objectId, ids: ids, add: add);
     if (parseObject != null) {
       await parseObject.save();
     }

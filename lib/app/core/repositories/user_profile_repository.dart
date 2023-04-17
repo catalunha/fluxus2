@@ -18,9 +18,9 @@ class UserProfileRepository {
   Future<UserProfileModel?> readById(String id) => userProfileB4a.readById(id);
   // Future<UserProfileModel?> readByCPF(String? value) =>
   //     userProfileB4a.readByCPF(value);
-  Future<void> updateRelationGraduations(
+  Future<void> updateRelationOffices(
           String objectId, List<String> ids, bool add) =>
-      userProfileB4a.updateRelationGraduations(
+      userProfileB4a.updateRelationOffices(
           objectId: objectId, ids: ids, add: add);
   Future<void> updateRelationExpertises(
           String objectId, List<String> ids, bool add) =>

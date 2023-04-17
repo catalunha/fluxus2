@@ -95,7 +95,7 @@ class UserProfilePrintPage extends StatelessWidget {
               pw.Text(
                   'Regiao: ${model.region?.uf}. ${model.region?.city}${model.region?.name}'),
               pw.Text(
-                  'Graduações: ${model.graduations?.map((e) => e.name).toList().join(', ')}'),
+                  'Cargos: ${model.offices?.map((e) => e.name).toList().join(', ')}'),
               pw.Text(
                   'Especialidades: ${model.expertises?.map((e) => e.name).toList().join(', ')}'),
               pw.Text(

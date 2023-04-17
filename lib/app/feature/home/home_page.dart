@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
                 color: Colors.black,
               ),
               HomeCardModule(
-                title: 'Graduações',
+                title: 'Cargos',
                 access: const ['admin'],
                 icon: Icons.school,
                 color: Colors.black87,
@@ -53,7 +53,7 @@ class HomePage extends StatelessWidget {
                   // ),
                   IconButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/graduation/list');
+                      Navigator.of(context).pushNamed('/office/list');
                     },
                     icon: const Icon(Icons.list),
                   )

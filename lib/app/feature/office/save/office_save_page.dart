@@ -2,29 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:validatorless/validatorless.dart';
 
-import '../../../core/models/graduation_model.dart';
-import '../../../core/repositories/graduation_repository.dart';
+import '../../../core/models/office_model.dart';
+import '../../../core/repositories/office_repository.dart';
 import '../../utils/app_textformfield.dart';
-import '../list/bloc/graduation_list_bloc.dart';
-import '../list/bloc/graduation_list_event.dart';
-import 'bloc/graduation_save_bloc.dart';
-import 'bloc/graduation_save_event.dart';
-import 'bloc/graduation_save_state.dart';
+import '../list/bloc/office_list_bloc.dart';
+import '../list/bloc/office_list_event.dart';
+import 'bloc/office_save_bloc.dart';
+import 'bloc/office_save_event.dart';
+import 'bloc/office_save_state.dart';
 
-class GraduationSavePage extends StatelessWidget {
-  final GraduationModel? model;
+class OfficeSavePage extends StatelessWidget {
+  final OfficeModel? model;
 
-  const GraduationSavePage({super.key, this.model});
+  const OfficeSavePage({super.key, this.model});
 
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-      create: (context) => GraduationRepository(),
+      create: (context) => OfficeRepository(),
       child: BlocProvider(
-        create: (context) => GraduationSaveBloc(
+        create: (context) => OfficeSaveBloc(
             model: model,
-            repository: RepositoryProvider.of<GraduationRepository>(context)),
-        child: GraduationSaveView(
+            repository: RepositoryProvider.of<OfficeRepository>(context)),
+        child: OfficeSaveView(
           model: model,
         ),
       ),
@@ -32,15 +32,15 @@ class GraduationSavePage extends StatelessWidget {
   }
 }
 
-class GraduationSaveView extends StatefulWidget {
-  final GraduationModel? model;
-  const GraduationSaveView({Key? key, required this.model}) : super(key: key);
+class OfficeSaveView extends StatefulWidget {
+  final OfficeModel? model;
+  const OfficeSaveView({Key? key, required this.model}) : super(key: key);
 
   @override
-  State<GraduationSaveView> createState() => _GraduationSaveViewState();
+  State<OfficeSaveView> createState() => _OfficeSaveViewState();
 }
 
-class _GraduationSaveViewState extends State<GraduationSaveView> {
+class _OfficeSaveViewState extends State<OfficeSaveView> {
   final _formKey = GlobalKey<FormState>();
   final _nameTEC = TextEditingController();
   bool delete = false;
@@ -60,14 +60,14 @@ class _GraduationSaveViewState extends State<GraduationSaveView> {
         child: const Icon(Icons.cloud_upload),
         onPressed: () async {
           if (delete) {
-            context.read<GraduationSaveBloc>().add(
-                  GraduationSaveEventDelete(),
+            context.read<OfficeSaveBloc>().add(
+                  OfficeSaveEventDelete(),
                 );
           } else {
             final formValid = _formKey.currentState?.validate() ?? false;
             if (formValid) {
-              context.read<GraduationSaveBloc>().add(
-                    GraduationSaveEventFormSubmitted(
+              context.read<OfficeSaveBloc>().add(
+                    OfficeSaveEventFormSubmitted(
                       name: _nameTEC.text,
                     ),
                   );
@@ -75,37 +75,37 @@ class _GraduationSaveViewState extends State<GraduationSaveView> {
           }
         },
       ),
-      body: BlocListener<GraduationSaveBloc, GraduationSaveState>(
+      body: BlocListener<OfficeSaveBloc, OfficeSaveState>(
         listenWhen: (previous, current) {
           return previous.status != current.status;
         },
         listener: (context, state) async {
-          if (state.status == GraduationSaveStateStatus.error) {
+          if (state.status == OfficeSaveStateStatus.error) {
             Navigator.of(context).pop();
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(SnackBar(content: Text(state.error ?? '...')));
           }
-          if (state.status == GraduationSaveStateStatus.success) {
+          if (state.status == OfficeSaveStateStatus.success) {
             Navigator.of(context).pop();
             if (widget.model == null) {
               context
-                  .read<GraduationListBloc>()
-                  .add(GraduationListEventAddToList(state.model!));
+                  .read<OfficeListBloc>()
+                  .add(OfficeListEventAddToList(state.model!));
             } else {
               if (delete) {
                 context
-                    .read<GraduationListBloc>()
-                    .add(GraduationListEventRemoveFromList(state.model!.id!));
+                    .read<OfficeListBloc>()
+                    .add(OfficeListEventRemoveFromList(state.model!.id!));
               } else {
                 context
-                    .read<GraduationListBloc>()
-                    .add(GraduationListEventUpdateList(state.model!));
+                    .read<OfficeListBloc>()
+                    .add(OfficeListEventUpdateList(state.model!));
               }
             }
             Navigator.of(context).pop();
           }
-          if (state.status == GraduationSaveStateStatus.loading) {
+          if (state.status == OfficeSaveStateStatus.loading) {
             await showDialog(
               barrierDismissible: false,
               context: context,

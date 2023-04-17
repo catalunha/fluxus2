@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 
 import '../../../../core/models/expertise_model.dart';
-import '../../../../core/models/graduation_model.dart';
+import '../../../../core/models/office_model.dart';
 import '../../../../core/models/procedure_model.dart';
 import '../../../../core/models/user_profile_model.dart';
 import '../../../../core/repositories/user_profile_repository.dart';
@@ -23,10 +23,9 @@ class UserProfileAccessBloc
         _onUserProfileAccessEventFormSubmitted);
     on<UserProfileAccessEventUpdateAccess>(
         _onUserProfileAccessEventUpdateAccess);
-    on<UserProfileAccessEventAddGraduation>(
-        _onUserProfileAccessEventAddGraduation);
-    on<UserProfileAccessEventRemoveGraduation>(
-        _onUserProfileAccessEventRemoveGraduation);
+    on<UserProfileAccessEventAddOffice>(_onUserProfileAccessEventAddOffice);
+    on<UserProfileAccessEventRemoveOffice>(
+        _onUserProfileAccessEventRemoveOffice);
     on<UserProfileAccessEventAddExpertise>(
         _onUserProfileAccessEventAddExpertise);
     on<UserProfileAccessEventRemoveExpertise>(
@@ -48,15 +47,15 @@ class UserProfileAccessBloc
       );
 
       String userProfileId = await _repository.update(model);
-      List<GraduationModel> graduationsResult =
-          await updateRelationGraduation(userProfileId);
+      List<OfficeModel> officesResult =
+          await updateRelationOffice(userProfileId);
       List<ExpertiseModel> expertisesResult =
           await updateRelationExpertise(userProfileId);
       List<ProcedureModel> proceduresResult =
           await updateRelationProcedure(userProfileId);
 
       model = model.copyWith(
-        graduations: graduationsResult,
+        offices: officesResult,
         expertises: expertisesResult,
         procedures: proceduresResult,
       );
@@ -81,44 +80,43 @@ class UserProfileAccessBloc
     emit(state.copyWith(access: access));
   }
 
-  FutureOr<void> _onUserProfileAccessEventAddGraduation(
-      UserProfileAccessEventAddGraduation event,
+  FutureOr<void> _onUserProfileAccessEventAddOffice(
+      UserProfileAccessEventAddOffice event,
       Emitter<UserProfileAccessState> emit) {
-    int index = state.graduationsUpdated
-        .indexWhere((model) => model.id == event.model.id);
+    int index =
+        state.officesUpdated.indexWhere((model) => model.id == event.model.id);
     if (index < 0) {
-      List<GraduationModel> temp = [...state.graduationsUpdated];
+      List<OfficeModel> temp = [...state.officesUpdated];
       temp.add(event.model);
-      emit(state.copyWith(graduationsUpdated: temp));
+      emit(state.copyWith(officesUpdated: temp));
     }
   }
 
-  FutureOr<void> _onUserProfileAccessEventRemoveGraduation(
-      UserProfileAccessEventRemoveGraduation event,
+  FutureOr<void> _onUserProfileAccessEventRemoveOffice(
+      UserProfileAccessEventRemoveOffice event,
       Emitter<UserProfileAccessState> emit) {
-    List<GraduationModel> temp = [...state.graduationsUpdated];
+    List<OfficeModel> temp = [...state.officesUpdated];
     temp.removeWhere((element) => element.id == event.model.id);
-    emit(state.copyWith(graduationsUpdated: temp));
+    emit(state.copyWith(officesUpdated: temp));
   }
 
-  Future<List<GraduationModel>> updateRelationGraduation(String modelId) async {
-    List<GraduationModel> listResult = [];
-    List<GraduationModel> listFinal = [];
-    listResult.addAll([...state.graduationsUpdated]);
-    listFinal.addAll([...state.graduationsOriginal]);
-    for (var original in state.graduationsOriginal) {
-      int index = state.graduationsUpdated
-          .indexWhere((model) => model.id == original.id);
+  Future<List<OfficeModel>> updateRelationOffice(String modelId) async {
+    List<OfficeModel> listResult = [];
+    List<OfficeModel> listFinal = [];
+    listResult.addAll([...state.officesUpdated]);
+    listFinal.addAll([...state.officesOriginal]);
+    for (var original in state.officesOriginal) {
+      int index =
+          state.officesUpdated.indexWhere((model) => model.id == original.id);
       if (index < 0) {
-        await _repository.updateRelationGraduations(
-            modelId, [original.id!], false);
+        await _repository.updateRelationOffices(modelId, [original.id!], false);
         listFinal.removeWhere((element) => element.id == original.id);
       } else {
         listResult.removeWhere((element) => element.id == original.id);
       }
     }
     for (var result in listResult) {
-      await _repository.updateRelationGraduations(modelId, [result.id!], true);
+      await _repository.updateRelationOffices(modelId, [result.id!], true);
       listFinal.add(result);
     }
     return listFinal;

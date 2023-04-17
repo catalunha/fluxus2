@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluxus2/app/core/models/healthplan_model.dart';
-import 'package:fluxus2/app/feature/graduation/select/graduation_select_page.dart';
 
 import 'core/authentication/authentication.dart';
 import 'core/models/expertise_model.dart';
-import 'core/models/graduation_model.dart';
 import 'core/models/healthplantype_model.dart';
+import 'core/models/office_model.dart';
 import 'core/models/patient_model.dart';
 import 'core/models/procedure_model.dart';
 import 'core/models/region_model.dart';
@@ -20,15 +19,16 @@ import 'feature/expertise/list/expertise_list_page.dart';
 import 'feature/expertise/print/expertise_print_page.dart';
 import 'feature/expertise/save/expertise_save_page.dart';
 import 'feature/expertise/select/expertise_select_page.dart';
-import 'feature/graduation/list/graduation_list_page.dart';
-import 'feature/graduation/print/graduation_print_page.dart';
-import 'feature/graduation/save/graduation_save_page.dart';
+import 'feature/office/list/office_list_page.dart';
 import 'feature/healthplan/save/healthplan_save_page.dart';
 import 'feature/healthplantype/list/healthplantype_list_page.dart';
 import 'feature/healthplantype/print/healthplantype_print_page.dart';
 import 'feature/healthplantype/save/healthplantype_save_page.dart';
 import 'feature/healthplantype/select/healthplantype_select_page.dart';
 import 'feature/home/home_page.dart';
+import 'feature/office/print/office_print_page.dart';
+import 'feature/office/save/office_save_page.dart';
+import 'feature/office/select/office_select_page.dart';
 import 'feature/patient/print/patient_print_page.dart';
 import 'feature/patient/save/patient_save_page.dart';
 import 'feature/patient/search/patient_search_page.dart';
@@ -151,21 +151,20 @@ class _AppViewState extends State<AppView> {
               .arguments as List<UserProfileModel>?;
           return UserProfilePrintPage(modelList: modelList ?? []);
         },
-        '/graduation/list': (_) => const GraduationListPage(),
-        '/graduation/save': (_) => const GraduationSavePage(),
-        '/graduation/select': (context) {
+        '/office/list': (_) => const OfficeListPage(),
+        '/office/save': (_) => const OfficeSavePage(),
+        '/office/select': (context) {
           bool isSingleValue =
               ModalRoute.of(context)!.settings.arguments as bool;
 
-          return GraduationSelectPage(
+          return OfficeSelectPage(
             isSingleValue: isSingleValue,
           );
         },
-        '/graduation/print': (context) {
-          List<GraduationModel>? modelList = ModalRoute.of(context)!
-              .settings
-              .arguments as List<GraduationModel>?;
-          return GraduationPrintPage(modelList: modelList ?? []);
+        '/office/print': (context) {
+          List<OfficeModel>? modelList =
+              ModalRoute.of(context)!.settings.arguments as List<OfficeModel>?;
+          return OfficePrintPage(modelList: modelList ?? []);
         },
         '/expertise/list': (_) => const ExpertiseListPage(),
         '/expertise/save': (_) => const ExpertiseSavePage(),
