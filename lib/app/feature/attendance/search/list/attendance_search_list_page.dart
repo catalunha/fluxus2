@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/models/Attendance_model.dart';
-import '../bloc/Attendance_search_bloc.dart';
-import '../bloc/Attendance_search_event.dart';
-import '../bloc/Attendance_search_state.dart';
-import 'comp/Attendance_card.dart';
+import '../../../../core/models/attendance_model.dart';
+import '../../select/comp/attendance_card.dart';
+import '../bloc/attendance_search_bloc.dart';
+import '../bloc/attendance_search_event.dart';
+import '../bloc/attendance_search_state.dart';
 
 class AttendanceSearchListPage extends StatelessWidget {
   const AttendanceSearchListPage({
@@ -32,7 +32,7 @@ class AttendanceSearchListView extends StatelessWidget {
               List<AttendanceModel> modelList =
                   context.read<AttendanceSearchBloc>().state.list;
               Navigator.of(context)
-                  .pushNamed('/Attendance/print', arguments: modelList);
+                  .pushNamed('/attendance/print', arguments: modelList);
             },
             icon: const Icon(Icons.print),
           )

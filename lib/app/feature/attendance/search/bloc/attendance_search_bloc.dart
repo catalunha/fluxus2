@@ -3,19 +3,19 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
-import '../../../../core/models/Attendance_model.dart';
-import '../../../../core/repositories/Attendance_repository.dart';
-import '../../../../data/b4a/entity/Attendance_entity.dart';
+import '../../../../core/models/attendance_model.dart';
+import '../../../../core/repositories/attendance_repository.dart';
+import '../../../../data/b4a/entity/attendance_entity.dart';
 import '../../../../data/utils/pagination.dart';
-import 'Attendance_search_event.dart';
-import 'Attendance_search_state.dart';
+import 'attendance_search_event.dart';
+import 'attendance_search_state.dart';
 
 class AttendanceSearchBloc
     extends Bloc<AttendanceSearchEvent, AttendanceSearchState> {
-  final AttendanceRepository _AttendanceRepository;
+  final AttendanceRepository _repository;
   AttendanceSearchBloc({
-    required AttendanceRepository AttendanceRepository,
-  })  : _AttendanceRepository = AttendanceRepository,
+    required AttendanceRepository repository,
+  })  : _repository = repository,
         super(AttendanceSearchState.initial()) {
     on<AttendanceSearchEventFormSubmitted>(
         _onAttendanceSearchEventFormSubmitted);
@@ -41,26 +41,25 @@ class AttendanceSearchBloc
       QueryBuilder<ParseObject> query =
           QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
 
-      if (event.ufContainsBool) {
-        query.whereContains(AttendanceEntity.uf, event.ufContainsString);
-      }
-      if (event.cityContainsBool) {
-        query.whereContains(AttendanceEntity.city, event.cityContainsString);
-      }
-      if (event.nameContainsBool) {
-        query.whereContains(AttendanceEntity.name, event.nameContainsString);
-      }
+      // if (event.ufContainsBool) {
+      //   query.whereContains(AttendanceEntity.uf, event.ufContainsString);
+      // }
+      // if (event.cityContainsBool) {
+      //   query.whereContains(AttendanceEntity.city, event.cityContainsString);
+      // }
+      // if (event.nameContainsBool) {
+      //   query.whereContains(AttendanceEntity.name, event.nameContainsString);
+      // }
 
-      query.orderByAscending('name');
-      List<AttendanceModel> AttendanceModelListGet =
-          await _AttendanceRepository.list(
+      // query.orderByAscending('name');
+      List<AttendanceModel> modelListGet = await _repository.list(
         query,
         Pagination(page: state.page, limit: state.limit),
       );
 
       emit(state.copyWith(
         status: AttendanceSearchStateStatus.success,
-        list: AttendanceModelListGet,
+        list: modelListGet,
         query: query,
       ));
     } catch (e) {
@@ -87,8 +86,7 @@ class AttendanceSearchBloc
           page: state.page - 1,
         ),
       );
-      List<AttendanceModel> AttendanceModelListGet =
-          await _AttendanceRepository.list(
+      List<AttendanceModel> AttendanceModelListGet = await _repository.list(
         state.query,
         Pagination(page: state.page, limit: state.limit),
       );
@@ -120,8 +118,7 @@ class AttendanceSearchBloc
     emit(
       state.copyWith(status: AttendanceSearchStateStatus.loading),
     );
-    List<AttendanceModel> AttendanceModelListGet =
-        await _AttendanceRepository.list(
+    List<AttendanceModel> AttendanceModelListGet = await _repository.list(
       state.query,
       Pagination(page: state.page + 1, limit: state.limit),
     );
@@ -146,9 +143,9 @@ class AttendanceSearchBloc
       Emitter<AttendanceSearchState> emit) {
     int index = state.list.indexWhere((model) => model.id == event.model.id);
     if (index >= 0) {
-      List<AttendanceModel> AttendanceModelListTemp = [...state.list];
-      AttendanceModelListTemp.replaceRange(index, index + 1, [event.model]);
-      emit(state.copyWith(list: AttendanceModelListTemp));
+      List<AttendanceModel> tempList = [...state.list];
+      tempList.replaceRange(index, index + 1, [event.model]);
+      emit(state.copyWith(list: tempList));
     }
   }
 
@@ -157,9 +154,9 @@ class AttendanceSearchBloc
       Emitter<AttendanceSearchState> emit) {
     int index = state.list.indexWhere((model) => model.id == event.modelId);
     if (index >= 0) {
-      List<AttendanceModel> AttendanceModelListTemp = [...state.list];
-      AttendanceModelListTemp.removeAt(index);
-      emit(state.copyWith(list: AttendanceModelListTemp));
+      List<AttendanceModel> tempList = [...state.list];
+      tempList.removeAt(index);
+      emit(state.copyWith(list: tempList));
     }
   }
 }

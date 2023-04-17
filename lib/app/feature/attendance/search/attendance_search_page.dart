@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/repositories/Attendance_repository.dart';
+import '../../../core/repositories/attendance_repository.dart';
 import '../../utils/app_icon.dart';
 import '../../utils/app_textformfield.dart';
-import 'bloc/Attendance_search_bloc.dart';
-import 'bloc/Attendance_search_event.dart';
-import 'bloc/Attendance_search_state.dart';
-import 'list/Attendance_search_list_page.dart';
+import 'bloc/attendance_search_bloc.dart';
+import 'bloc/attendance_search_event.dart';
+import 'bloc/attendance_search_state.dart';
+import 'list/attendance_search_list_page.dart';
 
 class AttendanceSearchPage extends StatelessWidget {
   const AttendanceSearchPage({
@@ -21,8 +21,7 @@ class AttendanceSearchPage extends StatelessWidget {
       child: BlocProvider(
         create: (context) {
           return AttendanceSearchBloc(
-            AttendanceRepository:
-                RepositoryProvider.of<AttendanceRepository>(context),
+            repository: RepositoryProvider.of<AttendanceRepository>(context),
           );
         },
         child: const AttendanceSearchView(),
@@ -184,14 +183,7 @@ class _SearchPageState extends State<AttendanceSearchView> {
           if (formValid) {
             context
                 .read<AttendanceSearchBloc>()
-                .add(AttendanceSearchEventFormSubmitted(
-                  ufContainsBool: _ufContainsBool,
-                  ufContainsString: _ufContainsTEC.text,
-                  cityContainsBool: _cityContainsBool,
-                  cityContainsString: _cityContainsTEC.text,
-                  nameContainsBool: _nameContainsBool,
-                  nameContainsString: _nameContainsTEC.text,
-                ));
+                .add(AttendanceSearchEventFormSubmitted());
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (_) => BlocProvider.value(

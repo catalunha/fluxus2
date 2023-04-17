@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
-import '../../../../core/models/Attendance_model.dart';
-import '../../../../data/b4a/entity/Attendance_entity.dart';
+import '../../../../core/models/attendance_model.dart';
+import '../../../../data/b4a/entity/attendance_entity.dart';
 
 enum AttendanceSearchStateStatus { initial, loading, success, error }
 

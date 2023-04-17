@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/repositories/Attendance_repository.dart';
+import '../../../core/authentication/authentication.dart';
+import '../../../core/models/user_profile_model.dart';
+import '../../../core/repositories/attendance_repository.dart';
 import '../../utils/app_textformfield.dart';
-import 'bloc/Attendance_select_bloc.dart';
-import 'bloc/Attendance_select_event.dart';
-import 'bloc/Attendance_select_state.dart';
-import 'comp/Attendance_card.dart';
+import 'bloc/attendance_select_bloc.dart';
+import 'bloc/attendance_select_event.dart';
+import 'bloc/attendance_select_state.dart';
+import 'comp/attendance_card.dart';
 
 class AttendanceSelectPage extends StatelessWidget {
+  final bool isSingleValue;
   const AttendanceSelectPage({
     Key? key,
+    required this.isSingleValue,
   }) : super(key: key);
 
   @override
@@ -19,9 +23,12 @@ class AttendanceSelectPage extends StatelessWidget {
       create: (context) => AttendanceRepository(),
       child: BlocProvider(
         create: (context) {
+          UserProfileModel userProfile =
+              context.read<AuthenticationBloc>().state.user!.userProfile!;
           return AttendanceSelectBloc(
-            AttendanceRepository:
-                RepositoryProvider.of<AttendanceRepository>(context),
+            repository: RepositoryProvider.of<AttendanceRepository>(context),
+            seller: userProfile,
+            isSingleValue: isSingleValue,
           );
         },
         child: const AttendanceSelectView(),
@@ -29,17 +36,6 @@ class AttendanceSelectPage extends StatelessWidget {
     );
   }
 }
-
-// class AttendanceSelectPage extends StatelessWidget {
-//   const AttendanceSelectPage({
-//     Key? key,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const AttendanceSelectView();
-//   }
-// }
 
 class AttendanceSelectView extends StatefulWidget {
   const AttendanceSelectView({Key? key}) : super(key: key);
@@ -49,6 +45,7 @@ class AttendanceSelectView extends StatefulWidget {
 }
 
 class _AttendanceSelectViewState extends State<AttendanceSelectView> {
+  final _formKey = GlobalKey<FormState>();
   final _nameTEC = TextEditingController();
 
   @override
@@ -61,7 +58,7 @@ class _AttendanceSelectViewState extends State<AttendanceSelectView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Selecione uma região'),
+        title: const Text('Selecione uma graduação'),
       ),
       body: BlocListener<AttendanceSelectBloc, AttendanceSelectState>(
         listenWhen: (previous, current) {
@@ -90,11 +87,12 @@ class _AttendanceSelectViewState extends State<AttendanceSelectView> {
         child: Column(
           children: [
             Form(
+              key: _formKey,
               child: Row(
                 children: [
                   Expanded(
                     child: AppTextFormField(
-                      label: 'Nome da região',
+                      label: 'Pesquise por Nome',
                       controller: _nameTEC,
                       onChange: (value) {
                         context
@@ -187,6 +185,20 @@ class _AttendanceSelectViewState extends State<AttendanceSelectView> {
             ),
           ],
         ),
+      ),
+      floatingActionButton:
+          BlocBuilder<AttendanceSelectBloc, AttendanceSelectState>(
+        builder: (context, state) {
+          return Visibility(
+            visible: !state.isSingleValue,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).pop(state.selectedValues);
+              },
+              child: const Icon(Icons.send),
+            ),
+          );
+        },
       ),
     );
   }

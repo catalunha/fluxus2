@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
-import '../../../../core/models/Attendance_model.dart';
-import '../../../../data/b4a/entity/Attendance_entity.dart';
+import '../../../../core/models/attendance_model.dart';
+import '../../../../data/b4a/entity/attendance_entity.dart';
 
 enum AttendanceSelectStateStatus { initial, loading, success, error }
 
@@ -16,6 +16,8 @@ class AttendanceSelectState {
   final bool firstPage;
   final bool lastPage;
   QueryBuilder<ParseObject> query;
+  final List<AttendanceModel> selectedValues;
+  final bool isSingleValue;
 
   AttendanceSelectState({
     required this.status,
@@ -27,8 +29,10 @@ class AttendanceSelectState {
     required this.firstPage,
     required this.lastPage,
     required this.query,
+    this.selectedValues = const [],
+    this.isSingleValue = true,
   });
-  AttendanceSelectState.initial()
+  AttendanceSelectState.initial(this.isSingleValue)
       : status = AttendanceSelectStateStatus.initial,
         error = '',
         list = [],
@@ -38,7 +42,8 @@ class AttendanceSelectState {
         firstPage = true,
         lastPage = false,
         query =
-            QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
+            QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className)),
+        selectedValues = const [];
 
   AttendanceSelectState copyWith({
     AttendanceSelectStateStatus? status,
@@ -50,6 +55,8 @@ class AttendanceSelectState {
     bool? firstPage,
     bool? lastPage,
     QueryBuilder<ParseObject>? query,
+    List<AttendanceModel>? selectedValues,
+    bool? isSingleValue,
   }) {
     return AttendanceSelectState(
       status: status ?? this.status,
@@ -61,6 +68,8 @@ class AttendanceSelectState {
       firstPage: firstPage ?? this.firstPage,
       lastPage: lastPage ?? this.lastPage,
       query: query ?? this.query,
+      selectedValues: selectedValues ?? this.selectedValues,
+      isSingleValue: isSingleValue ?? this.isSingleValue,
     );
   }
 
@@ -77,7 +86,9 @@ class AttendanceSelectState {
         other.limit == limit &&
         other.firstPage == firstPage &&
         other.lastPage == lastPage &&
-        other.query == query;
+        other.query == query &&
+        listEquals(other.selectedValues, selectedValues) &&
+        other.isSingleValue == isSingleValue;
   }
 
   @override
@@ -90,11 +101,13 @@ class AttendanceSelectState {
         limit.hashCode ^
         firstPage.hashCode ^
         lastPage.hashCode ^
-        query.hashCode;
+        query.hashCode ^
+        selectedValues.hashCode ^
+        isSingleValue.hashCode;
   }
 
   @override
   String toString() {
-    return 'AttendanceSelectState(status: $status, error: $error, list: $list, listFiltered: $listFiltered, page: $page, limit: $limit, firstPage: $firstPage, lastPage: $lastPage, query: $query)';
+    return 'AttendanceSelectState(status: $status, error: $error, list: $list, listFiltered: $listFiltered, page: $page, limit: $limit, firstPage: $firstPage, lastPage: $lastPage, query: $query, selectedValues: $selectedValues, isSingleValue: $isSingleValue)';
   }
 }

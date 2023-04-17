@@ -7,7 +7,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
-import '../../../core/models/Attendance_model.dart';
+import '../../../core/models/attendance_model.dart';
 
 class AttendancePrintPage extends StatelessWidget {
   final List<AttendanceModel> modelList;
@@ -48,7 +48,7 @@ class AttendancePrintPage extends StatelessWidget {
         build: (pw.Context context) => <pw.Widget>[
           pw.Header(
             level: 1,
-            child: pw.Text('Relatório de regiões'),
+            child: pw.Text('Relatório de Atendimentos'),
           ),
           ...body(),
         ],
@@ -68,6 +68,8 @@ class AttendancePrintPage extends StatelessWidget {
   }
 
   userBody(AttendanceModel model) {
+    final dateFormat = DateFormat('dd/MM/y');
+    final dateFormatHM = DateFormat('dd/MM/y HH:mm');
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
@@ -77,9 +79,27 @@ class AttendancePrintPage extends StatelessWidget {
               child: pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              pw.Text('UF: ${model.uf}'),
-              pw.Text('Cidade: ${model.city}'),
-              pw.Text('Nome: ${model.name}'),
+              pw.Text('Id: ${model.id}'),
+              pw.Text('Profissional: ${model.professional?.nickname}'),
+              pw.Text('Procedimento: ${model.procedure?.code}'),
+              pw.Text('Paciente: ${model.patient?.nickname}'),
+              pw.Text('Plano de saúde: ${model.healthPlan?.code}'),
+              pw.Text(
+                  'Tipo de Plano de saúde: ${model.healthPlan?.healthPlanType?.name}'),
+              pw.Text('Autorização. Código: ${model.authorizationCode}'),
+              pw.Text(
+                  'Autorização. Criada em: ${model.authorizationDateCreated == null ? '...' : dateFormat.format(model.authorizationDateCreated!)}'),
+              pw.Text(
+                  'Autorização. Limitada em: ${model.authorizationDateLimit == null ? '...' : dateFormat.format(model.authorizationDateLimit!)}'),
+              pw.Text(
+                  'Atendida em: ${model.attendance == null ? '...' : dateFormatHM.format(model.attendance!)}'),
+              pw.Text('Descrição: ${model.description}'),
+              pw.Text(
+                  'Presença confirmada em: ${model.confirmedPresence == null ? '...' : dateFormatHM.format(model.confirmedPresence!)}'),
+              pw.Text('Status: ${model.status?.name}'),
+              pw.Text('Evento: ${model.event?.id}'),
+              pw.Text('Evolution: ${model.evolution?.id}'),
+              pw.Text('Fatura: ${model.invoice?.id}'),
             ],
           ))
         ]),

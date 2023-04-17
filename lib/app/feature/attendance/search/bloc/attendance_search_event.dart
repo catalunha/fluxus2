@@ -1,4 +1,4 @@
-import '../../../../core/models/Attendance_model.dart';
+import '../../../../core/models/attendance_model.dart';
 
 abstract class AttendanceSearchEvent {}
 
@@ -20,19 +20,4 @@ class AttendanceSearchEventRemoveFromList extends AttendanceSearchEvent {
   );
 }
 
-class AttendanceSearchEventFormSubmitted extends AttendanceSearchEvent {
-  final bool ufContainsBool;
-  final String ufContainsString;
-  final bool cityContainsBool;
-  final String cityContainsString;
-  final bool nameContainsBool;
-  final String nameContainsString;
-  AttendanceSearchEventFormSubmitted({
-    required this.ufContainsBool,
-    required this.ufContainsString,
-    required this.cityContainsBool,
-    required this.cityContainsString,
-    required this.nameContainsBool,
-    required this.nameContainsString,
-  });
-}
+class AttendanceSearchEventFormSubmitted extends AttendanceSearchEvent {}

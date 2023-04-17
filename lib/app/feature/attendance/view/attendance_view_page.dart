@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-import '../../../core/models/Attendance_model.dart';
+import '../../../core/models/attendance_model.dart';
 import '../../utils/app_text_title_value.dart';
 
 class AttendanceViewPage extends StatelessWidget {
@@ -9,8 +10,11 @@ class AttendanceViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dateFormat = DateFormat('dd/MM/y');
+    final dateFormatHM = DateFormat('dd/MM/y HH:mm');
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Dados desta região')),
+      appBar: AppBar(title: const Text('Dados deste atendimento')),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600),
@@ -24,19 +28,72 @@ class AttendanceViewPage extends StatelessWidget {
                   value: model.id,
                 ),
                 AppTextTitleValue(
-                  title: 'UF: ',
-                  value: model.uf,
-                  inColumn: true,
+                  title: 'Profissional: ',
+                  value: model.professional?.nickname,
                 ),
                 AppTextTitleValue(
-                  title: 'Cidade: ',
-                  value: model.city,
-                  inColumn: true,
+                  title: 'Procedimento: ',
+                  value: model.procedure?.code,
                 ),
                 AppTextTitleValue(
-                  title: 'Nome: ',
-                  value: model.name,
-                  inColumn: true,
+                  title: 'Paciente: ',
+                  value: model.patient?.nickname,
+                ),
+                AppTextTitleValue(
+                  title: 'Plano de saúde: ',
+                  value: model.healthPlan?.code,
+                ),
+                AppTextTitleValue(
+                  title: 'Tipo de Plano de saúde: ',
+                  value: model.healthPlan?.healthPlanType?.name,
+                ),
+                AppTextTitleValue(
+                  title: 'Autorização. Código: ',
+                  value: model.authorizationCode,
+                ),
+                AppTextTitleValue(
+                  title: 'Autorização. Criada em: ',
+                  value: model.authorizationDateCreated == null
+                      ? '...'
+                      : dateFormat.format(model.authorizationDateCreated!),
+                ),
+                AppTextTitleValue(
+                  title: 'Autorização. Limitada a: ',
+                  value: model.authorizationDateLimit == null
+                      ? '...'
+                      : dateFormat.format(model.authorizationDateLimit!),
+                ),
+                AppTextTitleValue(
+                  title: 'Atendida em: ',
+                  value: model.attendance == null
+                      ? '...'
+                      : dateFormatHM.format(model.attendance!),
+                ),
+                AppTextTitleValue(
+                  title: 'Descrição',
+                  value: model.description,
+                ),
+                AppTextTitleValue(
+                  title: 'Presença confirmada em: ',
+                  value: model.confirmedPresence == null
+                      ? '...'
+                      : dateFormatHM.format(model.confirmedPresence!),
+                ),
+                AppTextTitleValue(
+                  title: 'Status: ',
+                  value: model.status?.name,
+                ),
+                AppTextTitleValue(
+                  title: 'Evento: ',
+                  value: model.event?.id,
+                ),
+                AppTextTitleValue(
+                  title: 'Evolution: ',
+                  value: model.evolution?.id,
+                ),
+                AppTextTitleValue(
+                  title: 'Fatura: ',
+                  value: model.invoice?.id,
                 ),
               ],
             ),

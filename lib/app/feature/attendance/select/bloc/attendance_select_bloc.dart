@@ -3,24 +3,31 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
-import '../../../../core/models/Attendance_model.dart';
-import '../../../../core/repositories/Attendance_repository.dart';
-import '../../../../data/b4a/entity/Attendance_entity.dart';
+import '../../../../core/models/attendance_model.dart';
+import '../../../../core/models/user_profile_model.dart';
+import '../../../../core/repositories/attendance_repository.dart';
+import '../../../../data/b4a/entity/attendance_entity.dart';
 import '../../../../data/utils/pagination.dart';
-import 'Attendance_select_event.dart';
-import 'Attendance_select_state.dart';
+import 'attendance_select_event.dart';
+import 'attendance_select_state.dart';
 
 class AttendanceSelectBloc
     extends Bloc<AttendanceSelectEvent, AttendanceSelectState> {
-  final AttendanceRepository _AttendanceRepository;
-  AttendanceSelectBloc({required AttendanceRepository AttendanceRepository})
-      : _AttendanceRepository = AttendanceRepository,
-        super(AttendanceSelectState.initial()) {
+  final AttendanceRepository _repository;
+  AttendanceSelectBloc({
+    required AttendanceRepository repository,
+    required UserProfileModel seller,
+    required bool isSingleValue,
+  })  : _repository = repository,
+        super(AttendanceSelectState.initial(isSingleValue)) {
     on<AttendanceSelectEventStartQuery>(_onAttendanceSelectEventStartQuery);
     on<AttendanceSelectEventPreviousPage>(_onAttendanceSelectEventPreviousPage);
     on<AttendanceSelectEventNextPage>(_onAttendanceSelectEventNextPage);
     on<AttendanceSelectEventFormSubmitted>(
         _onAttendanceSelectEventFormSubmitted);
+    on<AttendanceSelectEventUpdateSelectedValues>(
+        _onAttendanceSelectEventUpdateSelectedValues);
+
     add(AttendanceSelectEventStartQuery());
   }
 
@@ -40,7 +47,7 @@ class AttendanceSelectBloc
           QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
 
       query.orderByAscending('name');
-      List<AttendanceModel> listGet = await _AttendanceRepository.list(
+      List<AttendanceModel> listGet = await _repository.list(
         query,
         Pagination(page: state.page, limit: state.limit),
       );
@@ -74,7 +81,7 @@ class AttendanceSelectBloc
           page: state.page - 1,
         ),
       );
-      List<AttendanceModel> listGet = await _AttendanceRepository.list(
+      List<AttendanceModel> listGet = await _repository.list(
         state.query,
         Pagination(page: state.page, limit: state.limit),
       );
@@ -107,7 +114,7 @@ class AttendanceSelectBloc
     emit(
       state.copyWith(status: AttendanceSelectStateStatus.loading),
     );
-    List<AttendanceModel> listGet = await _AttendanceRepository.list(
+    List<AttendanceModel> listGet = await _repository.list(
       state.query,
       Pagination(page: state.page + 1, limit: state.limit),
     );
@@ -130,12 +137,30 @@ class AttendanceSelectBloc
   FutureOr<void> _onAttendanceSelectEventFormSubmitted(
       AttendanceSelectEventFormSubmitted event,
       Emitter<AttendanceSelectState> emit) {
-    if (event.name.isEmpty) {
+    if (event.authorizationCode.isEmpty) {
       emit(state.copyWith(listFiltered: state.list));
     } else {
       List<AttendanceModel> listTemp;
-      listTemp = state.list.where((e) => e.name!.contains(event.name)).toList();
+      listTemp = state.list
+          .where((e) => e.authorizationCode!.contains(event.authorizationCode))
+          .toList();
       emit(state.copyWith(listFiltered: listTemp));
+    }
+  }
+
+  FutureOr<void> _onAttendanceSelectEventUpdateSelectedValues(
+      AttendanceSelectEventUpdateSelectedValues event,
+      Emitter<AttendanceSelectState> emit) {
+    int index =
+        state.selectedValues.indexWhere((model) => model.id == event.model.id);
+    if (index >= 0) {
+      List<AttendanceModel> temp = [...state.selectedValues];
+      temp.removeAt(index);
+      emit(state.copyWith(selectedValues: temp));
+    } else {
+      List<AttendanceModel> temp = [...state.selectedValues];
+      temp.add(event.model);
+      emit(state.copyWith(selectedValues: temp));
     }
   }
 }
