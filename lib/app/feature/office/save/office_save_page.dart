@@ -54,7 +54,7 @@ class _OfficeSaveViewState extends State<OfficeSaveView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.model == null ? "Criar" : "Editar"} Graduação'),
+        title: Text('${widget.model == null ? "Criar" : "Editar"} Cargos'),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.cloud_upload),

@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/models/office_model.dart';
 import '../../../core/repositories/office_repository.dart';
 import '../save/office_save_page.dart';
-import '../select/comp/office_card.dart';
 import 'bloc/office_list_bloc.dart';
 import 'bloc/office_list_event.dart';
 import 'bloc/office_list_state.dart';
+import 'comp/office_card.dart';
 
 class OfficeListPage extends StatelessWidget {
   const OfficeListPage({
@@ -34,14 +34,14 @@ class OfficeListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Graduações encontradas'),
+        title: const Text('Cargos encontrados'),
         actions: [
           IconButton(
             onPressed: () {
               List<OfficeModel> modelList =
                   context.read<OfficeListBloc>().state.list;
               Navigator.of(context)
-                  .pushNamed('/graduation/print', arguments: modelList);
+                  .pushNamed('/office/print', arguments: modelList);
             },
             icon: const Icon(Icons.print),
           )

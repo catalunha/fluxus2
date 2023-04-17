@@ -5,10 +5,10 @@ import '../../../core/authentication/authentication.dart';
 import '../../../core/models/user_profile_model.dart';
 import '../../../core/repositories/office_repository.dart';
 import '../../utils/app_textformfield.dart';
-import '../list/comp/office_card.dart';
 import 'bloc/office_select_bloc.dart';
 import 'bloc/office_select_event.dart';
 import 'bloc/office_select_state.dart';
+import 'comp/office_card.dart';
 
 class OfficeSelectPage extends StatelessWidget {
   final bool isSingleValue;
@@ -58,7 +58,7 @@ class _OfficeSelectViewState extends State<OfficeSelectView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Selecione uma graduação'),
+        title: const Text('Selecione um cargo'),
       ),
       body: BlocListener<OfficeSelectBloc, OfficeSelectState>(
         listenWhen: (previous, current) {

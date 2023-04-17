@@ -163,7 +163,7 @@ class _UserProfileAccessViewState extends State<UserProfileAccessView> {
                           accessSelect('Financeiro', 'fin'),
                         ],
                       ),
-                      const Text('Selecione as graduações'),
+                      const Text('Selecione os cargos'),
                       Row(
                         children: [
                           IconButton(
