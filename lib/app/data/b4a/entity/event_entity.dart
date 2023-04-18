@@ -10,6 +10,7 @@ class EventEntity {
   static const String className = 'Event';
   static const String id = 'objectId';
   static const String attendances = 'attendances';
+  static const String attendanceBrief = 'attendanceBrief';
   static const String room = 'room';
   static const String start = 'start';
   static const String end = 'end';
@@ -18,8 +19,9 @@ class EventEntity {
   static const String description = 'description';
 
   Future<EventModel> toModel(ParseObject parseObject) async {
-    //+++ get attendance
     List<AttendanceModel> attendanceList = [];
+
+    //+++ get attendance
     {
       QueryBuilder<ParseObject> queryAttendanceType =
           QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
@@ -48,9 +50,11 @@ class EventEntity {
       }
     }
     //--- get healthPlan
+
     EventModel model = EventModel(
       id: parseObject.objectId!,
       attendances: attendanceList,
+      attendanceBrief: parseObject.get(EventEntity.attendanceBrief),
       room: parseObject.get(EventEntity.room) != null
           ? RoomEntity().toModel(parseObject.get(EventEntity.room))
           : null,
@@ -67,6 +71,9 @@ class EventEntity {
   Future<ParseObject> toParse(EventModel model) async {
     final parseObject = ParseObject(EventEntity.className);
     parseObject.objectId = model.id;
+    if (model.attendanceBrief != null) {
+      parseObject.set(EventEntity.attendanceBrief, model.attendanceBrief);
+    }
     if (model.room != null) {
       parseObject.set(
           EventEntity.room,

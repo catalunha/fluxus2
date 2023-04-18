@@ -39,15 +39,19 @@ class ScheduleSearchListView extends StatelessWidget {
         ],
       ),
       body: BlocBuilder<ScheduleSearchBloc, ScheduleSearchState>(
-        buildWhen: (current, next) =>
-            next.list.isNotEmpty && next.start != null && next.end != null,
+        // buildWhen: (current, next) {
+        //   print('current: ${current.list.length}');
+        //   print('current: ${current.start}');
+        //   print('current: ${current.end}');
+        //   print('next: ${next.list.length}');
+        //   print('next: ${next.start}');
+        //   print('next: ${next.end}');
+        //   return next.list.isNotEmpty && next.start != null && next.end != null;
+        // },
         // current.list.isNotEmpty &&
         // current.start != null &&
         // current.end != null,
         builder: (context, state) {
-          print(state.list.length);
-          print(state.start);
-          print(state.end);
           if (state.list.isEmpty || state.start == null || state.end == null) {
             return const Center(child: Text('Construindo agenda...'));
           }
@@ -67,10 +71,12 @@ class ScheduleSearchListView extends StatelessWidget {
               dayMorning = dayMorning.add(const Duration(days: 1))) {
             DateTime dayNight =
                 dayMorning.add(const Duration(hours: 23, minutes: 59));
-            timePlannerHeaders.add(TimePlannerTitle(
-              date: dateFormat.format(dayMorning),
-              title: dateFormatDay.format(dayMorning),
-            ));
+            timePlannerHeaders.add(
+              TimePlannerTitle(
+                date: dateFormat.format(dayMorning),
+                title: dateFormatDay.format(dayMorning),
+              ),
+            );
             for (EventModel e in list) {
               if (dayMorning.isBefore(e.start!) && dayNight.isAfter(e.start!)) {
                 timePlannerTasks.add(
@@ -85,8 +91,6 @@ class ScheduleSearchListView extends StatelessWidget {
                     child: Text('${e.id}'),
                   ),
                 );
-              } else {
-                print('event ${e.id} nao esta neste dia $dayMorning');
               }
             }
             day++;
