@@ -5,10 +5,10 @@ import '../../../core/authentication/authentication.dart';
 import '../../../core/models/user_profile_model.dart';
 import '../../../core/repositories/status_repository.dart';
 import '../../utils/app_textformfield.dart';
-import '../list/comp/status_card.dart';
 import 'bloc/status_select_bloc.dart';
 import 'bloc/status_select_event.dart';
 import 'bloc/status_select_state.dart';
+import 'comp/status_card.dart';
 
 class StatusSelectPage extends StatelessWidget {
   final bool isSingleValue;

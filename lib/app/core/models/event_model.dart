@@ -10,9 +10,9 @@ class EventModel {
   final String? id;
   final List<AttendanceModel>? attendances;
   final RoomModel? room;
+  final StatusModel? status;
   final DateTime? start;
   final DateTime? end;
-  final StatusModel? status;
   final String? history;
 
   EventModel({

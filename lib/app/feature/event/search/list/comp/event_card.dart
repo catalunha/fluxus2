@@ -49,7 +49,8 @@ class EventCard extends StatelessWidget {
             ),
             AppTextTitleValue(
               title: 'Histórico: ',
-              value: model.history,
+              value: '\n${model.history}',
+              // inColumn: true,
             ),
             Center(
               child: Wrap(

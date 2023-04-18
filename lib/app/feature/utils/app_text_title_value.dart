@@ -15,18 +15,20 @@ class AppTextTitleValue extends StatelessWidget {
   Widget build(BuildContext context) {
     if (inColumn) {
       return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            title,
-            style: const TextStyle(color: Colors.blueGrey),
-          ),
           Center(
             child: Text(
-              // value ?? '...',
-              value != null && value!.isNotEmpty ? value! : '...',
-              style: const TextStyle(color: Colors.white),
-              textAlign: TextAlign.center,
+              title,
+              style: const TextStyle(color: Colors.blueGrey),
             ),
+          ),
+          Text(
+            // value ?? '...',
+            value != null && value!.isNotEmpty ? value! : '...',
+            style: const TextStyle(color: Colors.white),
+            textAlign: TextAlign.center,
           ),
         ],
       );

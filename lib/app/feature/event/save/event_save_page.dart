@@ -7,6 +7,7 @@ import '../../../core/models/event_model.dart';
 import '../../../core/models/room_model.dart';
 import '../../../core/models/status_model.dart';
 import '../../../core/repositories/event_repository.dart';
+import '../../utils/app_textformfield.dart';
 import '../search/bloc/event_search_bloc.dart';
 import '../search/bloc/event_search_event.dart';
 import 'bloc/event_save_bloc.dart';
@@ -138,6 +139,7 @@ class _EventSaveViewState extends State<EventSaveView> {
                         child: CupertinoDatePicker(
                           initialDateTime: _start,
                           mode: CupertinoDatePickerMode.dateAndTime,
+                          use24hFormat: true,
                           onDateTimeChanged: (DateTime newDate) {
                             _start = newDate;
                           },
@@ -151,6 +153,7 @@ class _EventSaveViewState extends State<EventSaveView> {
                         child: CupertinoDatePicker(
                           initialDateTime: _end,
                           mode: CupertinoDatePickerMode.dateAndTime,
+                          use24hFormat: true,
                           onDateTimeChanged: (DateTime newDate) {
                             _end = newDate;
                           },
@@ -255,6 +258,15 @@ class _EventSaveViewState extends State<EventSaveView> {
                           ),
                           const SizedBox(width: 15)
                         ],
+                      ),
+                      AppTextFormField(
+                        label: 'Histórico',
+                        controller: _historyTec,
+                      ),
+                      BlocBuilder<EventSaveBloc, EventSaveState>(
+                        builder: (context, state) {
+                          return Text('${state.model?.history}');
+                        },
                       ),
                       const SizedBox(height: 70),
                     ],

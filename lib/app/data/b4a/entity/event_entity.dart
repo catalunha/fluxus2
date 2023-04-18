@@ -25,6 +25,20 @@ class EventEntity {
           QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
       queryAttendanceType.whereRelatedTo(EventEntity.attendances,
           EventEntity.className, parseObject.objectId!);
+      queryAttendanceType.includeObject([
+        'professional',
+        'professional.region',
+        'procedure',
+        'procedure.expertise',
+        'patient',
+        'patient.region',
+        'healthPlan',
+        'healthPlan.healthPlanType',
+        'status',
+        'event',
+        'evolution',
+        'invoice',
+      ]);
       final ParseResponse parseResponse = await queryAttendanceType.query();
       if (parseResponse.success && parseResponse.results != null) {
         for (var e in parseResponse.results!) {
