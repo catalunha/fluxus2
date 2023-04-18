@@ -64,7 +64,7 @@ class AttendanceEntity {
           ? StatusEntity().toModel(parseObject.get(AttendanceEntity.status))
           : null,
       event: parseObject.get(AttendanceEntity.event) != null
-          ? EventEntity().toModel(parseObject.get(AttendanceEntity.event))
+          ? await EventEntity().toModel(parseObject.get(AttendanceEntity.event))
           : null,
       evolution: parseObject.get(AttendanceEntity.evolution) != null
           ? EvolutionEntity()
