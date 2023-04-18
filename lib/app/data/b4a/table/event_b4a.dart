@@ -15,7 +15,6 @@ class EventB4a {
       'room',
       'status',
     ]);
-
     return query;
   }
 
