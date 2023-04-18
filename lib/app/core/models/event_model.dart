@@ -14,6 +14,10 @@ class EventModel {
   final DateTime? start;
   final DateTime? end;
   final String? history;
+  int duration() {
+    Duration diff = end!.difference(start!);
+    return diff.inMinutes;
+  }
 
   EventModel({
     this.id,

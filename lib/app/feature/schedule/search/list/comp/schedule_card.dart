@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../core/models/event_model.dart';
 import '../../../../utils/app_text_title_value.dart';
-import '../../../save/event_save_page.dart';
-import '../../../view/event_view_page.dart';
-import '../../bloc/event_search_bloc.dart';
 
-class EventCard extends StatelessWidget {
+class ScheduleCard extends StatelessWidget {
   final EventModel model;
-  const EventCard({Key? key, required this.model}) : super(key: key);
+  const ScheduleCard({Key? key, required this.model}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,39 +47,6 @@ class EventCard extends StatelessWidget {
               title: 'Histórico: ',
               value: '\n${model.history}',
               // inColumn: true,
-            ),
-            Center(
-              child: Wrap(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => BlocProvider.value(
-                            value: BlocProvider.of<EventSearchBloc>(context),
-                            child: EventSavePage(model: model),
-                          ),
-                        ),
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.edit,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => EventViewPage(model: model),
-                        ),
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.assignment_ind_outlined,
-                    ),
-                  ),
-                ],
-              ),
             ),
           ],
         ),

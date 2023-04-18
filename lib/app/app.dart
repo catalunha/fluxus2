@@ -1,7 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fluxus2/app/core/models/healthplan_model.dart';
+import 'package:fluxus2/app/feature/schedule/test/schedule.dart';
 
 import 'core/authentication/authentication.dart';
 import 'core/models/attendance_model.dart';
@@ -54,6 +56,7 @@ import 'feature/region/select/region_select_page.dart';
 import 'feature/room/list/room_list_page.dart';
 import 'feature/room/save/room_save_page.dart';
 import 'feature/room/select/room_select_page.dart';
+import 'feature/schedule/search/schedule_search_page.dart';
 import 'feature/splash/splash_page.dart';
 import 'feature/status/list/status_list_page.dart';
 import 'feature/status/print/status_print_page.dart';
@@ -101,6 +104,15 @@ class _AppState extends State<App> {
   }
 }
 
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  // Override behavior methods and getters like dragDevices
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
+}
+
 class AppView extends StatefulWidget {
   const AppView({Key? key}) : super(key: key);
 
@@ -114,6 +126,7 @@ class _AppViewState extends State<AppView> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: MyCustomScrollBehavior(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(useMaterial3: true),
       localizationsDelegates: const [
@@ -320,6 +333,8 @@ class _AppViewState extends State<AppView> {
               ModalRoute.of(context)!.settings.arguments as List<EventModel>?;
           return EventPrintPage(modelList: modelList ?? []);
         },
+        '/schedule/view': (_) => const Schedule(),
+        '/schedule/search': (_) => const ScheduleSearchPage(),
       },
       initialRoute: '/',
     );

@@ -222,7 +222,7 @@ class HomePage extends StatelessWidget {
               HomeCardModule(
                 title: 'Eventos',
                 access: const ['admin'],
-                icon: Icons.calendar_month,
+                icon: Icons.people_alt_outlined,
                 color: Colors.black87,
                 actions: [
                   IconButton(
@@ -237,6 +237,26 @@ class HomePage extends StatelessWidget {
                     },
                     icon: const Icon(Icons.search),
                   )
+                ],
+              ),
+              HomeCardModule(
+                title: 'Agenda',
+                access: const ['admin'],
+                icon: Icons.calendar_month,
+                color: Colors.black87,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/schedule/search');
+                    },
+                    icon: const Icon(Icons.search),
+                  ),
+                  // IconButton(
+                  //   onPressed: () {
+                  //     Navigator.of(context).pushNamed('/calendar/professional');
+                  //   },
+                  //   icon: const Icon(Icons.person),
+                  // )
                 ],
               ),
             ],
