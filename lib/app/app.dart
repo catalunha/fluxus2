@@ -5,6 +5,7 @@ import 'package:fluxus2/app/core/models/healthplan_model.dart';
 
 import 'core/authentication/authentication.dart';
 import 'core/models/attendance_model.dart';
+import 'core/models/event_model.dart';
 import 'core/models/expertise_model.dart';
 import 'core/models/healthplantype_model.dart';
 import 'core/models/office_model.dart';
@@ -20,6 +21,10 @@ import 'feature/attendance/print/attendance_print_page.dart';
 import 'feature/attendance/save/attendance_save_page.dart';
 import 'feature/attendance/search/attendance_search_page.dart';
 import 'feature/attendance/select/attendance_select_page.dart';
+import 'feature/event/print/event_print_page.dart';
+import 'feature/event/save/event_save_page.dart';
+import 'feature/event/search/event_search_page.dart';
+import 'feature/event/select/event_select_page.dart';
 import 'feature/expertise/list/expertise_list_page.dart';
 import 'feature/expertise/print/expertise_print_page.dart';
 import 'feature/expertise/save/expertise_save_page.dart';
@@ -299,6 +304,21 @@ class _AppViewState extends State<AppView> {
               .settings
               .arguments as List<AttendanceModel>?;
           return AttendancePrintPage(modelList: modelList ?? []);
+        },
+        '/event/save': (_) => const EventSavePage(),
+        '/event/search': (_) => const EventSearchPage(),
+        '/event/select': (context) {
+          bool isSingleValue =
+              ModalRoute.of(context)!.settings.arguments as bool;
+
+          return EventSelectPage(
+            isSingleValue: isSingleValue,
+          );
+        },
+        '/event/print': (context) {
+          List<EventModel>? modelList =
+              ModalRoute.of(context)!.settings.arguments as List<EventModel>?;
+          return EventPrintPage(modelList: modelList ?? []);
         },
       },
       initialRoute: '/',

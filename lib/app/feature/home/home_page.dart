@@ -219,6 +219,26 @@ class HomePage extends StatelessWidget {
                   )
                 ],
               ),
+              HomeCardModule(
+                title: 'Eventos',
+                access: const ['admin'],
+                icon: Icons.calendar_month,
+                color: Colors.black87,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/event/save');
+                    },
+                    icon: const Icon(Icons.add),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/event/search');
+                    },
+                    icon: const Icon(Icons.search),
+                  )
+                ],
+              ),
             ],
           ),
         ),
