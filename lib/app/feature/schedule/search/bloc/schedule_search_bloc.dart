@@ -135,17 +135,6 @@ class ScheduleSearchBloc
       Emitter<ScheduleSearchState> emit) async {
     List<EventModel> listTemp = [...state.list];
     listTemp = listTemp.where((e) => e.room?.id == event.model.id).toList();
-    emit(state.copyWith(listFiltered: [], roomSelected: event.model));
-    await Future.delayed(const Duration(seconds: 1));
     emit(state.copyWith(listFiltered: listTemp, roomSelected: event.model));
   }
 }
-
-/*
-  int dif() {
-    Duration diff = end.difference(start);
-    return diff.inMinutes;
-  }
-
-
-*/

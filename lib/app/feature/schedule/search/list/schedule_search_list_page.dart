@@ -71,8 +71,9 @@ class ScheduleSearchListView extends StatelessWidget {
               if (state.listFiltered.isEmpty ||
                   state.start == null ||
                   state.end == null) {
-                return const Center(
-                    child: Text('Eventos não encontrados nestas condições.'));
+                return const Center(child: Text(''));
+                // const Center(
+                //     child: Text('Eventos não encontrados nestas condições.'));
               }
               print('room: ${state.roomSelected?.name}');
               print('list: ${state.list.length}');
@@ -129,6 +130,7 @@ class ScheduleSearchListView extends StatelessWidget {
                 day++;
               }
               Widget newPlanner = TimePlanner(
+                key: ValueKey(state.listFiltered.hashCode),
                 startHour: 6,
                 endHour: 19,
                 headers: timePlannerHeaders,
