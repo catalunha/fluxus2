@@ -10,9 +10,12 @@ class UserProfileRepository {
   UserProfileRepository();
   Future<List<UserProfileModel>> list(
     QueryBuilder<ParseObject> query,
-    Pagination pagination,
-  ) =>
-      userProfileB4a.list(query, pagination);
+    Pagination pagination, [
+    List<String> cols = const [],
+    List<String> colsPointer = const [],
+    List<String> colsRelation = const [],
+  ]) =>
+      userProfileB4a.list(query, pagination, cols, colsPointer, colsRelation);
   Future<String> update(UserProfileModel userProfileModel) =>
       userProfileB4a.update(userProfileModel);
   Future<UserProfileModel?> readById(String id) => userProfileB4a.readById(id);

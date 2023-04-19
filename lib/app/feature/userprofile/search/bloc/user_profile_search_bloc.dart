@@ -42,6 +42,7 @@ class UserProfileSearchBloc
       List<UserProfileModel> listGet = await _userProfileRepository.list(
         state.query,
         Pagination(page: state.page, limit: state.limit),
+        // ['email', 'name', 'phone', 'photo', 'isActive'],
       );
       if (state.page == 1) {
         emit(
@@ -74,6 +75,7 @@ class UserProfileSearchBloc
     List<UserProfileModel> listGet = await _userProfileRepository.list(
       state.query,
       Pagination(page: state.page + 1, limit: state.limit),
+      // ['email', 'name', 'phone', 'photo', 'isActive'],
     );
     if (listGet.isEmpty) {
       emit(state.copyWith(
@@ -121,13 +123,15 @@ class UserProfileSearchBloc
       List<UserProfileModel> listGet = await _userProfileRepository.list(
         query,
         Pagination(page: state.page, limit: state.limit),
+        // ['email', 'name', 'phone', 'photo', 'isActive'],
       );
       emit(state.copyWith(
         status: UserProfileSearchStateStatus.success,
         list: listGet,
         query: query,
       ));
-    } catch (_) {
+    } catch (e) {
+      print(e);
       emit(
         state.copyWith(
             status: UserProfileSearchStateStatus.error,

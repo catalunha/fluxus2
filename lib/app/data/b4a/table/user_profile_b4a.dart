@@ -8,9 +8,16 @@ import '../utils/parse_error_translate.dart';
 
 class UserProfileB4a {
   Future<QueryBuilder<ParseObject>> getQueryAll(
-      QueryBuilder<ParseObject> query, Pagination pagination) async {
+    QueryBuilder<ParseObject> query,
+    Pagination pagination, [
+    List<String> cols = const [],
+    List<String> colsPointer = const [],
+    List<String> colsRelation = const [],
+  ]) async {
     query.setAmountToSkip((pagination.page - 1) * pagination.limit);
     query.setLimit(pagination.limit);
+    // query.keysToReturn(cols);
+    // query.includeObject(colsPointer);
     query.includeObject(['region']);
 
     return query;
@@ -18,17 +25,22 @@ class UserProfileB4a {
 
   Future<List<UserProfileModel>> list(
     QueryBuilder<ParseObject> query,
-    Pagination pagination,
-  ) async {
+    Pagination pagination, [
+    List<String> cols = const [],
+    List<String> colsPointer = const [],
+    List<String> colsRelation = const [],
+  ]) async {
     QueryBuilder<ParseObject> query2;
-    query2 = await getQueryAll(query, pagination);
+    query2 =
+        await getQueryAll(query, pagination, cols, colsPointer, colsRelation);
     ParseResponse? response;
     try {
       response = await query2.query();
       List<UserProfileModel> listTemp = <UserProfileModel>[];
       if (response.success && response.results != null) {
         for (var element in response.results!) {
-          listTemp.add(await UserProfileEntity().toModel(element));
+          listTemp.add(await UserProfileEntity()
+              .toModel(element, cols, colsPointer, colsRelation));
         }
         return listTemp;
       } else {

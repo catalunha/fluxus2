@@ -52,10 +52,10 @@ class UserProfileCard extends StatelessWidget {
                       title: 'Telefone: ',
                       value: '${model.phone}',
                     ),
-                    AppTextTitleValue(
-                      title: 'CPF: ',
-                      value: '${model.cpf}',
-                    ),
+                    // AppTextTitleValue(
+                    //   title: 'CPF: ',
+                    //   value: '${model.cpf}',
+                    // ),
                     Wrap(
                       children: [
                         IconButton(

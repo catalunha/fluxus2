@@ -32,11 +32,13 @@ class UserProfileEntity {
 
   Future<UserProfileModel> toModel(
     ParseObject parseObject, [
-    List<String> excludeRelations = const [],
+    List<String> cols = const [],
+    List<String> colsPointer = const [],
+    List<String> colsRelation = const [],
   ]) async {
     //+++ get office
     List<OfficeModel> officeList = [];
-    if (!excludeRelations.contains('UserProfile.offices')) {
+    if (colsRelation.contains('UserProfile.offices')) {
       QueryBuilder<ParseObject> queryOffice =
           QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className));
       queryOffice.whereRelatedTo(UserProfileEntity.offices,
@@ -53,7 +55,7 @@ class UserProfileEntity {
     //+++ get expertise
     List<ExpertiseModel> expertiseList = [];
 
-    if (!excludeRelations.contains('UserProfile.expertises')) {
+    if (colsRelation.contains('UserProfile.expertises')) {
       QueryBuilder<ParseObject> queryExpertise =
           QueryBuilder<ParseObject>(ParseObject(ExpertiseEntity.className));
       queryExpertise.whereRelatedTo(UserProfileEntity.expertises,
@@ -70,7 +72,7 @@ class UserProfileEntity {
     //+++ get procedure
     List<ProcedureModel> procedureList = [];
 
-    if (!excludeRelations.contains('UserProfile.procedures')) {
+    if (colsRelation.contains('UserProfile.procedures')) {
       QueryBuilder<ParseObject> queryProcedure =
           QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className));
       queryProcedure.whereRelatedTo(UserProfileEntity.procedures,
@@ -105,7 +107,8 @@ class UserProfileEntity {
               .map((e) => e.toString())
               .toList()
           : [],
-      region: parseObject.get(UserProfileEntity.region) != null
+      region: parseObject.containsKey(UserProfileEntity.region) &&
+              parseObject.get(UserProfileEntity.region) != null
           ? RegionEntity().toModel(parseObject.get(UserProfileEntity.region))
           : null,
       offices: officeList,
