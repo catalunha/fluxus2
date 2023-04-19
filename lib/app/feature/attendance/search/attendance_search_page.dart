@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/models/patient_model.dart';
+import '../../../core/models/user_profile_model.dart';
 import '../../../core/repositories/attendance_repository.dart';
 import '../../utils/app_icon.dart';
 import '../../utils/app_textformfield.dart';
@@ -39,18 +41,17 @@ class AttendanceSearchView extends StatefulWidget {
 
 class _SearchPageState extends State<AttendanceSearchView> {
   final _formKey = GlobalKey<FormState>();
-  final bool _ufContainsBool = false;
-  final bool _nameContainsBool = false;
-  final bool _cityContainsBool = false;
-  final _ufContainsTEC = TextEditingController();
-  final _nameContainsTEC = TextEditingController();
-  final _cityContainsTEC = TextEditingController();
+  bool? selectedProfessional;
+  UserProfileModel? equalsProfessional;
+  bool? selectedPatient;
+  PatientModel? equalsPatient;
+  bool? selectedStartEnd;
+  DateTime? start;
+  DateTime? end;
+  // RoomModel? equalsRoom;
 
   @override
   void initState() {
-    _ufContainsTEC.text = '';
-    _nameContainsTEC.text = '';
-    _cityContainsTEC.text = '';
     super.initState();
   }
 

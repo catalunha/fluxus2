@@ -6,6 +6,8 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import '../../../../core/models/attendance_model.dart';
 import '../../../../core/repositories/attendance_repository.dart';
 import '../../../../data/b4a/entity/attendance_entity.dart';
+import '../../../../data/b4a/entity/patient_entity.dart';
+import '../../../../data/b4a/entity/user_profile_entity.dart';
 import '../../../../data/utils/pagination.dart';
 import 'attendance_search_event.dart';
 import 'attendance_search_state.dart';
@@ -41,16 +43,27 @@ class AttendanceSearchBloc
       QueryBuilder<ParseObject> query =
           QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
 
-      // if (event.ufContainsBool) {
-      //   query.whereContains(AttendanceEntity.uf, event.ufContainsString);
-      // }
-      // if (event.cityContainsBool) {
-      //   query.whereContains(AttendanceEntity.city, event.cityContainsString);
-      // }
-      // if (event.nameContainsBool) {
-      //   query.whereContains(AttendanceEntity.name, event.nameContainsString);
-      // }
-
+      if (event.selectedProfessional) {
+        query.whereEqualTo(
+            AttendanceEntity.professional,
+            (ParseObject(UserProfileEntity.className)
+                  ..objectId = event.professional?.id)
+                .toPointer());
+      }
+      if (event.selectedPatient) {
+        query.whereEqualTo(
+            AttendanceEntity.patient,
+            (ParseObject(PatientEntity.className)..objectId = event.patient?.id)
+                .toPointer());
+      }
+      if (event.selectedStartEnd) {
+        query.whereGreaterThanOrEqualsTo('createdAt',
+            DateTime(event.start!.year, event.start!.month, event.start!.day));
+        query.whereLessThanOrEqualTo(
+            'createdAt',
+            DateTime(
+                event.end!.year, event.end!.month, event.end!.day, 23, 59));
+      }
       query.orderByDescending('updatedAt');
       List<AttendanceModel> modelListGet = await _repository.list(
         query,
