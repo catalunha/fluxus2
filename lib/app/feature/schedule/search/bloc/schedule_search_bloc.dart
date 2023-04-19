@@ -48,12 +48,12 @@ class ScheduleSearchBloc
                   ..objectId = event.equalsStatus?.id)
                 .toPointer());
       }
-      if (event.selectedRoom) {
-        query.whereEqualTo(
-            EventEntity.room,
-            (ParseObject(RoomEntity.className)..objectId = event.equalsRoom?.id)
-                .toPointer());
-      }
+      // if (event.selectedRoom) {
+      //   query.whereEqualTo(
+      //       EventEntity.room,
+      //       (ParseObject(RoomEntity.className)..objectId = event.equalsRoom?.id)
+      //           .toPointer());
+      // }
       if (event.selectedStartEnd) {
         query.whereGreaterThanOrEqualsTo(EventEntity.start,
             DateTime(event.start!.year, event.start!.month, event.start!.day));
