@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/models/room_model.dart';
 import '../../../core/models/status_model.dart';
 import '../../../core/repositories/event_repository.dart';
+import '../../../core/repositories/room_repository.dart';
 import '../../utils/app_icon.dart';
 import 'bloc/schedule_search_bloc.dart';
 import 'bloc/schedule_search_event.dart';
@@ -18,11 +19,20 @@ class ScheduleSearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => EventRepository(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (context) => EventRepository(),
+        ),
+        RepositoryProvider(
+          create: (context) => RoomRepository(),
+        ),
+      ],
       child: BlocProvider(
         create: (context) => ScheduleSearchBloc(
-            repository: RepositoryProvider.of<EventRepository>(context)),
+          repository: RepositoryProvider.of<EventRepository>(context),
+          repositoryRoom: RepositoryProvider.of<RoomRepository>(context),
+        ),
         child: const ScheduleSearchView(),
       ),
     );

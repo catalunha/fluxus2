@@ -21,3 +21,10 @@ class ScheduleSearchEventFormSubmitted extends ScheduleSearchEvent {
     this.end,
   });
 }
+
+class ScheduleSearchEventFilterByRoom extends ScheduleSearchEvent {
+  final RoomModel model;
+  ScheduleSearchEventFilterByRoom(
+    this.model,
+  );
+}

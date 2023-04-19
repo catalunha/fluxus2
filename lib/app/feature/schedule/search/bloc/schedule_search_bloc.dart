@@ -4,7 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../../core/models/event_model.dart';
+import '../../../../core/models/room_model.dart';
 import '../../../../core/repositories/event_repository.dart';
+import '../../../../core/repositories/room_repository.dart';
 import '../../../../data/b4a/entity/event_entity.dart';
 import '../../../../data/b4a/entity/room_entity.dart';
 import '../../../../data/b4a/entity/status_entity.dart';
@@ -15,11 +17,16 @@ import 'schedule_search_state.dart';
 class ScheduleSearchBloc
     extends Bloc<ScheduleSearchEvent, ScheduleSearchState> {
   final EventRepository _repository;
+  final RoomRepository _repositoryRoom;
 
-  ScheduleSearchBloc({required EventRepository repository})
-      : _repository = repository,
+  ScheduleSearchBloc({
+    required EventRepository repository,
+    required RoomRepository repositoryRoom,
+  })  : _repository = repository,
+        _repositoryRoom = repositoryRoom,
         super(ScheduleSearchState.initial()) {
     on<ScheduleSearchEventFormSubmitted>(_onScheduleSearchEventFormSubmitted);
+    on<ScheduleSearchEventFilterByRoom>(_onScheduleSearchEventFilterByRoom);
   }
 
   FutureOr<void> _onScheduleSearchEventFormSubmitted(
@@ -65,12 +72,25 @@ class ScheduleSearchBloc
         'Patient.family',
         'Patient.healthPlans',
       ]);
+      QueryBuilder<ParseObject> queryRoom =
+          QueryBuilder<ParseObject>(ParseObject(RoomEntity.className));
+      queryRoom.orderByAscending('name');
+
+      List<RoomModel> rooms =
+          await _repositoryRoom.list(queryRoom, Pagination(page: 1, limit: 20));
+
       emit(state.copyWith(
-        status: ScheduleSearchStateStatus.success,
+        rooms: rooms,
+        roomSelected: rooms[0],
         list: listGet,
+        listFiltered: listGet,
         query: query,
         start: event.start,
         end: event.end,
+      ));
+      add(ScheduleSearchEventFilterByRoom(state.roomSelected!));
+      emit(state.copyWith(
+        status: ScheduleSearchStateStatus.success,
       ));
     } catch (_) {
       emit(
@@ -109,6 +129,16 @@ class ScheduleSearchBloc
     }
   }
   */
+
+  FutureOr<void> _onScheduleSearchEventFilterByRoom(
+      ScheduleSearchEventFilterByRoom event,
+      Emitter<ScheduleSearchState> emit) async {
+    List<EventModel> listTemp = [...state.list];
+    listTemp = listTemp.where((e) => e.room?.id == event.model.id).toList();
+    emit(state.copyWith(listFiltered: [], roomSelected: event.model));
+    await Future.delayed(const Duration(seconds: 1));
+    emit(state.copyWith(listFiltered: listTemp, roomSelected: event.model));
+  }
 }
 
 /*

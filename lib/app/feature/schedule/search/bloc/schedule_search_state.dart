@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
-import 'package:time_planner/time_planner.dart';
 
 import '../../../../core/models/event_model.dart';
+import '../../../../core/models/room_model.dart';
 import '../../../../data/b4a/entity/event_entity.dart';
 
 enum ScheduleSearchStateStatus { initial, loading, success, error }
@@ -10,21 +10,23 @@ enum ScheduleSearchStateStatus { initial, loading, success, error }
 class ScheduleSearchState {
   final ScheduleSearchStateStatus status;
   final String? error;
+  final List<RoomModel> rooms;
   final List<EventModel> list;
+  final List<EventModel> listFiltered;
   QueryBuilder<ParseObject> query;
-  List<TimePlannerTask> timePlannerTasks;
-  List<TimePlannerTitle> timePlannerHeaders;
   final DateTime? start;
   final DateTime? end;
+  final RoomModel? roomSelected;
   ScheduleSearchState({
     required this.status,
     this.error,
+    required this.rooms,
     required this.list,
+    required this.listFiltered,
     required this.query,
-    this.timePlannerTasks = const [],
-    this.timePlannerHeaders = const [],
     this.start,
     this.end,
+    this.roomSelected,
   });
 
   ScheduleSearchState.initial()
@@ -33,29 +35,32 @@ class ScheduleSearchState {
         start = null,
         end = null,
         list = [],
-        timePlannerTasks = const [],
-        timePlannerHeaders = const [],
+        listFiltered = [],
+        rooms = [],
+        roomSelected = null,
         query = QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
 
   ScheduleSearchState copyWith({
     ScheduleSearchStateStatus? status,
     String? error,
+    List<RoomModel>? rooms,
     List<EventModel>? list,
+    List<EventModel>? listFiltered,
     QueryBuilder<ParseObject>? query,
-    List<TimePlannerTask>? timePlannerTasks,
-    List<TimePlannerTitle>? timePlannerHeaders,
     DateTime? start,
     DateTime? end,
+    RoomModel? roomSelected,
   }) {
     return ScheduleSearchState(
       status: status ?? this.status,
       error: error ?? this.error,
+      rooms: rooms ?? this.rooms,
       list: list ?? this.list,
+      listFiltered: listFiltered ?? this.listFiltered,
       query: query ?? this.query,
-      timePlannerTasks: timePlannerTasks ?? this.timePlannerTasks,
-      timePlannerHeaders: timePlannerHeaders ?? this.timePlannerHeaders,
       start: start ?? this.start,
       end: end ?? this.end,
+      roomSelected: roomSelected ?? this.roomSelected,
     );
   }
 
@@ -66,28 +71,30 @@ class ScheduleSearchState {
     return other is ScheduleSearchState &&
         other.status == status &&
         other.error == error &&
+        listEquals(other.rooms, rooms) &&
         listEquals(other.list, list) &&
+        listEquals(other.listFiltered, listFiltered) &&
         other.query == query &&
-        listEquals(other.timePlannerTasks, timePlannerTasks) &&
-        listEquals(other.timePlannerHeaders, timePlannerHeaders) &&
         other.start == start &&
-        other.end == end;
+        other.end == end &&
+        other.roomSelected == roomSelected;
   }
 
   @override
   int get hashCode {
     return status.hashCode ^
         error.hashCode ^
+        rooms.hashCode ^
         list.hashCode ^
+        listFiltered.hashCode ^
         query.hashCode ^
-        timePlannerTasks.hashCode ^
-        timePlannerHeaders.hashCode ^
         start.hashCode ^
-        end.hashCode;
+        end.hashCode ^
+        roomSelected.hashCode;
   }
 
   @override
   String toString() {
-    return 'ScheduleSearchState(status: $status, error: $error, list: $list, query: $query, timePlannerTasks: $timePlannerTasks, timePlannerHeaders: $timePlannerHeaders, start: $start, end: $end)';
+    return 'ScheduleSearchState(status: $status, error: $error, rooms: $rooms, list: $list, listFiltered: $listFiltered, query: $query, start: $start, end: $end, roomSelected: $roomSelected)';
   }
 }

@@ -6,6 +6,7 @@ import 'package:time_planner/time_planner.dart';
 import '../../../../core/models/attendance_model.dart';
 import '../../../../core/models/event_model.dart';
 import '../bloc/schedule_search_bloc.dart';
+import '../bloc/schedule_search_event.dart';
 import '../bloc/schedule_search_state.dart';
 
 class ScheduleSearchListPage extends StatelessWidget {
@@ -39,81 +40,104 @@ class ScheduleSearchListView extends StatelessWidget {
           )
         ],
       ),
-      body: BlocBuilder<ScheduleSearchBloc, ScheduleSearchState>(
-        // buildWhen: (current, next) {
-        //   print('current: ${current.list.length}');
-        //   print('current: ${current.start}');
-        //   print('current: ${current.end}');
-        //   print('next: ${next.list.length}');
-        //   print('next: ${next.start}');
-        //   print('next: ${next.end}');
-        //   return next.list.isNotEmpty && next.start != null && next.end != null;
-        // },
-        // current.list.isNotEmpty &&
-        // current.start != null &&
-        // current.end != null,
-        builder: (context, state) {
-          if (state.list.isEmpty || state.start == null || state.end == null) {
-            return const Center(child: Text('Construindo agenda...'));
-          }
-          var list = state.list;
-          DateTime start =
-              DateTime(state.start!.year, state.start!.month, state.start!.day);
-          DateTime end =
-              DateTime(state.end!.year, state.end!.month, state.end!.day);
-          final dateFormat = DateFormat('dd/MM/y', 'pt_BR');
-          final dateFormatDay = DateFormat('E', 'pt_BR');
+      body: Column(
+        children: [
+          BlocBuilder<ScheduleSearchBloc, ScheduleSearchState>(
+            builder: (context, state) {
+              List<Widget> roomWidget = [];
+              for (var room in state.rooms) {
+                roomWidget.add(CircleAvatar(
+                  radius: 20,
+                  backgroundColor:
+                      room == state.roomSelected ? Colors.green : null,
+                  child: IconButton(
+                    icon: Text('${room.name}'),
+                    onPressed: () {
+                      context
+                          .read<ScheduleSearchBloc>()
+                          .add(ScheduleSearchEventFilterByRoom(room));
+                    },
+                  ),
+                ));
+              }
 
-          List<TimePlannerTask> timePlannerTasks = [];
-          List<TimePlannerTitle> timePlannerHeaders = [];
-          int day = 0;
-          for (DateTime dayMorning = start;
-              dayMorning.isBefore(end.add(const Duration(days: 1)));
-              dayMorning = dayMorning.add(const Duration(days: 1))) {
-            DateTime dayNight =
-                dayMorning.add(const Duration(hours: 23, minutes: 59));
-            timePlannerHeaders.add(
-              TimePlannerTitle(
-                date: dateFormat.format(dayMorning),
-                title: dateFormatDay.format(dayMorning),
-              ),
-            );
-            for (EventModel e in list) {
-              if (dayMorning.isBefore(e.start!) && dayNight.isAfter(e.start!)) {
-                List<String> texts = [];
-                texts.add('${e.status?.name}');
-                texts.add('${e.room?.name}');
-                for (AttendanceModel attendance in e.attendances ?? []) {
-                  // texts.add('${attendance.professional?.name}');
-                  // texts.add('${attendance.patient?.name}');
-                }
+              return Wrap(
+                children: roomWidget,
+              );
+            },
+          ),
+          BlocBuilder<ScheduleSearchBloc, ScheduleSearchState>(
+            builder: (context, state) {
+              if (state.listFiltered.isEmpty ||
+                  state.start == null ||
+                  state.end == null) {
+                return const Center(
+                    child: Text('Eventos não encontrados nestas condições.'));
+              }
+              print('room: ${state.roomSelected?.name}');
+              print('list: ${state.list.length}');
+              print('listFiltered: ${state.listFiltered}');
+              var list = [...state.listFiltered];
+              DateTime start = DateTime(
+                  state.start!.year, state.start!.month, state.start!.day);
+              DateTime end =
+                  DateTime(state.end!.year, state.end!.month, state.end!.day);
+              final dateFormat = DateFormat('dd/MM/y', 'pt_BR');
+              final dateFormatDay = DateFormat('E', 'pt_BR');
 
-                timePlannerTasks.add(
-                  TimePlannerTask(
-                    color: Colors.green,
-                    dateTime: TimePlannerDateTime(
-                      day: day,
-                      hour: e.start!.hour,
-                      minutes: e.start!.minute,
-                    ),
-                    minutesDuration: e.duration(),
-                    child: Tooltip(
-                        message: texts.join('\n'),
-                        child: Text(texts.join('\n'))),
+              List<TimePlannerTask> timePlannerTasks = [];
+              List<TimePlannerTitle> timePlannerHeaders = [];
+              int day = 0;
+              for (DateTime dayMorning = start;
+                  dayMorning.isBefore(end.add(const Duration(days: 1)));
+                  dayMorning = dayMorning.add(const Duration(days: 1))) {
+                DateTime dayNight =
+                    dayMorning.add(const Duration(hours: 23, minutes: 59));
+                timePlannerHeaders.add(
+                  TimePlannerTitle(
+                    date: dateFormat.format(dayMorning),
+                    title: dateFormatDay.format(dayMorning),
                   ),
                 );
+                for (EventModel e in list) {
+                  if (dayMorning.isBefore(e.start!) &&
+                      dayNight.isAfter(e.start!)) {
+                    List<String> texts = [];
+                    texts.add('${e.status?.name}');
+                    texts.add('${e.room?.name}');
+                    for (AttendanceModel attendance in e.attendances ?? []) {
+                      // texts.add('${attendance.professional?.name}');
+                      // texts.add('${attendance.patient?.name}');
+                    }
+                    print('na lista: ${e.room?.name}');
+                    timePlannerTasks.add(
+                      TimePlannerTask(
+                        color: Colors.green,
+                        dateTime: TimePlannerDateTime(
+                          day: day,
+                          hour: e.start!.hour,
+                          minutes: e.start!.minute,
+                        ),
+                        minutesDuration: e.duration(),
+                        child: Tooltip(
+                            message: texts.join('\n'),
+                            child: Text(texts.join('\n'))),
+                      ),
+                    );
+                  }
+                }
+                day++;
               }
-            }
-            day++;
-          }
-
-          return TimePlanner(
-            startHour: 6,
-            endHour: 19,
-            headers: timePlannerHeaders,
-            tasks: timePlannerTasks,
-          );
-        },
+              Widget newPlanner = TimePlanner(
+                startHour: 6,
+                endHour: 19,
+                headers: timePlannerHeaders,
+                tasks: timePlannerTasks,
+              );
+              return Expanded(child: newPlanner);
+            },
+          ),
+        ],
       ),
     );
   }
