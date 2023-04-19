@@ -20,10 +20,14 @@ class PatientEntity {
   static const String family = 'family';
   static const String healthPlans = 'healthPlans';
 
-  Future<PatientModel> toModel(ParseObject parseObject) async {
+  Future<PatientModel> toModel(
+    ParseObject parseObject, [
+    List<String> excludeRelations = const [],
+  ]) async {
     //+++ get family
     List<PatientModel> familyList = [];
-    {
+
+    if (!excludeRelations.contains('Patient.family')) {
       QueryBuilder<ParseObject> queryPatient =
           QueryBuilder<ParseObject>(ParseObject(PatientEntity.className));
       queryPatient.whereRelatedTo(
@@ -35,10 +39,11 @@ class PatientEntity {
         }
       }
     }
+
     //--- get family
     //+++ get healthPlan
     List<HealthPlanModel> healthPlanList = [];
-    {
+    if (!excludeRelations.contains('Patient.healthPlans')) {
       QueryBuilder<ParseObject> queryHealthPlanType =
           QueryBuilder<ParseObject>(ParseObject(HealthPlanEntity.className));
       queryHealthPlanType.whereRelatedTo(PatientEntity.healthPlans,
@@ -50,6 +55,7 @@ class PatientEntity {
         }
       }
     }
+
     //--- get healthPlan
 
     PatientModel model = PatientModel(

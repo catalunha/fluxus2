@@ -205,21 +205,6 @@ class _SearchPageState extends State<ScheduleSearchView> {
                         )
                       ]),
                     ),
-                    BlocBuilder<ScheduleSearchBloc, ScheduleSearchState>(
-                      buildWhen: (current, next) {
-                        print('current: ${current.list.length}');
-                        print('current: ${current.start}');
-                        print('current: ${current.end}');
-                        print('next: ${next.list.length}');
-                        print('next: ${next.start}');
-                        print('next: ${next.end}');
-                        return true;
-                      },
-                      builder: (context, state) {
-                        print('=======> builder teste');
-                        return const Text('Teste');
-                      },
-                    ),
                     const SizedBox(height: 70)
                   ],
                 ),

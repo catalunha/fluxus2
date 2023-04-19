@@ -57,10 +57,14 @@ class ScheduleSearchBloc
       }
 
       query.orderByDescending('updatedAt');
-      List<EventModel> listGet = await _repository.list(
-        query,
-        Pagination(page: 1, limit: 100),
-      );
+      List<EventModel> listGet =
+          await _repository.list(query, Pagination(page: 1, limit: 100), [
+        'UserProfile.offices',
+        'UserProfile.expertises',
+        'UserProfile.procedures',
+        'Patient.family',
+        'Patient.healthPlans',
+      ]);
       emit(state.copyWith(
         status: ScheduleSearchStateStatus.success,
         list: listGet,

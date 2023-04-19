@@ -18,15 +18,35 @@ class EventEntity {
   static const String history = 'history';
   static const String description = 'description';
 
-  Future<EventModel> toModel(ParseObject parseObject) async {
-    List<AttendanceModel> attendanceList = [];
-
+  Future<EventModel> toModel(
+    ParseObject parseObject, [
+    List<String> excludeRelations = const [],
+  ]) async {
+    // print(
+    //     'parseObject.containsKey("status"): ${parseObject. containsKey('status')}');
+    // print(
+    //     'parseObject.containsKey("attendances"): ${parseObject.containsKey('attendances')}');
+    // // print('===>>> ${parseObject.toJson()}');
+    // print('===>>> ${parseObject.toJson(
+    //   full: true,
+    // )} <<<===');
+    // print('===>>> ${parseObject.toJson(
+    //   // full: true,
+    //   forApiRQ: true,
+    // )}');
+    // print('===>>> ${parseObject.toJson(
+    //   // full: true,
+    //   // forApiRQ: true,
+    //   allowCustomObjectId: true,
+    // )}');
     //+++ get attendance
+    List<AttendanceModel> attendanceList = [];
     {
       QueryBuilder<ParseObject> queryAttendanceType =
           QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
       queryAttendanceType.whereRelatedTo(EventEntity.attendances,
           EventEntity.className, parseObject.objectId!);
+
       queryAttendanceType.includeObject([
         'professional',
         'professional.region',
@@ -44,8 +64,8 @@ class EventEntity {
       final ParseResponse parseResponse = await queryAttendanceType.query();
       if (parseResponse.success && parseResponse.results != null) {
         for (var e in parseResponse.results!) {
-          attendanceList
-              .add(await AttendanceEntity().toModel(e as ParseObject));
+          attendanceList.add(await AttendanceEntity()
+              .toModel(e as ParseObject, excludeRelations));
         }
       }
     }

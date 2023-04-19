@@ -20,8 +20,9 @@ class EventB4a {
 
   Future<List<EventModel>> list(
     QueryBuilder<ParseObject> query,
-    Pagination pagination,
-  ) async {
+    Pagination pagination, [
+    List<String> excludeRelations = const [],
+  ]) async {
     QueryBuilder<ParseObject> query2;
     query2 = await getQueryAll(query, pagination);
     ParseResponse? response;
@@ -30,7 +31,7 @@ class EventB4a {
       List<EventModel> listTemp = <EventModel>[];
       if (response.success && response.results != null) {
         for (var element in response.results!) {
-          listTemp.add(await EventEntity().toModel(element));
+          listTemp.add(await EventEntity().toModel(element, excludeRelations));
         }
         return listTemp;
       } else {

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:time_planner/time_planner.dart';
 
+import '../../../../core/models/attendance_model.dart';
 import '../../../../core/models/event_model.dart';
 import '../bloc/schedule_search_bloc.dart';
 import '../bloc/schedule_search_state.dart';
@@ -79,6 +80,14 @@ class ScheduleSearchListView extends StatelessWidget {
             );
             for (EventModel e in list) {
               if (dayMorning.isBefore(e.start!) && dayNight.isAfter(e.start!)) {
+                List<String> texts = [];
+                texts.add('${e.status?.name}');
+                texts.add('${e.room?.name}');
+                for (AttendanceModel attendance in e.attendances ?? []) {
+                  // texts.add('${attendance.professional?.name}');
+                  // texts.add('${attendance.patient?.name}');
+                }
+
                 timePlannerTasks.add(
                   TimePlannerTask(
                     color: Colors.green,
@@ -88,7 +97,9 @@ class ScheduleSearchListView extends StatelessWidget {
                       minutes: e.start!.minute,
                     ),
                     minutesDuration: e.duration(),
-                    child: Text('${e.id}'),
+                    child: Tooltip(
+                        message: texts.join('\n'),
+                        child: Text(texts.join('\n'))),
                   ),
                 );
               }

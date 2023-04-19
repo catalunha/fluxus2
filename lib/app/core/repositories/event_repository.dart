@@ -10,9 +10,10 @@ class EventRepository {
   EventRepository();
   Future<List<EventModel>> list(
     QueryBuilder<ParseObject> query,
-    Pagination pagination,
-  ) =>
-      apiB4a.list(query, pagination);
+    Pagination pagination, [
+    List<String> excludeRelations = const [],
+  ]) =>
+      apiB4a.list(query, pagination, excludeRelations);
   Future<String> update(EventModel userProfileModel) =>
       apiB4a.update(userProfileModel);
   Future<EventModel?> readById(String id) => apiB4a.readById(id);

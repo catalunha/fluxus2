@@ -28,20 +28,23 @@ class AttendanceEntity {
   static const String evolution = 'evolution';
   static const String invoice = 'invoice';
 
-  Future<AttendanceModel> toModel(ParseObject parseObject) async {
+  Future<AttendanceModel> toModel(
+    ParseObject parseObject, [
+    List<String> excludeRelations = const [],
+  ]) async {
     AttendanceModel model = AttendanceModel(
       id: parseObject.objectId!,
       professional: parseObject.get(AttendanceEntity.professional) != null
-          ? await UserProfileEntity()
-              .toModel(parseObject.get(AttendanceEntity.professional))
+          ? await UserProfileEntity().toModel(
+              parseObject.get(AttendanceEntity.professional), excludeRelations)
           : null,
       procedure: parseObject.get(AttendanceEntity.procedure) != null
           ? ProcedureEntity()
               .toModel(parseObject.get(AttendanceEntity.procedure))
           : null,
       patient: parseObject.get(AttendanceEntity.patient) != null
-          ? await PatientEntity()
-              .toModel(parseObject.get(AttendanceEntity.patient))
+          ? await PatientEntity().toModel(
+              parseObject.get(AttendanceEntity.patient), excludeRelations)
           : null,
       healthPlan: parseObject.get(AttendanceEntity.healthPlan) != null
           ? HealthPlanEntity()

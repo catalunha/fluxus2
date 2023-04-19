@@ -30,10 +30,13 @@ class UserProfileEntity {
   static const String expertises = 'expertises';
   static const String procedures = 'procedures';
 
-  Future<UserProfileModel> toModel(ParseObject parseObject) async {
+  Future<UserProfileModel> toModel(
+    ParseObject parseObject, [
+    List<String> excludeRelations = const [],
+  ]) async {
     //+++ get office
     List<OfficeModel> officeList = [];
-    {
+    if (!excludeRelations.contains('UserProfile.offices')) {
       QueryBuilder<ParseObject> queryOffice =
           QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className));
       queryOffice.whereRelatedTo(UserProfileEntity.offices,
@@ -45,10 +48,12 @@ class UserProfileEntity {
         }
       }
     }
+
     //--- get office
     //+++ get expertise
     List<ExpertiseModel> expertiseList = [];
-    {
+
+    if (!excludeRelations.contains('UserProfile.expertises')) {
       QueryBuilder<ParseObject> queryExpertise =
           QueryBuilder<ParseObject>(ParseObject(ExpertiseEntity.className));
       queryExpertise.whereRelatedTo(UserProfileEntity.expertises,
@@ -60,10 +65,12 @@ class UserProfileEntity {
         }
       }
     }
+
     //--- get expertise
     //+++ get procedure
     List<ProcedureModel> procedureList = [];
-    {
+
+    if (!excludeRelations.contains('UserProfile.procedures')) {
       QueryBuilder<ParseObject> queryProcedure =
           QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className));
       queryProcedure.whereRelatedTo(UserProfileEntity.procedures,
@@ -76,8 +83,8 @@ class UserProfileEntity {
         }
       }
     }
-    //--- get procedure
 
+    //--- get procedure
     UserProfileModel model = UserProfileModel(
       id: parseObject.objectId!,
       email: parseObject.get(UserProfileEntity.email),
