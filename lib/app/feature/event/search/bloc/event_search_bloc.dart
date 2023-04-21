@@ -5,7 +5,13 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../../core/models/event_model.dart';
 import '../../../../core/repositories/event_repository.dart';
+import '../../../../data/b4a/entity/attendance_entity.dart';
 import '../../../../data/b4a/entity/event_entity.dart';
+import '../../../../data/b4a/entity/patient_entity.dart';
+import '../../../../data/b4a/entity/procedure_entity.dart';
+import '../../../../data/b4a/entity/room_entity.dart';
+import '../../../../data/b4a/entity/status_entity.dart';
+import '../../../../data/b4a/entity/user_profile_entity.dart';
 import '../../../../data/utils/pagination.dart';
 import 'event_search_event.dart';
 import 'event_search_state.dart';
@@ -103,16 +109,74 @@ class EventSearchBloc extends Bloc<EventSearchEvent, EventSearchState> {
       QueryBuilder<ParseObject> query =
           QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
 
-      // if (event.nameContainsBool) {
-      //   query.whereContains('name', event.nameContainsString);
-      // }
+      if (event.selectedProfessional) {
+        // query.whereEqualTo(
+        //     EventEntity.professional,
+        //     (ParseObject(UserProfileEntity.className)
+        //           ..objectId = event.equalsProfessional?.id)
+        //         .toPointer());
+        QueryBuilder<ParseObject> queryAttendance =
+            QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
+        queryAttendance.whereEqualTo(
+            AttendanceEntity.professional,
+            (ParseObject(UserProfileEntity.className)
+                  ..objectId = event.equalsProfessional?.id)
+                .toPointer());
 
-      // if (event.cpfEqualToBool) {
-      //   query.whereEqualTo('register', event.cpfEqualToString);
-      // }
-      // if (event.phoneEqualToBool) {
-      //   query.whereEqualTo('phone', event.phoneEqualToString);
-      // }
+        query.whereMatchesQuery(EventEntity.attendances, queryAttendance);
+      }
+      if (event.selectedProcedure) {
+        // query.whereEqualTo(
+        //     EventEntity.procedure,
+        //     (ParseObject(ProcedureEntity.className)
+        //           ..objectId = event.equalsProcedure?.id)
+        //         .toPointer());
+        QueryBuilder<ParseObject> queryAttendance =
+            QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
+        queryAttendance.whereEqualTo(
+            AttendanceEntity.procedure,
+            (ParseObject(ProcedureEntity.className)
+                  ..objectId = event.equalsProcedure?.id)
+                .toPointer());
+
+        query.whereMatchesQuery(EventEntity.attendances, queryAttendance);
+      }
+      if (event.selectedPatient) {
+        // query.whereEqualTo(
+        //     EventEntity.patient,
+        //     (ParseObject(PatientEntity.className)
+        //           ..objectId = event.equalsPatient?.id)
+        //         .toPointer());
+        QueryBuilder<ParseObject> queryAttendance =
+            QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
+        queryAttendance.whereEqualTo(
+            AttendanceEntity.patient,
+            (ParseObject(PatientEntity.className)
+                  ..objectId = event.equalsPatient?.id)
+                .toPointer());
+
+        query.whereMatchesQuery(EventEntity.attendances, queryAttendance);
+      }
+
+      if (event.selectedStatus) {
+        query.whereEqualTo(
+            EventEntity.status,
+            (ParseObject(StatusEntity.className)
+                  ..objectId = event.equalsStatus?.id)
+                .toPointer());
+      }
+      if (event.selectedRoom) {
+        query.whereEqualTo(
+            EventEntity.room,
+            (ParseObject(RoomEntity.className)..objectId = event.equalsRoom?.id)
+                .toPointer());
+      }
+
+      query.whereGreaterThanOrEqualsTo(EventEntity.start,
+          DateTime(event.start!.year, event.start!.month, event.start!.day));
+      query.whereLessThanOrEqualTo(EventEntity.start,
+          DateTime(event.end!.year, event.end!.month, event.end!.day, 23, 59));
+
       query.orderByDescending('updatedAt');
       List<EventModel> listGet = await _repository.list(
         query,

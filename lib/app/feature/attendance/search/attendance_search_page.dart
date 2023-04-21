@@ -200,7 +200,7 @@ class _SearchPageState extends State<AttendanceSearchView> {
                                     },
                                     icon: const Icon(Icons.search),
                                   ),
-                                  Text('${equalsProfessional?.name}')
+                                  Text('${equalsProfessional?.nickname}')
                                 ],
                               ),
                             ),
@@ -278,7 +278,7 @@ class _SearchPageState extends State<AttendanceSearchView> {
                                     },
                                     icon: const Icon(Icons.search),
                                   ),
-                                  Text('${equalsPatient?.name}')
+                                  Text('${equalsPatient?.nickname}')
                                 ],
                               ),
                             ),
