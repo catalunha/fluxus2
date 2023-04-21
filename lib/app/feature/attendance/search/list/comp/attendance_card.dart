@@ -83,18 +83,6 @@ class AttendanceCard extends StatelessWidget {
               title: 'Status: ',
               value: model.status?.name,
             ),
-            AppTextTitleValue(
-              title: 'Evento: ',
-              value: model.event?.id,
-            ),
-            AppTextTitleValue(
-              title: 'Evolution: ',
-              value: model.evolution?.id,
-            ),
-            AppTextTitleValue(
-              title: 'Fatura: ',
-              value: model.invoice?.id,
-            ),
             Center(
               child: Wrap(
                 children: [

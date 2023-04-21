@@ -97,9 +97,6 @@ class AttendancePrintPage extends StatelessWidget {
               pw.Text(
                   'Presença confirmada em: ${model.confirmedPresence == null ? '...' : dateFormatHM.format(model.confirmedPresence!)}'),
               pw.Text('Status: ${model.status?.name}'),
-              pw.Text('Evento: ${model.event?.id}'),
-              pw.Text('Evolution: ${model.evolution?.id}'),
-              pw.Text('Fatura: ${model.invoice?.id}'),
             ],
           ))
         ]),

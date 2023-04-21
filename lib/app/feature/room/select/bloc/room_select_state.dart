@@ -38,7 +38,7 @@ class RoomSelectState {
         list = [],
         listFiltered = [],
         page = 1,
-        limit = 2,
+        limit = 20,
         firstPage = true,
         lastPage = false,
         query = QueryBuilder<ParseObject>(ParseObject(RoomEntity.className)),

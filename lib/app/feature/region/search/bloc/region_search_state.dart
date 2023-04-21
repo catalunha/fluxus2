@@ -31,7 +31,7 @@ class RegionSearchState {
         error = '',
         list = [],
         page = 1,
-        limit = 2,
+        limit = 20,
         firstPage = true,
         lastPage = false,
         query = QueryBuilder<ParseObject>(ParseObject(RegionEntity.className));

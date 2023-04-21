@@ -48,20 +48,11 @@ class ScheduleSearchBloc
                   ..objectId = event.equalsStatus?.id)
                 .toPointer());
       }
-      // if (event.selectedRoom) {
-      //   query.whereEqualTo(
-      //       EventEntity.room,
-      //       (ParseObject(RoomEntity.className)..objectId = event.equalsRoom?.id)
-      //           .toPointer());
-      // }
-      if (event.selectedStartEnd) {
-        query.whereGreaterThanOrEqualsTo(EventEntity.start,
-            DateTime(event.start!.year, event.start!.month, event.start!.day));
-        query.whereLessThanOrEqualTo(
-            EventEntity.end,
-            DateTime(
-                event.end!.year, event.end!.month, event.end!.day, 23, 59));
-      }
+
+      query.whereGreaterThanOrEqualsTo(EventEntity.start,
+          DateTime(event.start!.year, event.start!.month, event.start!.day));
+      query.whereLessThanOrEqualTo(EventEntity.end,
+          DateTime(event.end!.year, event.end!.month, event.end!.day, 23, 59));
 
       query.orderByDescending('updatedAt');
       List<EventModel> listGet =

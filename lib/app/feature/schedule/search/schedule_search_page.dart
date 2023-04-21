@@ -47,21 +47,16 @@ class ScheduleSearchView extends StatefulWidget {
 
 class _SearchPageState extends State<ScheduleSearchView> {
   final _formKey = GlobalKey<FormState>();
-  // bool? selectedRoom;
-  bool? selectedStatus;
-  bool? selectedStartEnd;
+  bool selectedStatus = false;
+  StatusModel? equalsStatus;
   DateTime? start;
   DateTime? end;
-  // RoomModel? equalsRoom;
-  StatusModel? equalsStatus;
   @override
   void initState() {
     super.initState();
     start = DateTime.now();
     end = DateTime.now().add(const Duration(days: 7));
-    // selectedRoom = false;
     selectedStatus = false;
-    selectedStartEnd = true;
   }
 
   @override
@@ -175,45 +170,6 @@ class _SearchPageState extends State<ScheduleSearchView> {
                         )
                       ]),
                     ),
-                    // Card(
-                    //   child: Column(children: [
-                    //     const Text('Selecione uma Sala'),
-                    //     Row(
-                    //       children: [
-                    //         Checkbox(
-                    //           value: selectedRoom,
-                    //           onChanged: (value) {
-                    //             setState(() {
-                    //               selectedRoom = value!;
-                    //             });
-                    //           },
-                    //         ),
-                    //         Expanded(
-                    //           child: Row(
-                    //             children: [
-                    //               IconButton(
-                    //                 onPressed: () async {
-                    //                   List<RoomModel>? result =
-                    //                       await Navigator.of(context).pushNamed(
-                    //                               '/room/select',
-                    //                               arguments: true)
-                    //                           as List<RoomModel>?;
-                    //                   if (result != null) {
-                    //                     setState(() {
-                    //                       equalsRoom = result[0];
-                    //                     });
-                    //                   }
-                    //                 },
-                    //                 icon: const Icon(Icons.search),
-                    //               ),
-                    //               Text('${equalsRoom?.name}')
-                    //             ],
-                    //           ),
-                    //         ),
-                    //       ],
-                    //     )
-                    //   ]),
-                    // ),
                     const SizedBox(height: 70)
                   ],
                 ),
@@ -230,10 +186,7 @@ class _SearchPageState extends State<ScheduleSearchView> {
           if (formValid) {
             context.read<ScheduleSearchBloc>().add(
                   ScheduleSearchEventFormSubmitted(
-                    // selectedRoom: selectedRoom!,
-                    selectedStatus: selectedStatus!,
-                    selectedStartEnd: selectedStartEnd!,
-                    // equalsRoom: equalsRoom,
+                    selectedStatus: selectedStatus,
                     equalsStatus: equalsStatus,
                     start: start,
                     end: end,

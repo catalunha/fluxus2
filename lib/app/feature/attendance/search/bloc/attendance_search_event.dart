@@ -1,5 +1,7 @@
 import '../../../../core/models/attendance_model.dart';
 import '../../../../core/models/patient_model.dart';
+import '../../../../core/models/procedure_model.dart';
+import '../../../../core/models/status_model.dart';
 import '../../../../core/models/user_profile_model.dart';
 
 abstract class AttendanceSearchEvent {}
@@ -24,18 +26,24 @@ class AttendanceSearchEventRemoveFromList extends AttendanceSearchEvent {
 
 class AttendanceSearchEventFormSubmitted extends AttendanceSearchEvent {
   final bool selectedProfessional;
-  final UserProfileModel? professional;
+  final UserProfileModel? equalsProfessional;
+  final bool selectedProcedure;
+  final ProcedureModel? equalsProcedure;
   final bool selectedPatient;
-  final PatientModel? patient;
-  final bool selectedStartEnd;
+  final PatientModel? equalsPatient;
+  final bool selectedStatus;
+  final StatusModel? equalsStatus;
   final DateTime? start;
   final DateTime? end;
   AttendanceSearchEventFormSubmitted({
     this.selectedProfessional = false,
-    this.professional,
+    this.equalsProfessional,
+    this.selectedProcedure = false,
+    this.equalsProcedure,
     this.selectedPatient = false,
-    this.patient,
-    this.selectedStartEnd = false,
+    this.equalsPatient,
+    this.selectedStatus = false,
+    this.equalsStatus,
     this.start,
     this.end,
   });

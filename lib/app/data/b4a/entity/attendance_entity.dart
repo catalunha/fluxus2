@@ -1,10 +1,7 @@
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../core/models/attendance_model.dart';
-import 'event_entity.dart';
-import 'evolution_entity copy.dart';
 import 'healthplan_entity.dart';
-import 'invoice_entity.dart';
 import 'patient_entity.dart';
 import 'procedure_entity.dart';
 import 'status_entity.dart';
@@ -24,9 +21,6 @@ class AttendanceEntity {
   static const String confirmedPresence = 'confirmedPresence';
   static const String description = 'description';
   static const String status = 'status';
-  static const String event = 'event';
-  static const String evolution = 'evolution';
-  static const String invoice = 'invoice';
 
   Future<AttendanceModel> toModel(
     ParseObject parseObject, [
@@ -65,16 +59,6 @@ class AttendanceEntity {
       description: parseObject.get(AttendanceEntity.description),
       status: parseObject.get(AttendanceEntity.status) != null
           ? StatusEntity().toModel(parseObject.get(AttendanceEntity.status))
-          : null,
-      event: parseObject.get(AttendanceEntity.event) != null
-          ? await EventEntity().toModel(parseObject.get(AttendanceEntity.event))
-          : null,
-      evolution: parseObject.get(AttendanceEntity.evolution) != null
-          ? EvolutionEntity()
-              .toModel(parseObject.get(AttendanceEntity.evolution))
-          : null,
-      invoice: parseObject.get(AttendanceEntity.invoice) != null
-          ? InvoiceEntity().toModel(parseObject.get(AttendanceEntity.invoice))
           : null,
     );
     return model;
@@ -149,25 +133,7 @@ class AttendanceEntity {
           (ParseObject(StatusEntity.className)..objectId = model.status!.id)
               .toPointer());
     }
-    if (model.event != null) {
-      parseObject.set(
-          AttendanceEntity.event,
-          (ParseObject(EventEntity.className)..objectId = model.event!.id)
-              .toPointer());
-    }
-    if (model.evolution != null) {
-      parseObject.set(
-          AttendanceEntity.evolution,
-          (ParseObject(EvolutionEntity.className)
-                ..objectId = model.evolution!.id)
-              .toPointer());
-    }
-    if (model.invoice != null) {
-      parseObject.set(
-          AttendanceEntity.invoice,
-          (ParseObject(InvoiceEntity.className)..objectId = model.invoice!.id)
-              .toPointer());
-    }
+
     return parseObject;
   }
 }
