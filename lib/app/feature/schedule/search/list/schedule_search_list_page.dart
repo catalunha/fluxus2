@@ -76,9 +76,9 @@ class ScheduleSearchListView extends StatelessWidget {
                 // const Center(
                 //     child: Text('Eventos não encontrados nestas condições.'));
               }
-              print('room: ${state.roomSelected?.name}');
-              print('list: ${state.list.length}');
-              print('listFiltered: ${state.listFiltered}');
+              // print('room: ${state.roomSelected?.name}');
+              // print('list: ${state.list.length}');
+              // print('listFiltered: ${state.listFiltered}');
               var list = [...state.listFiltered];
               DateTime start = DateTime(
                   state.start!.year, state.start!.month, state.start!.day);
@@ -112,7 +112,6 @@ class ScheduleSearchListView extends StatelessWidget {
                       texts.add('${attendance.professional?.name}');
                       // texts.add('${attendance.patient?.name}');
                     }
-                    print('na lista: ${e.room?.name}');
                     timePlannerTasks.add(
                       TimePlannerTask(
                         color: Colors.green,

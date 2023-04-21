@@ -40,26 +40,28 @@ class AttendanceSaveBloc
         for (var procedure in state.procedures) {
           if (state.model == null) {
             modelTemp = AttendanceModel(
-              professional: state.professional,
-              procedure: procedure,
-              patient: state.patient,
-              healthPlan: state.healthPlans[0],
-              authorizationCode: event.authorizationCode,
-              authorizationDateCreated: event.authorizationDateCreated,
-              authorizationDateLimit: event.authorizationDateLimit,
-              description: event.description,
-            );
+                professional: state.professional,
+                procedure: procedure,
+                patient: state.patient,
+                healthPlan: state.healthPlans[0],
+                authorizationCode: event.authorizationCode,
+                authorizationDateCreated: event.authorizationDateCreated,
+                authorizationDateLimit: event.authorizationDateLimit,
+                description: event.description,
+                attendance: event.attendance,
+                confirmedPresence: event.confirmedPresence);
           } else {
             modelTemp = state.model!.copyWith(
-              professional: state.professional,
-              procedure: procedure,
-              patient: state.patient,
-              healthPlan: state.healthPlans[0],
-              authorizationCode: event.authorizationCode,
-              authorizationDateCreated: event.authorizationDateCreated,
-              authorizationDateLimit: event.authorizationDateLimit,
-              description: event.description,
-            );
+                professional: state.professional,
+                procedure: procedure,
+                patient: state.patient,
+                healthPlan: state.healthPlans[0],
+                authorizationCode: event.authorizationCode,
+                authorizationDateCreated: event.authorizationDateCreated,
+                authorizationDateLimit: event.authorizationDateLimit,
+                description: event.description,
+                attendance: event.attendance,
+                confirmedPresence: event.confirmedPresence);
           }
           String modelId = await _repository.update(modelTemp);
 

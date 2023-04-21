@@ -168,11 +168,12 @@ class _ProcedureSaveViewState extends State<ProcedureSaveView> {
                             Validatorless.required('Este valor é obrigatório'),
                       ),
                       AppTextFormField(
-                        label: 'Custo *',
-                        controller: _costTEC,
-                        validator:
+                          label: 'Custo *',
+                          controller: _costTEC,
+                          validator: Validatorless.multiple([
                             Validatorless.required('Este valor é obrigatório'),
-                      ),
+                            Validatorless.number('Precisa ser um número válido')
+                          ])),
                       if (widget.model != null)
                         CheckboxListTile(
                           tileColor: delete ? Colors.red : null,

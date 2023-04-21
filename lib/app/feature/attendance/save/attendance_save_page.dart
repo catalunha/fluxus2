@@ -48,14 +48,25 @@ class _AttendanceSaveViewState extends State<AttendanceSaveView> {
   final _authorizationCodeTEC = TextEditingController();
   DateTime _authorizationDateCreated = DateTime.now();
   DateTime _authorizationDateLimit = DateTime.now();
+  DateTime? _attendance = DateTime.now();
+  DateTime? _confirmedPresence = DateTime.now();
   final _descriptionTEC = TextEditingController();
   bool delete = false;
+  bool updateAttendance = false;
+  bool updateConfirmedPresence = false;
   @override
   void initState() {
     super.initState();
     _authorizationCodeTEC.text = widget.model?.authorizationCode ?? "";
     _authorizationDateCreated =
         widget.model?.authorizationDateCreated ?? DateTime.now();
+
+    _attendance = widget.model?.attendance;
+    updateAttendance = widget.model?.attendance != null ? true : false;
+    _confirmedPresence = widget.model?.confirmedPresence;
+    updateConfirmedPresence =
+        widget.model?.confirmedPresence != null ? true : false;
+
     _authorizationDateLimit = widget.model?.authorizationDateLimit ??
         DateTime.now().add(const Duration(days: 30));
     _descriptionTEC.text = widget.model?.description ?? "";
@@ -83,6 +94,9 @@ class _AttendanceSaveViewState extends State<AttendanceSaveView> {
                       authorizationDateCreated: _authorizationDateCreated,
                       authorizationDateLimit: _authorizationDateLimit,
                       description: _descriptionTEC.text,
+                      attendance: updateAttendance ? _attendance : null,
+                      confirmedPresence:
+                          updateConfirmedPresence ? _confirmedPresence : null,
                     ),
                   );
             }
@@ -296,6 +310,66 @@ class _AttendanceSaveViewState extends State<AttendanceSaveView> {
                           },
                         ),
                       ),
+                      const SizedBox(height: 10),
+                      if (widget.model != null)
+                        Column(
+                          children: [
+                            Card(
+                              child: Column(children: [
+                                CheckboxListTile(
+                                  title: const Text(
+                                      "Atualizar data do atendimento ?"),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      updateAttendance = value ?? false;
+                                    });
+                                  },
+                                  value: updateAttendance,
+                                ),
+                                SizedBox(
+                                  width: 300,
+                                  height: 100,
+                                  child: CupertinoDatePicker(
+                                    initialDateTime: _attendance,
+                                    mode: CupertinoDatePickerMode.date,
+                                    onDateTimeChanged: (DateTime newDate) {
+                                      _attendance = newDate;
+                                    },
+                                  ),
+                                ),
+                              ]),
+                            ),
+                            const SizedBox(height: 10),
+                            Card(
+                              child: Column(
+                                children: [
+                                  CheckboxListTile(
+                                    title: const Text(
+                                        "Atualizar data da confirmação da presença ?"),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        updateConfirmedPresence =
+                                            value ?? false;
+                                      });
+                                    },
+                                    value: updateConfirmedPresence,
+                                  ),
+                                  SizedBox(
+                                    width: 300,
+                                    height: 100,
+                                    child: CupertinoDatePicker(
+                                      initialDateTime: _confirmedPresence,
+                                      mode: CupertinoDatePickerMode.date,
+                                      onDateTimeChanged: (DateTime newDate) {
+                                        _confirmedPresence = newDate;
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       if (widget.model != null)
                         CheckboxListTile(
                           tileColor: delete ? Colors.red : null,

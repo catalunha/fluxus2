@@ -12,11 +12,15 @@ class AttendanceSaveEventFormSubmitted extends AttendanceSaveEvent {
   final DateTime? authorizationDateCreated;
   final DateTime? authorizationDateLimit;
   final String? description;
+  final DateTime? attendance;
+  final DateTime? confirmedPresence;
   AttendanceSaveEventFormSubmitted({
     this.authorizationCode,
     this.authorizationDateCreated,
     this.authorizationDateLimit,
     this.description,
+    this.attendance,
+    this.confirmedPresence,
   });
 }
 
