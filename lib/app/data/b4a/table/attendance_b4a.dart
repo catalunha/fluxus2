@@ -21,11 +21,7 @@ class AttendanceB4a {
       'healthPlan',
       'healthPlan.healthPlanType',
       'status',
-      'event',
-      'evolution',
-      'invoice',
     ]);
-
     return query;
   }
 

@@ -107,9 +107,6 @@ class PatientSearchBloc extends Bloc<PatientSearchEvent, PatientSearchState> {
         query.whereContains('name', event.nameContainsString);
       }
 
-      if (event.cpfEqualToBool) {
-        query.whereEqualTo('register', event.cpfEqualToString);
-      }
       if (event.phoneEqualToBool) {
         query.whereEqualTo('phone', event.phoneEqualToString);
       }

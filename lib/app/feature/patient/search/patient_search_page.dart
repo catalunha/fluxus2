@@ -38,16 +38,13 @@ class PatientSearchView extends StatefulWidget {
 class _SearchPageState extends State<PatientSearchView> {
   final _formKey = GlobalKey<FormState>();
   bool _nameContains = false;
-  bool _cpfEqualTo = false;
   bool _phoneEqualTo = false;
   final _nameContainsTEC = TextEditingController();
-  final _cpfEqualToTEC = TextEditingController();
   final _phoneEqualToTEC = TextEditingController();
 
   @override
   void initState() {
     _nameContainsTEC.text = '';
-    _cpfEqualToTEC.text = '';
     _phoneEqualToTEC.text = '';
     super.initState();
   }
@@ -123,31 +120,6 @@ class _SearchPageState extends State<PatientSearchView> {
                     Card(
                       child: Column(
                         children: [
-                          const Text('por CPF'),
-                          Row(
-                            children: [
-                              Checkbox(
-                                value: _cpfEqualTo,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _cpfEqualTo = value!;
-                                  });
-                                },
-                              ),
-                              Expanded(
-                                child: AppTextFormField(
-                                  label: 'igual a',
-                                  controller: _cpfEqualToTEC,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Card(
-                      child: Column(
-                        children: [
                           const Text('por Telefone'),
                           Row(
                             children: [
@@ -188,8 +160,6 @@ class _SearchPageState extends State<PatientSearchView> {
                   PatientSearchEventFormSubmitted(
                     nameContainsBool: _nameContains,
                     nameContainsString: _nameContainsTEC.text,
-                    cpfEqualToBool: _cpfEqualTo,
-                    cpfEqualToString: _cpfEqualToTEC.text,
                     phoneEqualToBool: _phoneEqualTo,
                     phoneEqualToString: _phoneEqualToTEC.text,
                   ),

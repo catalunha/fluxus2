@@ -29,6 +29,10 @@ class AttendanceCard extends StatelessWidget {
             ),
             AppTextTitleValue(
               title: 'Profissional: ',
+              value: model.professional?.name,
+            ),
+            AppTextTitleValue(
+              title: 'Profissional: ',
               value: model.professional?.nickname,
             ),
             AppTextTitleValue(

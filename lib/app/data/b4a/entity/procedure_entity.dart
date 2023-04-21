@@ -17,7 +17,7 @@ class ProcedureEntity {
       id: parseObject.objectId!,
       code: parseObject.get(ProcedureEntity.code),
       name: parseObject.get(ProcedureEntity.name),
-      cost: parseObject.get(ProcedureEntity.cost),
+      cost: parseObject.get(ProcedureEntity.cost).toDouble(),
       expertise: parseObject.get(ProcedureEntity.expertise) != null
           ? ExpertiseEntity()
               .toModel(parseObject.get(ProcedureEntity.expertise))

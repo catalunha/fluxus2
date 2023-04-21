@@ -58,6 +58,7 @@ class ProcedureSearchBloc
         query: query,
       ));
     } catch (e) {
+      print(e);
       emit(
         state.copyWith(
             status: ProcedureSearchStateStatus.error,

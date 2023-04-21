@@ -239,7 +239,7 @@ class _SearchPageState extends State<AttendanceSearchView> {
                                     },
                                     icon: const Icon(Icons.search),
                                   ),
-                                  Text('${equalsProcedure?.name}')
+                                  Text('${equalsProcedure?.code}')
                                 ],
                               ),
                             ),
