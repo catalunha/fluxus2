@@ -8,6 +8,7 @@ import '../../../../core/models/event_model.dart';
 import '../bloc/schedule_search_bloc.dart';
 import '../bloc/schedule_search_event.dart';
 import '../bloc/schedule_search_state.dart';
+import 'comp/attendance_add_ids.dart';
 
 class ScheduleSearchListPage extends StatelessWidget {
   const ScheduleSearchListPage({
@@ -104,10 +105,11 @@ class ScheduleSearchListView extends StatelessWidget {
                   if (dayMorning.isBefore(e.start!) &&
                       dayNight.isAfter(e.start!)) {
                     List<String> texts = [];
-                    texts.add('${e.status?.name}');
-                    texts.add('${e.room?.name}');
+                    // texts.add('s: ${e.status?.name}');
+                    // texts.add('r: ${e.room?.name}');
+                    texts.add('a: ${e.attendances?.length}');
                     for (AttendanceModel attendance in e.attendances ?? []) {
-                      // texts.add('${attendance.professional?.name}');
+                      texts.add('${attendance.professional?.name}');
                       // texts.add('${attendance.patient?.name}');
                     }
                     print('na lista: ${e.room?.name}');
@@ -123,6 +125,18 @@ class ScheduleSearchListView extends StatelessWidget {
                         child: Tooltip(
                             message: texts.join('\n'),
                             child: Text(texts.join('\n'))),
+                        onTap: () async {
+                          await showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const AttendanceAddIds(
+                                title: 'Teste...',
+                                formFieldLabel: 'Separador por espaço',
+                              );
+                            },
+                          );
+                        },
                       ),
                     );
                   }
