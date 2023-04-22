@@ -278,7 +278,7 @@ class _SearchPageState extends State<AttendanceSearchView> {
                                     },
                                     icon: const Icon(Icons.search),
                                   ),
-                                  Text('${equalsPatient?.nickname}')
+                                  Text('${equalsPatient?.name}')
                                 ],
                               ),
                             ),

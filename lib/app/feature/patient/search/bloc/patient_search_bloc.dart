@@ -22,7 +22,9 @@ class PatientSearchBloc extends Bloc<PatientSearchEvent, PatientSearchState> {
     on<PatientSearchEventUpdateList>(_onPatientSearchEventUpdateList);
     on<PatientSearchEventRemoveFromList>(_onPatientSearchEventRemoveFromList);
   }
-  static const List<String> _cols = ['name', 'nickname', 'region'];
+  // static final List<String> _cols = ['name'];
+  // static final List<String> _cols = ['name', 'region'];
+  static final List<String> _cols = PatientEntity.getAllCols();
   FutureOr<void> _onPatientSearchEventFormSubmitted(
       PatientSearchEventFormSubmitted event,
       Emitter<PatientSearchState> emit) async {
