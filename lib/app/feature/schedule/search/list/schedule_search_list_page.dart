@@ -8,7 +8,7 @@ import '../../../../core/models/event_model.dart';
 import '../bloc/schedule_search_bloc.dart';
 import '../bloc/schedule_search_event.dart';
 import '../bloc/schedule_search_state.dart';
-import 'comp/attendance_add_ids.dart';
+import 'confirm_presence/schedule_confirm_presence_page.dart';
 
 class ScheduleSearchListPage extends StatelessWidget {
   const ScheduleSearchListPage({
@@ -104,17 +104,39 @@ class ScheduleSearchListView extends StatelessWidget {
                 for (EventModel e in list) {
                   if (dayMorning.isBefore(e.start!) &&
                       dayNight.isAfter(e.start!)) {
+                    List<AttendanceModel> models = e.attendances!;
                     List<String> texts = [];
-                    // texts.add('s: ${e.status?.name}');
-                    // texts.add('r: ${e.room?.name}');
-                    texts.add('a: ${e.attendances?.length}');
-                    for (AttendanceModel attendance in e.attendances ?? []) {
-                      texts.add('${attendance.professional?.name}');
-                      // texts.add('${attendance.patient?.name}');
+                    List<String> msg = [];
+                    bool allConfirmedPresence = false;
+                    if (e.attendances?.length == 1) {
+                      for (AttendanceModel attendance in e.attendances ?? []) {
+                        texts.add('${attendance.professional?.name}');
+                        texts.add(
+                            '${attendance.confirmedPresence == null ? "-" : "+"} ${attendance.patient?.name}');
+                        allConfirmedPresence =
+                            attendance.confirmedPresence == null ? false : true;
+                      }
+                      allConfirmedPresence = true;
+                    } else {
+                      int confirmedPresence = 0;
+                      for (AttendanceModel attendance in e.attendances ?? []) {
+                        if (attendance.confirmedPresence != null) {
+                          confirmedPresence++;
+                        }
+                        msg.add(
+                            '${attendance.professional?.name} - ${attendance.patient?.name}');
+                      }
+                      texts.add(
+                          '$confirmedPresence/${e.attendances?.length} ats. ');
+                      allConfirmedPresence =
+                          confirmedPresence != e.attendances?.length
+                              ? false
+                              : true;
                     }
                     timePlannerTasks.add(
                       TimePlannerTask(
-                        color: Colors.green,
+                        color:
+                            allConfirmedPresence ? Colors.green : Colors.black,
                         dateTime: TimePlannerDateTime(
                           day: day,
                           hour: e.start!.hour,
@@ -122,16 +144,20 @@ class ScheduleSearchListView extends StatelessWidget {
                         ),
                         minutesDuration: e.duration(),
                         child: Tooltip(
-                            message: texts.join('\n'),
+                            message: msg.join('\n'),
                             child: Text(texts.join('\n'))),
                         onTap: () async {
                           await showDialog(
                             barrierDismissible: false,
                             context: context,
-                            builder: (BuildContext context) {
-                              return const AttendanceAddIds(
-                                title: 'Teste...',
-                                formFieldLabel: 'Separador por espaço',
+                            builder: (_) {
+                              // return ScheduleConfirmAttendancePage(
+                              //     models: models);
+
+                              return BlocProvider.value(
+                                value: BlocProvider.of<ScheduleSearchBloc>(
+                                    context),
+                                child: ScheduleConfirmAttendancePage(event: e),
                               );
                             },
                           );

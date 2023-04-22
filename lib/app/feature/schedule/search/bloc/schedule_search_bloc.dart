@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
+import '../../../../core/models/attendance_model.dart';
 import '../../../../core/models/event_model.dart';
 import '../../../../core/models/room_model.dart';
 import '../../../../core/repositories/event_repository.dart';
@@ -27,6 +28,8 @@ class ScheduleSearchBloc
         super(ScheduleSearchState.initial()) {
     on<ScheduleSearchEventFormSubmitted>(_onScheduleSearchEventFormSubmitted);
     on<ScheduleSearchEventFilterByRoom>(_onScheduleSearchEventFilterByRoom);
+    on<ScheduleSearchEventUpdateAttendances>(
+        _onScheduleSearchEventUpdateAttendances);
   }
 
   FutureOr<void> _onScheduleSearchEventFormSubmitted(
@@ -91,41 +94,52 @@ class ScheduleSearchBloc
       );
     }
   }
-/*
-  Future<void> createPlanner(DateTime start, DateTime end) async {
-    List<TimePlannerTask> timePlannerTasks = [];
-    List<TimePlannerTitle> timePlannerHeaders = [];
-    int day = 0;
-    for (DateTime dayMorning = start;
-        dayMorning.isBefore(end.add(const Duration(days: 1)));
-        dayMorning = dayMorning.add(const Duration(days: 1))) {
-      DateTime dayNight =
-          dayMorning.add(const Duration(hours: 23, minutes: 59));
-      // timePlannerHeaders.add(TimePlannerTitle());
-      for (EventModel e in state.list) {
-        if (dayMorning.isBefore(e.start!) && dayNight.isAfter(e.start!)) {
-          timePlannerTasks.add(
-            TimePlannerTask(
-              dateTime: TimePlannerDateTime(
-                day: day,
-                hour: e.start!.hour,
-                minutes: e.start!.minute,
-              ),
-              minutesDuration: e.duration(),
-            ),
-          );
-        }
-      }
-      day++;
-    }
-  }
-  */
 
   FutureOr<void> _onScheduleSearchEventFilterByRoom(
       ScheduleSearchEventFilterByRoom event,
-      Emitter<ScheduleSearchState> emit) async {
+      Emitter<ScheduleSearchState> emit) {
+    print('filter by room...');
     List<EventModel> listTemp = [...state.list];
     listTemp = listTemp.where((e) => e.room?.id == event.model.id).toList();
     emit(state.copyWith(listFiltered: listTemp, roomSelected: event.model));
+  }
+
+  FutureOr<void> _onScheduleSearchEventUpdateAttendances(
+      ScheduleSearchEventUpdateAttendances event,
+      Emitter<ScheduleSearchState> emit) {
+    print('updated...${event.event.id}');
+    final List<AttendanceModel> attendancesConfimed = [...event.attendances];
+    EventModel eventWithAttendancesForUpdated = event.event;
+    List<AttendanceModel> attendancesDirty = [
+      ...eventWithAttendancesForUpdated.attendances!
+    ];
+    List<AttendanceModel> attendancesDirtyFinal = [
+      ...eventWithAttendancesForUpdated.attendances!
+    ];
+    for (var attendanceDirty in attendancesDirty) {
+      for (var attendanceConfimed in attendancesConfimed) {
+        if (attendanceDirty.id == attendanceConfimed.id) {
+          int index = attendancesDirtyFinal
+              .indexWhere((model) => model.id == attendanceDirty.id);
+          if (index >= 0) {
+            attendancesDirtyFinal
+                .replaceRange(index, index + 1, [attendanceConfimed]);
+          }
+        }
+      }
+    }
+    eventWithAttendancesForUpdated = eventWithAttendancesForUpdated.copyWith(
+        attendances: attendancesDirtyFinal);
+
+    int index = state.list
+        .indexWhere((model) => model.id == eventWithAttendancesForUpdated.id);
+    if (index >= 0) {
+      print('$index');
+      List<EventModel> temp = [...state.list];
+      temp.replaceRange(index, index + 1, [eventWithAttendancesForUpdated]);
+      print(temp);
+      emit(state.copyWith(list: temp));
+    }
+    add(ScheduleSearchEventFilterByRoom(state.roomSelected!));
   }
 }

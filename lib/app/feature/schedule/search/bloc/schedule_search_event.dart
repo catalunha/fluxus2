@@ -1,3 +1,5 @@
+import '../../../../core/models/attendance_model.dart';
+import '../../../../core/models/event_model.dart';
 import '../../../../core/models/room_model.dart';
 import '../../../../core/models/status_model.dart';
 
@@ -20,5 +22,14 @@ class ScheduleSearchEventFilterByRoom extends ScheduleSearchEvent {
   final RoomModel model;
   ScheduleSearchEventFilterByRoom(
     this.model,
+  );
+}
+
+class ScheduleSearchEventUpdateAttendances extends ScheduleSearchEvent {
+  final EventModel event;
+  final List<AttendanceModel> attendances;
+  ScheduleSearchEventUpdateAttendances(
+    this.event,
+    this.attendances,
   );
 }
