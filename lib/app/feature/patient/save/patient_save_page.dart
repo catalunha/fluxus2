@@ -82,6 +82,16 @@ class _PatientSaveViewState extends State<PatientSaveView> {
     _addressTec.text = widget.model?.address ?? "";
     isFemale = widget.model?.isFemale ?? true;
     _birthday = widget.model?.birthday ?? DateTime.now();
+//     WidgetsBinding.instance.addPostFrameCallback((_) {
+//       _emailTec.text = widget.model?.email ?? "";
+//     _nameTec.text = widget.model?.name ?? "";
+//     _nicknameTec.text = widget.model?.nickname ?? "";
+//     _phoneTec.text = widget.model?.phone ?? "";
+//     _cpfTec.text = widget.model?.cpf ?? "";
+//     _addressTec.text = widget.model?.address ?? "";
+//     isFemale = widget.model?.isFemale ?? true;
+//     _birthday = widget.model?.birthday ?? DateTime.now();
+// });
   }
 
   @override
@@ -137,6 +147,14 @@ class _PatientSaveViewState extends State<PatientSaveView> {
           }
           if (state.status == PatientSaveStateStatus.updated) {
             Navigator.of(context).pop();
+            _emailTec.text = state.model?.email ?? "";
+            _nameTec.text = state.model?.name ?? "";
+            _nicknameTec.text = state.model?.nickname ?? "";
+            _phoneTec.text = state.model?.phone ?? "";
+            _cpfTec.text = state.model?.cpf ?? "";
+            _addressTec.text = state.model?.address ?? "";
+            isFemale = state.model?.isFemale ?? true;
+            _birthday = state.model?.birthday ?? DateTime.now();
           }
           if (state.status == PatientSaveStateStatus.loading) {
             await showDialog(
@@ -149,223 +167,241 @@ class _PatientSaveViewState extends State<PatientSaveView> {
           }
         },
         child: Center(
-          child: Form(
-            key: _formKey,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 600),
-              child: Center(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      AppTextFormField(
-                        label: 'Seu nome *',
-                        controller: _nameTec,
-                        validator: Validatorless.required(
-                            'Nome completo é obrigatório'),
-                      ),
-                      AppTextFormField(
-                          label: 'Seu telefone. Formato: DDDNÚMERO *',
-                          controller: _phoneTec,
-                          validator: Validatorless.multiple([
-                            Validatorless.number(
-                                'Apenas números. Formato: DDDNÚMERO'),
-                            Validatorless.required('Telefone é obrigatório'),
-                          ])),
-                      const Divider(height: 5),
-                      AppTextFormField(
-                        label: 'Seu nome curto ou apelido',
-                        controller: _nicknameTec,
-                      ),
-                      AppTextFormField(
-                        label: 'email',
-                        controller: _emailTec,
-                        validator: Validatorless.email('Email inválido'),
-                      ),
-                      AppTextFormField(
-                        label: 'Seu CPF. Apenas números',
-                        controller: _cpfTec,
-                        validator: Validatorless.multiple(
-                            [Validatorless.cpf('Número de CPF é inválido')]),
-                      ),
-                      AppTextFormField(
-                        label: 'Seu endereço completo. (Rua X, ..., CEP ..., )',
-                        controller: _addressTec,
-                      ),
-                      const Text('Aniversário'),
-                      SizedBox(
-                        width: 300,
-                        height: 100,
-                        child: CupertinoDatePicker(
-                          initialDateTime: _birthday,
-                          mode: CupertinoDatePickerMode.date,
-                          onDateTimeChanged: (DateTime newDate) {
-                            _birthday = newDate;
-                          },
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Builder(builder: (context) {
+                    return Column(
+                      children: [
+                        AppTextFormField(
+                          label: 'Seu nome *',
+                          controller: _nameTec,
+                          validator: Validatorless.required(
+                              'Nome completo é obrigatório'),
                         ),
-                      ),
-                      CheckboxListTile(
-                        title: const Text("Sexo feminino ?"),
-                        onChanged: (value) {
-                          setState(() {
-                            isFemale = value ?? true;
-                          });
-                        },
-                        value: isFemale,
-                      ),
-                      const SizedBox(height: 5),
-                      const Text('Selecione a região onde reside'),
-                      Row(
-                        children: [
-                          IconButton(
-                              onPressed: () async {
-                                var contextTemp =
-                                    context.read<PatientSaveBloc>();
-                                RegionModel? result =
-                                    await Navigator.of(context)
-                                            .pushNamed('/region/select')
-                                        as RegionModel?;
-                                if (result != null) {
-                                  contextTemp
-                                      .add(PatientSaveEventAddRegion(result));
-                                }
-                              },
-                              icon: const Icon(Icons.search)),
-                          BlocBuilder<PatientSaveBloc, PatientSaveState>(
-                            builder: (context, state) {
-                              return Text(
-                                  '${state.region?.uf}. ${state.region?.city}. ${state.region?.name}');
+                        AppTextFormField(
+                            label: 'Seu telefone. Formato: DDDNÚMERO *',
+                            controller: _phoneTec,
+                            validator: Validatorless.multiple([
+                              Validatorless.number(
+                                  'Apenas números. Formato: DDDNÚMERO'),
+                              Validatorless.required('Telefone é obrigatório'),
+                            ])),
+                        // BlocBuilder<PatientSaveBloc, PatientSaveState>(
+                        //   builder: (context, state) {
+                        //     _phoneTec.text = state.model?.phone ?? "";
+
+                        //     return AppTextFormField(
+                        //         label: 'Seu telefone. Formato: DDDNÚMERO *',
+                        //         controller: _phoneTec,
+                        //         validator: Validatorless.multiple([
+                        //           Validatorless.number(
+                        //               'Apenas números. Formato: DDDNÚMERO'),
+                        //           Validatorless.required(
+                        //               'Telefone é obrigatório'),
+                        //         ]));
+                        //   },
+                        // ),
+                        const Divider(height: 5),
+                        AppTextFormField(
+                          label: 'Seu nome curto ou apelido',
+                          controller: _nicknameTec,
+                        ),
+                        AppTextFormField(
+                          label: 'email',
+                          controller: _emailTec,
+                          validator: Validatorless.email('Email inválido'),
+                        ),
+                        AppTextFormField(
+                          label: 'Seu CPF. Apenas números',
+                          controller: _cpfTec,
+                          validator: Validatorless.multiple(
+                              [Validatorless.cpf('Número de CPF é inválido')]),
+                        ),
+                        AppTextFormField(
+                          label:
+                              'Seu endereço completo. (Rua X, ..., CEP ..., )',
+                          controller: _addressTec,
+                        ),
+                        const Text('Aniversário'),
+                        SizedBox(
+                          width: 300,
+                          height: 100,
+                          child: CupertinoDatePicker(
+                            initialDateTime: _birthday,
+                            mode: CupertinoDatePickerMode.date,
+                            onDateTimeChanged: (DateTime newDate) {
+                              _birthday = newDate;
                             },
                           ),
-                        ],
-                      ),
-                      const Text('Selecione seus famíliares'),
-                      Row(
-                        children: [
-                          IconButton(
-                              onPressed: () async {
-                                var contextTemp =
-                                    context.read<PatientSaveBloc>();
-                                List<PatientModel>? result =
-                                    await Navigator.of(context).pushNamed(
-                                            '/patient/select',
-                                            arguments: false)
-                                        as List<PatientModel>?;
-                                if (result != null) {
-                                  for (var element in result) {
+                        ),
+                        CheckboxListTile(
+                          title: const Text("Sexo feminino ?"),
+                          onChanged: (value) {
+                            setState(() {
+                              isFemale = value ?? true;
+                            });
+                          },
+                          value: isFemale,
+                        ),
+                        const SizedBox(height: 5),
+                        const Text('Selecione a região onde reside'),
+                        Row(
+                          children: [
+                            IconButton(
+                                onPressed: () async {
+                                  var contextTemp =
+                                      context.read<PatientSaveBloc>();
+                                  RegionModel? result =
+                                      await Navigator.of(context)
+                                              .pushNamed('/region/select')
+                                          as RegionModel?;
+                                  if (result != null) {
+                                    contextTemp
+                                        .add(PatientSaveEventAddRegion(result));
+                                  }
+                                },
+                                icon: const Icon(Icons.search)),
+                            BlocBuilder<PatientSaveBloc, PatientSaveState>(
+                              builder: (context, state) {
+                                return Text(
+                                    '${state.region?.uf}. ${state.region?.city}. ${state.region?.name}');
+                              },
+                            ),
+                          ],
+                        ),
+                        const Text('Selecione seus famíliares'),
+                        Row(
+                          children: [
+                            IconButton(
+                                onPressed: () async {
+                                  var contextTemp =
+                                      context.read<PatientSaveBloc>();
+                                  List<PatientModel>? result =
+                                      await Navigator.of(context).pushNamed(
+                                              '/patient/select',
+                                              arguments: false)
+                                          as List<PatientModel>?;
+                                  if (result != null) {
+                                    for (var element in result) {
+                                      contextTemp.add(
+                                        PatientSaveEventAddFamily(
+                                          element,
+                                        ),
+                                      );
+                                    }
+                                  }
+                                },
+                                icon: const Icon(Icons.search)),
+                            BlocBuilder<PatientSaveBloc, PatientSaveState>(
+                              builder: (context, state) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: state.familyUpdated
+                                      .map(
+                                        (e) => Row(
+                                          children: [
+                                            Text('${e.name}'),
+                                            IconButton(
+                                              icon: const Icon(Icons.delete),
+                                              onPressed: () {
+                                                context
+                                                    .read<PatientSaveBloc>()
+                                                    .add(
+                                                      PatientSaveEventRemoveFamily(
+                                                        e,
+                                                      ),
+                                                    );
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                      .toList(),
+                                );
+                              },
+                            ),
+                            const SizedBox(width: 15)
+                          ],
+                        ),
+                        const Text('Defina seus planos de saúde'),
+                        Row(
+                          children: [
+                            IconButton(
+                                onPressed: () async {
+                                  var contextTemp =
+                                      context.read<PatientSaveBloc>();
+                                  HealthPlanModel? result =
+                                      await Navigator.of(context).pushNamed(
+                                          '/healthplan/save',
+                                          arguments: null) as HealthPlanModel?;
+                                  if (result != null) {
                                     contextTemp.add(
-                                      PatientSaveEventAddFamily(
-                                        element,
+                                      PatientSaveEventAddHealthPlan(
+                                        result,
                                       ),
                                     );
                                   }
-                                }
-                              },
-                              icon: const Icon(Icons.search)),
-                          BlocBuilder<PatientSaveBloc, PatientSaveState>(
-                            builder: (context, state) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: state.familyUpdated
-                                    .map(
-                                      (e) => Row(
-                                        children: [
-                                          Text('${e.name}'),
-                                          IconButton(
-                                            icon: const Icon(Icons.delete),
-                                            onPressed: () {
-                                              context
-                                                  .read<PatientSaveBloc>()
-                                                  .add(
-                                                    PatientSaveEventRemoveFamily(
-                                                      e,
+                                },
+                                icon: const Icon(Icons.add)),
+                            BlocBuilder<PatientSaveBloc, PatientSaveState>(
+                              builder: (context, state) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: state.healthPlansUpdated
+                                      .map(
+                                        (e) => Row(
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(Icons.edit),
+                                              onPressed: () async {
+                                                var contextTemp = context
+                                                    .read<PatientSaveBloc>();
+                                                HealthPlanModel? result =
+                                                    await Navigator.of(context)
+                                                            .pushNamed(
+                                                                '/healthplan/save',
+                                                                arguments: e)
+                                                        as HealthPlanModel?;
+                                                if (result != null) {
+                                                  contextTemp.add(
+                                                    PatientSaveEventUpdateHealthPlan(
+                                                      result,
                                                     ),
                                                   );
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                    .toList(),
-                              );
-                            },
-                          ),
-                          const SizedBox(width: 15)
-                        ],
-                      ),
-                      const Text('Defina seus planos de saúde'),
-                      Row(
-                        children: [
-                          IconButton(
-                              onPressed: () async {
-                                var contextTemp =
-                                    context.read<PatientSaveBloc>();
-                                HealthPlanModel? result =
-                                    await Navigator.of(context).pushNamed(
-                                        '/healthplan/save',
-                                        arguments: null) as HealthPlanModel?;
-                                if (result != null) {
-                                  contextTemp.add(
-                                    PatientSaveEventAddHealthPlan(
-                                      result,
-                                    ),
-                                  );
-                                }
+                                                }
+                                              },
+                                            ),
+                                            Text('${e.code}'),
+                                            IconButton(
+                                              icon: const Icon(Icons.delete),
+                                              onPressed: () {
+                                                context
+                                                    .read<PatientSaveBloc>()
+                                                    .add(
+                                                      PatientSaveEventRemoveHealthPlan(
+                                                        e,
+                                                      ),
+                                                    );
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                      .toList(),
+                                );
                               },
-                              icon: const Icon(Icons.add)),
-                          BlocBuilder<PatientSaveBloc, PatientSaveState>(
-                            builder: (context, state) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: state.healthPlansUpdated
-                                    .map(
-                                      (e) => Row(
-                                        children: [
-                                          IconButton(
-                                            icon: const Icon(Icons.edit),
-                                            onPressed: () async {
-                                              var contextTemp = context
-                                                  .read<PatientSaveBloc>();
-                                              HealthPlanModel? result =
-                                                  await Navigator.of(context)
-                                                          .pushNamed(
-                                                              '/healthplan/save',
-                                                              arguments: e)
-                                                      as HealthPlanModel?;
-                                              if (result != null) {
-                                                contextTemp.add(
-                                                  PatientSaveEventUpdateHealthPlan(
-                                                    result,
-                                                  ),
-                                                );
-                                              }
-                                            },
-                                          ),
-                                          Text('${e.code}'),
-                                          IconButton(
-                                            icon: const Icon(Icons.delete),
-                                            onPressed: () {
-                                              context
-                                                  .read<PatientSaveBloc>()
-                                                  .add(
-                                                    PatientSaveEventRemoveHealthPlan(
-                                                      e,
-                                                    ),
-                                                  );
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                    .toList(),
-                              );
-                            },
-                          ),
-                          const SizedBox(width: 15)
-                        ],
-                      ),
-                      const SizedBox(height: 70),
-                    ],
-                  ),
+                            ),
+                            const SizedBox(width: 15)
+                          ],
+                        ),
+                        const SizedBox(height: 70),
+                      ],
+                    );
+                  }),
                 ),
               ),
             ),

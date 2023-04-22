@@ -8,27 +8,34 @@ import '../utils/parse_error_translate.dart';
 
 class PatientB4a {
   Future<QueryBuilder<ParseObject>> getQueryAll(
-      QueryBuilder<ParseObject> query, Pagination pagination) async {
+      QueryBuilder<ParseObject> query, Pagination pagination,
+      [List<String> cols = const []]) async {
     query.setAmountToSkip((pagination.page - 1) * pagination.limit);
     query.setLimit(pagination.limit);
+
+    query.keysToReturn([
+      ...PatientEntity.getSingleCols(cols),
+      ...PatientEntity.getPointerCols(cols)
+    ]);
+
     query.includeObject(['region']);
+    // query.includeObject(PatientEntity.getPointerCols(cols));
 
     return query;
   }
 
   Future<List<PatientModel>> list(
-    QueryBuilder<ParseObject> query,
-    Pagination pagination,
-  ) async {
+      QueryBuilder<ParseObject> query, Pagination pagination,
+      [List<String> cols = const []]) async {
     QueryBuilder<ParseObject> query2;
-    query2 = await getQueryAll(query, pagination);
+    query2 = await getQueryAll(query, pagination, cols);
     ParseResponse? response;
     try {
       response = await query2.query();
       List<PatientModel> listTemp = <PatientModel>[];
       if (response.success && response.results != null) {
         for (var element in response.results!) {
-          listTemp.add(await PatientEntity().toModel(element));
+          listTemp.add(await PatientEntity().toModel(element, cols));
         }
         return listTemp;
       } else {
@@ -44,17 +51,19 @@ class PatientB4a {
     }
   }
 
-  Future<PatientModel?> readById(String id) async {
+  Future<PatientModel?> readById(String id,
+      [List<String> cols = const []]) async {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(PatientEntity.className));
     query.whereEqualTo(PatientEntity.id, id);
-    query.includeObject(['region']);
+    query.keysToReturn(PatientEntity.getSingleCols(cols));
+    query.includeObject(PatientEntity.getPointerCols(cols));
     query.first();
     try {
       var response = await query.query();
 
       if (response.success && response.results != null) {
-        return PatientEntity().toModel(response.results!.first);
+        return PatientEntity().toModel(response.results!.first, cols);
       }
       throw B4aException(
         'Perfil do usuário não encontrado.',

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:fluxus2/app/data/b4a/entity/patient_entity.dart';
 
 import '../../../../core/models/healthplan_model.dart';
 import '../../../../core/models/healthplantype_model.dart';
@@ -20,6 +21,7 @@ class PatientSaveBloc extends Bloc<PatientSaveEvent, PatientSaveState> {
   })  : _repository = repository,
         _healthPlanRepository = healthPlanRepository,
         super(PatientSaveState.initial(model)) {
+    on<PatientSaveEventStart>(_onPatientSaveEventStart);
     on<PatientSaveEventFormSubmitted>(_onPatientSaveEventFormSubmitted);
     on<PatientSaveEventAddRegion>(_onPatientSaveEventAddRegion);
     on<PatientSaveEventAddFamily>(_onPatientSaveEventAddFamily);
@@ -32,6 +34,23 @@ class PatientSaveBloc extends Bloc<PatientSaveEvent, PatientSaveState> {
           code: 'particular',
           healthPlanType:
               HealthPlanTypeModel(id: 'sMJxUZ8AuA', name: 'Particular'))));
+    } else {
+      add(PatientSaveEventStart());
+    }
+  }
+  FutureOr<void> _onPatientSaveEventStart(
+      PatientSaveEventStart event, Emitter<PatientSaveState> emit) async {
+    print('Staaaaaaaarting....');
+    emit(state.copyWith(status: PatientSaveStateStatus.loading));
+    try {
+      PatientModel? temp = await _repository.readById(
+          state.model!.id!, PatientEntity.getAllCols());
+      emit(state.copyWith(model: temp, status: PatientSaveStateStatus.updated));
+    } catch (e) {
+      //print(e);
+      emit(state.copyWith(
+          status: PatientSaveStateStatus.error,
+          error: 'Erro ao buscar dados do paciente'));
     }
   }
 

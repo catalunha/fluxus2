@@ -9,8 +9,8 @@ class PatientEntity {
   static const String className = 'Patient';
   static const String id = 'objectId';
   static const String email = 'email';
-  static const String nickname = 'nickname';
   static const String name = 'name';
+  static const String nickname = 'nickname';
   static const String cpf = 'cpf';
   static const String phone = 'phone';
   static const String isFemale = 'isFemale';
@@ -19,15 +19,64 @@ class PatientEntity {
   static const String region = 'region';
   static const String family = 'family';
   static const String healthPlans = 'healthPlans';
+  static const List<String> pointerCols = [PatientEntity.region];
+  static const List<String> relationCols = [
+    PatientEntity.family,
+    PatientEntity.healthPlans
+  ];
+  static List<String> getAllCols() {
+    return [
+      PatientEntity.email,
+      PatientEntity.name,
+      PatientEntity.nickname,
+      PatientEntity.cpf,
+      PatientEntity.phone,
+      PatientEntity.isFemale,
+      PatientEntity.birthday,
+      PatientEntity.address,
+      PatientEntity.region,
+      PatientEntity.family,
+      PatientEntity.healthPlans,
+    ];
+  }
 
-  Future<PatientModel> toModel(
-    ParseObject parseObject, [
-    List<String> excludeRelations = const [],
-  ]) async {
+  static List<String> getSingleCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (!PatientEntity.pointerCols.contains(col) &&
+          !PatientEntity.relationCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp;
+  }
+
+  static List<String> getPointerCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (PatientEntity.pointerCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp;
+  }
+
+  static List<String> getRelationCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (PatientEntity.relationCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp;
+  }
+
+  Future<PatientModel> toModel(ParseObject parseObject,
+      [List<String> cols = const []]) async {
     //+++ get family
     List<PatientModel> familyList = [];
 
-    if (!excludeRelations.contains('Patient.family')) {
+    if (cols.contains(PatientEntity.family)) {
       QueryBuilder<ParseObject> queryPatient =
           QueryBuilder<ParseObject>(ParseObject(PatientEntity.className));
       queryPatient.whereRelatedTo(
@@ -43,7 +92,7 @@ class PatientEntity {
     //--- get family
     //+++ get healthPlan
     List<HealthPlanModel> healthPlanList = [];
-    if (!excludeRelations.contains('Patient.healthPlans')) {
+    if (cols.contains(PatientEntity.healthPlans)) {
       QueryBuilder<ParseObject> queryHealthPlanType =
           QueryBuilder<ParseObject>(ParseObject(HealthPlanEntity.className));
       queryHealthPlanType.whereRelatedTo(PatientEntity.healthPlans,

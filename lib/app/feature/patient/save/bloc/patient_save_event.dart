@@ -4,6 +4,8 @@ import '../../../../core/models/region_model.dart';
 
 abstract class PatientSaveEvent {}
 
+class PatientSaveEventStart extends PatientSaveEvent {}
+
 class PatientSaveEventFormSubmitted extends PatientSaveEvent {
   final String? email;
   final String? name;

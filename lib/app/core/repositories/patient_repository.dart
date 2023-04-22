@@ -9,13 +9,13 @@ class PatientRepository {
 
   PatientRepository();
   Future<List<PatientModel>> list(
-    QueryBuilder<ParseObject> query,
-    Pagination pagination,
-  ) =>
-      apiB4a.list(query, pagination);
+          QueryBuilder<ParseObject> query, Pagination pagination,
+          [List<String> cols = const []]) =>
+      apiB4a.list(query, pagination, cols);
   Future<String> update(PatientModel userProfileModel) =>
       apiB4a.update(userProfileModel);
-  Future<PatientModel?> readById(String id) => apiB4a.readById(id);
+  Future<PatientModel?> readById(String id, [List<String> cols = const []]) =>
+      apiB4a.readById(id, cols);
 
   Future<void> updateRelationFamily(
           String objectId, List<String> ids, bool add) =>
