@@ -104,30 +104,29 @@ class ScheduleSearchListView extends StatelessWidget {
                 for (EventModel e in list) {
                   if (dayMorning.isBefore(e.start!) &&
                       dayNight.isAfter(e.start!)) {
-                    List<AttendanceModel> models = e.attendances!;
                     List<String> texts = [];
-                    List<String> msg = [];
+                    List<String> tooltipMsgs = [];
                     bool allConfirmedPresence = false;
                     if (e.attendances?.length == 1) {
                       for (AttendanceModel attendance in e.attendances ?? []) {
                         texts.add('${attendance.professional?.name}');
-                        texts.add(
-                            '${attendance.confirmedPresence == null ? "-" : "+"} ${attendance.patient?.name}');
+                        texts.add('${attendance.patient?.name}');
                         allConfirmedPresence =
                             attendance.confirmedPresence == null ? false : true;
                       }
-                      allConfirmedPresence = true;
                     } else {
                       int confirmedPresence = 0;
                       for (AttendanceModel attendance in e.attendances ?? []) {
                         if (attendance.confirmedPresence != null) {
                           confirmedPresence++;
                         }
-                        msg.add(
-                            '${attendance.professional?.name} - ${attendance.patient?.name}');
+                        tooltipMsgs.add(
+                            '${attendance.confirmedPresence != null ? "*" : ""}${attendance.professional?.name}. ${attendance.patient?.name}. ${attendance.patient?.phone}');
+                        texts.add(
+                            '${attendance.confirmedPresence != null ? "*" : ""}${attendance.professional?.name}');
                       }
                       texts.add(
-                          '$confirmedPresence/${e.attendances?.length} ats. ');
+                          '$confirmedPresence/${e.attendances?.length} Cfm/Ats. ');
                       allConfirmedPresence =
                           confirmedPresence != e.attendances?.length
                               ? false
@@ -144,7 +143,7 @@ class ScheduleSearchListView extends StatelessWidget {
                         ),
                         minutesDuration: e.duration(),
                         child: Tooltip(
-                            message: msg.join('\n'),
+                            message: tooltipMsgs.join('\n'),
                             child: Text(texts.join('\n'))),
                         onTap: () async {
                           await showDialog(

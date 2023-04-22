@@ -29,22 +29,10 @@ class ScheduleConfirmAttendancePage extends StatelessWidget {
   }
 }
 
-class ScheduleConfirmAttendanceView extends StatefulWidget {
+class ScheduleConfirmAttendanceView extends StatelessWidget {
   const ScheduleConfirmAttendanceView({
     Key? key,
   }) : super(key: key);
-
-  @override
-  State<ScheduleConfirmAttendanceView> createState() =>
-      _ScheduleConfirmAttendanceStatePage();
-}
-
-class _ScheduleConfirmAttendanceStatePage
-    extends State<ScheduleConfirmAttendanceView> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +69,6 @@ class _ScheduleConfirmAttendanceStatePage
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              // crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 BlocBuilder<ScheduleConfirmPresenceBloc,
@@ -94,26 +81,25 @@ class _ScheduleConfirmAttendanceStatePage
                     }
 
                     for (var model in state.modelsUnconfirmed) {
-                      widgetsConfirmPresence.add(CheckboxListTile(
-                        tristate: false,
-                        title: Text(
-                            '${model.id} ${model.patient?.nickname} (${model.professional?.nickname})'),
-                        onChanged: (value) {
-                          if (value != null && value == true) {
-                            // setState(() {
-                            context.read<ScheduleConfirmPresenceBloc>().add(
-                                ScheduleConfirmPresenceEventAddConfirm(model));
-                            // });
-                          } else if (value != null && value == false) {
-                            // setState(() {
-                            context.read<ScheduleConfirmPresenceBloc>().add(
-                                ScheduleConfirmPresenceEventRemoveConfirm(
-                                    model));
-                            // });
-                          }
-                        },
-                        value: state.modelsConfirmThese.contains(model),
-                      ));
+                      widgetsConfirmPresence.add(
+                        CheckboxListTile(
+                          tristate: false,
+                          title: Text(
+                              '${model.id} ${model.patient?.nickname} (${model.professional?.nickname})'),
+                          onChanged: (value) {
+                            if (value != null && value == true) {
+                              context.read<ScheduleConfirmPresenceBloc>().add(
+                                  ScheduleConfirmPresenceEventAddConfirm(
+                                      model));
+                            } else if (value != null && value == false) {
+                              context.read<ScheduleConfirmPresenceBloc>().add(
+                                  ScheduleConfirmPresenceEventRemoveConfirm(
+                                      model));
+                            }
+                          },
+                          value: state.modelsConfirmThese.contains(model),
+                        ),
+                      );
                     }
                     return Column(children: widgetsConfirmPresence);
                   },
