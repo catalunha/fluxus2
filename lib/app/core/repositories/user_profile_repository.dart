@@ -12,13 +12,13 @@ class UserProfileRepository {
     QueryBuilder<ParseObject> query,
     Pagination pagination, [
     List<String> cols = const [],
-    List<String> colsPointer = const [],
-    List<String> colsRelation = const [],
   ]) =>
-      userProfileB4a.list(query, pagination, cols, colsPointer, colsRelation);
+      userProfileB4a.list(query, pagination, cols);
   Future<String> update(UserProfileModel userProfileModel) =>
       userProfileB4a.update(userProfileModel);
-  Future<UserProfileModel?> readById(String id) => userProfileB4a.readById(id);
+  Future<UserProfileModel?> readById(String id,
+          [List<String> cols = const []]) =>
+      userProfileB4a.readById(id, cols);
   // Future<UserProfileModel?> readByCPF(String? value) =>
   //     userProfileB4a.readByCPF(value);
   Future<void> updateRelationOffices(

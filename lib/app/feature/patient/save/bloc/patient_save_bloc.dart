@@ -43,8 +43,8 @@ class PatientSaveBloc extends Bloc<PatientSaveEvent, PatientSaveState> {
     print('Staaaaaaaarting....');
     emit(state.copyWith(status: PatientSaveStateStatus.loading));
     try {
-      PatientModel? temp = await _repository.readById(
-          state.model!.id!, PatientEntity.getAllCols());
+      PatientModel? temp =
+          await _repository.readById(state.model!.id!, PatientEntity.allCols);
       emit(state.copyWith(model: temp, status: PatientSaveStateStatus.updated));
     } catch (e) {
       //print(e);

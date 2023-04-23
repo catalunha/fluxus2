@@ -19,39 +19,40 @@ class PatientEntity {
   static const String region = 'region';
   static const String family = 'family';
   static const String healthPlans = 'healthPlans';
-  static const List<String> pointerCols = [PatientEntity.region];
+
+  static const List<String> singleCols = [
+    PatientEntity.email,
+    PatientEntity.name,
+    PatientEntity.nickname,
+    PatientEntity.cpf,
+    PatientEntity.phone,
+    PatientEntity.isFemale,
+    PatientEntity.birthday,
+    PatientEntity.address,
+  ];
+  static const List<String> pointerCols = [
+    PatientEntity.region,
+  ];
   static const List<String> relationCols = [
     PatientEntity.family,
     PatientEntity.healthPlans
   ];
-  static List<String> getAllCols() {
-    return [
-      PatientEntity.email,
-      PatientEntity.name,
-      PatientEntity.nickname,
-      PatientEntity.cpf,
-      PatientEntity.phone,
-      PatientEntity.isFemale,
-      PatientEntity.birthday,
-      PatientEntity.address,
-      PatientEntity.region,
-      PatientEntity.family,
-      PatientEntity.healthPlans,
-    ];
-  }
-
-  static List<String> getSingleCols(List<String> cols) {
+  static const List<String> allCols = [
+    ...PatientEntity.singleCols,
+    ...PatientEntity.pointerCols,
+    ...PatientEntity.relationCols
+  ];
+  static List<String> filterSingleCols(List<String> cols) {
     List<String> temp = [];
     for (var col in cols) {
-      if (!PatientEntity.pointerCols.contains(col) &&
-          !PatientEntity.relationCols.contains(col)) {
+      if (PatientEntity.singleCols.contains(col)) {
         temp.add(col);
       }
     }
     return temp;
   }
 
-  static List<String> getPointerCols(List<String> cols) {
+  static List<String> filterPointerCols(List<String> cols) {
     List<String> temp = [];
     for (var col in cols) {
       if (PatientEntity.pointerCols.contains(col)) {
@@ -61,7 +62,7 @@ class PatientEntity {
     return temp;
   }
 
-  static List<String> getRelationCols(List<String> cols) {
+  static List<String> filterRelationCols(List<String> cols) {
     List<String> temp = [];
     for (var col in cols) {
       if (PatientEntity.relationCols.contains(col)) {
@@ -75,16 +76,17 @@ class PatientEntity {
       [List<String> cols = const []]) async {
     //+++ get family
     List<PatientModel> familyList = [];
-
     if (cols.contains(PatientEntity.family)) {
       QueryBuilder<ParseObject> queryPatient =
           QueryBuilder<ParseObject>(ParseObject(PatientEntity.className));
       queryPatient.whereRelatedTo(
           PatientEntity.family, PatientEntity.className, parseObject.objectId!);
+      queryPatient.keysToReturn([PatientEntity.name]);
       final ParseResponse parseResponse = await queryPatient.query();
       if (parseResponse.success && parseResponse.results != null) {
         for (var e in parseResponse.results!) {
-          familyList.add(PatientEntity().toModelSingleData(e as ParseObject));
+          familyList.add(await PatientEntity()
+              .toModel(e as ParseObject, cols = [PatientEntity.name]));
         }
       }
     }
@@ -126,19 +128,19 @@ class PatientEntity {
     return model;
   }
 
-  PatientModel toModelSingleData(ParseObject parseObject) {
-    PatientModel model = PatientModel(
-      id: parseObject.objectId!,
-      email: parseObject.get(PatientEntity.email),
-      nickname: parseObject.get(PatientEntity.nickname),
-      name: parseObject.get(PatientEntity.name),
-      cpf: parseObject.get(PatientEntity.cpf),
-      phone: parseObject.get(PatientEntity.phone),
-      address: parseObject.get(PatientEntity.address),
-      isFemale: parseObject.get(PatientEntity.isFemale),
-    );
-    return model;
-  }
+  // PatientModel toModelSingleData(ParseObject parseObject) {
+  //   PatientModel model = PatientModel(
+  //     id: parseObject.objectId!,
+  //     email: parseObject.get(PatientEntity.email),
+  //     nickname: parseObject.get(PatientEntity.nickname),
+  //     name: parseObject.get(PatientEntity.name),
+  //     cpf: parseObject.get(PatientEntity.cpf),
+  //     phone: parseObject.get(PatientEntity.phone),
+  //     address: parseObject.get(PatientEntity.address),
+  //     isFemale: parseObject.get(PatientEntity.isFemale),
+  //   );
+  //   return model;
+  // }
 
   Future<ParseObject> toParse(PatientModel model) async {
     final parseObject = ParseObject(PatientEntity.className);

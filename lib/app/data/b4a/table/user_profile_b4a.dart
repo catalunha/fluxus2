@@ -11,14 +11,15 @@ class UserProfileB4a {
     QueryBuilder<ParseObject> query,
     Pagination pagination, [
     List<String> cols = const [],
-    List<String> colsPointer = const [],
-    List<String> colsRelation = const [],
   ]) async {
     query.setAmountToSkip((pagination.page - 1) * pagination.limit);
     query.setLimit(pagination.limit);
-    // query.keysToReturn(cols);
-    // query.includeObject(colsPointer);
-    query.includeObject(['region']);
+    query.keysToReturn([
+      ...UserProfileEntity.filterSingleCols(cols),
+      ...UserProfileEntity.filterPointerCols(cols),
+      ...UserProfileEntity.filterRelationCols(cols)
+    ]);
+    query.includeObject(UserProfileEntity.filterPointerCols(cols));
 
     return query;
   }
@@ -27,20 +28,16 @@ class UserProfileB4a {
     QueryBuilder<ParseObject> query,
     Pagination pagination, [
     List<String> cols = const [],
-    List<String> colsPointer = const [],
-    List<String> colsRelation = const [],
   ]) async {
     QueryBuilder<ParseObject> query2;
-    query2 =
-        await getQueryAll(query, pagination, cols, colsPointer, colsRelation);
+    query2 = await getQueryAll(query, pagination, cols);
     ParseResponse? response;
     try {
       response = await query2.query();
       List<UserProfileModel> listTemp = <UserProfileModel>[];
       if (response.success && response.results != null) {
         for (var element in response.results!) {
-          listTemp.add(await UserProfileEntity()
-              .toModel(element, cols, colsPointer, colsRelation));
+          listTemp.add(await UserProfileEntity().toModel(element, cols));
         }
         return listTemp;
       } else {
@@ -56,17 +53,24 @@ class UserProfileB4a {
     }
   }
 
-  Future<UserProfileModel?> readById(String id) async {
+  Future<UserProfileModel?> readById(String id,
+      [List<String> cols = const []]) async {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(UserProfileEntity.className));
     query.whereEqualTo(UserProfileEntity.id, id);
-    query.includeObject(['region']);
+    query.keysToReturn([
+      ...UserProfileEntity.filterSingleCols(cols),
+      ...UserProfileEntity.filterPointerCols(cols),
+      ...UserProfileEntity.filterRelationCols(cols)
+    ]);
+    query.includeObject(UserProfileEntity.filterPointerCols(cols));
+
     query.first();
     try {
       var response = await query.query();
 
       if (response.success && response.results != null) {
-        return UserProfileEntity().toModel(response.results!.first);
+        return UserProfileEntity().toModel(response.results!.first, cols);
       }
       throw B4aException(
         'Perfil do usuário não encontrado.',

@@ -14,12 +14,11 @@ class PatientB4a {
     query.setLimit(pagination.limit);
 
     query.keysToReturn([
-      ...PatientEntity.getSingleCols(cols),
-      ...PatientEntity.getPointerCols(cols)
+      ...PatientEntity.filterSingleCols(cols),
+      ...PatientEntity.filterPointerCols(cols),
+      ...PatientEntity.filterRelationCols(cols)
     ]);
-
-    query.includeObject(['region']);
-    // query.includeObject(PatientEntity.getPointerCols(cols));
+    query.includeObject(PatientEntity.filterPointerCols(cols));
 
     return query;
   }
@@ -56,8 +55,12 @@ class PatientB4a {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(PatientEntity.className));
     query.whereEqualTo(PatientEntity.id, id);
-    query.keysToReturn(PatientEntity.getSingleCols(cols));
-    query.includeObject(PatientEntity.getPointerCols(cols));
+    query.keysToReturn([
+      ...PatientEntity.filterSingleCols(cols),
+      ...PatientEntity.filterPointerCols(cols),
+      ...PatientEntity.filterRelationCols(cols)
+    ]);
+    query.includeObject(PatientEntity.filterPointerCols(cols));
     query.first();
     try {
       var response = await query.query();

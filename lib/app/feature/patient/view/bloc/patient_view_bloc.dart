@@ -23,8 +23,8 @@ class PatientViewBloc extends Bloc<PatientViewEvent, PatientViewState> {
     print('Staaaaaaaarting....');
     emit(state.copyWith(status: PatientViewStateStatus.loading));
     try {
-      PatientModel? temp = await _repository.readById(
-          state.model.id!, PatientEntity.getAllCols());
+      PatientModel? temp =
+          await _repository.readById(state.model.id!, PatientEntity.allCols);
       emit(state.copyWith(model: temp, status: PatientViewStateStatus.updated));
     } catch (e) {
       //print(e);

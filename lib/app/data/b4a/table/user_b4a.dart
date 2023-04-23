@@ -8,6 +8,7 @@ import '../../../core/models/user_model.dart';
 import '../../../core/models/user_profile_model.dart';
 import '../b4a_exception.dart';
 import '../entity/user_entity.dart';
+import '../entity/user_profile_entity.dart';
 import '../utils/parse_error_translate.dart';
 import 'user_profile_b4a.dart';
 
@@ -172,8 +173,8 @@ class UserB4a {
     try {
       var profileField = parseUser.get(UserEntity.userProfile);
       var profileRepositoryB4a = UserProfileB4a();
-      var profileModel =
-          await profileRepositoryB4a.readById(profileField.objectId);
+      var profileModel = await profileRepositoryB4a.readById(
+          profileField.objectId, UserProfileEntity.allCols);
       return profileModel;
     } catch (_) {
       rethrow;

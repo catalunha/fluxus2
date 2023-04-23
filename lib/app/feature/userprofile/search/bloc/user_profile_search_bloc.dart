@@ -24,6 +24,71 @@ class UserProfileSearchBloc
     on<UserProfileSearchEventFormSubmitted>(
         _onUserProfileSearchEventFormSubmitted);
   }
+  List<String> cols() => [
+        UserProfileEntity.name,
+        UserProfileEntity.phone,
+        UserProfileEntity.email,
+        UserProfileEntity.access,
+        UserProfileEntity.isActive,
+      ];
+
+  FutureOr<void> _onUserProfileSearchEventFormSubmitted(
+      UserProfileSearchEventFormSubmitted event,
+      Emitter<UserProfileSearchState> emit) async {
+    emit(state.copyWith(
+      status: UserProfileSearchStateStatus.loading,
+      firstPage: true,
+      lastPage: false,
+      page: 1,
+      list: [],
+      query:
+          QueryBuilder<ParseObject>(ParseObject(UserProfileEntity.className)),
+    ));
+    try {
+      QueryBuilder<ParseObject> query =
+          QueryBuilder<ParseObject>(ParseObject(UserProfileEntity.className));
+
+      if (event.nameContainsBool) {
+        query.whereContains('name', event.nameContainsString);
+      }
+
+      if (event.cpfEqualToBool) {
+        query.whereEqualTo('register', event.cpfEqualToString);
+      }
+      if (event.phoneEqualToBool) {
+        query.whereEqualTo('phone', event.phoneEqualToString);
+      }
+      query.orderByDescending('updatedAt');
+      print(cols());
+      List<UserProfileModel> listGet = await _userProfileRepository.list(
+        query,
+        Pagination(page: state.page, limit: state.limit),
+        cols(),
+      );
+      emit(state.copyWith(
+        status: UserProfileSearchStateStatus.success,
+        list: listGet,
+        query: query,
+      ));
+    } catch (e) {
+      print(e);
+      emit(
+        state.copyWith(
+            status: UserProfileSearchStateStatus.error,
+            error: 'Erro na montagem da busca'),
+      );
+    }
+  }
+
+  FutureOr<void> _onUserProfileSearchEventUpdateList(
+      UserProfileSearchEventUpdateList event,
+      Emitter<UserProfileSearchState> emit) {
+    int index =
+        state.list.indexWhere((model) => model.id == event.userProfileModel.id);
+    List<UserProfileModel> listTemp = [...state.list];
+    listTemp.replaceRange(index, index + 1, [event.userProfileModel]);
+    emit(state.copyWith(list: listTemp));
+  }
 
   FutureOr<void> _onUserProfileSearchEventPreviousPage(
       UserProfileSearchEventPreviousPage event,
@@ -42,7 +107,7 @@ class UserProfileSearchBloc
       List<UserProfileModel> listGet = await _userProfileRepository.list(
         state.query,
         Pagination(page: state.page, limit: state.limit),
-        // ['email', 'name', 'phone', 'photo', 'isActive'],
+        cols(),
       );
       if (state.page == 1) {
         emit(
@@ -75,12 +140,11 @@ class UserProfileSearchBloc
     List<UserProfileModel> listGet = await _userProfileRepository.list(
       state.query,
       Pagination(page: state.page + 1, limit: state.limit),
-      // ['email', 'name', 'phone', 'photo', 'isActive'],
+      cols(),
     );
     if (listGet.isEmpty) {
       emit(state.copyWith(
         status: UserProfileSearchStateStatus.success,
-        // firstPage: false,
         lastPage: true,
       ));
     } else {
@@ -91,62 +155,5 @@ class UserProfileSearchBloc
         firstPage: false,
       ));
     }
-  }
-
-  FutureOr<void> _onUserProfileSearchEventFormSubmitted(
-      UserProfileSearchEventFormSubmitted event,
-      Emitter<UserProfileSearchState> emit) async {
-    emit(state.copyWith(
-      status: UserProfileSearchStateStatus.loading,
-      firstPage: true,
-      lastPage: false,
-      page: 1,
-      list: [],
-      query:
-          QueryBuilder<ParseObject>(ParseObject(UserProfileEntity.className)),
-    ));
-    try {
-      QueryBuilder<ParseObject> query =
-          QueryBuilder<ParseObject>(ParseObject(UserProfileEntity.className));
-
-      if (event.nameContainsBool) {
-        query.whereContains('name', event.nameContainsString);
-      }
-
-      if (event.cpfEqualToBool) {
-        query.whereEqualTo('register', event.cpfEqualToString);
-      }
-      if (event.phoneEqualToBool) {
-        query.whereEqualTo('phone', event.phoneEqualToString);
-      }
-      query.orderByDescending('updatedAt');
-      List<UserProfileModel> listGet = await _userProfileRepository.list(
-        query,
-        Pagination(page: state.page, limit: state.limit),
-        // ['email', 'name', 'phone', 'photo', 'isActive'],
-      );
-      emit(state.copyWith(
-        status: UserProfileSearchStateStatus.success,
-        list: listGet,
-        query: query,
-      ));
-    } catch (e) {
-      print(e);
-      emit(
-        state.copyWith(
-            status: UserProfileSearchStateStatus.error,
-            error: 'Erro na montagem da busca'),
-      );
-    }
-  }
-
-  FutureOr<void> _onUserProfileSearchEventUpdateList(
-      UserProfileSearchEventUpdateList event,
-      Emitter<UserProfileSearchState> emit) {
-    int index =
-        state.list.indexWhere((model) => model.id == event.userProfileModel.id);
-    List<UserProfileModel> listTemp = [...state.list];
-    listTemp.replaceRange(index, index + 1, [event.userProfileModel]);
-    emit(state.copyWith(list: listTemp));
   }
 }

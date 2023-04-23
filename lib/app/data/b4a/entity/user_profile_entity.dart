@@ -24,21 +24,75 @@ class UserProfileEntity {
   static const String isActive = 'isActive';
   static const String birthday = 'birthday';
   static const String address = 'address';
-  static const String region = 'region';
   static const String access = 'access';
+  static const String region = 'region';
   static const String offices = 'offices';
   static const String expertises = 'expertises';
   static const String procedures = 'procedures';
+  static const List<String> singleCols = [
+    UserProfileEntity.email,
+    UserProfileEntity.nickname,
+    UserProfileEntity.name,
+    UserProfileEntity.cpf,
+    UserProfileEntity.register,
+    UserProfileEntity.phone,
+    UserProfileEntity.photo,
+    UserProfileEntity.isFemale,
+    UserProfileEntity.isActive,
+    UserProfileEntity.birthday,
+    UserProfileEntity.address,
+    UserProfileEntity.access,
+  ];
+  static const List<String> pointerCols = [
+    UserProfileEntity.region,
+  ];
+  static const List<String> relationCols = [
+    UserProfileEntity.offices,
+    UserProfileEntity.expertises,
+    UserProfileEntity.procedures,
+  ];
+  static const List<String> allCols = [
+    ...UserProfileEntity.singleCols,
+    ...UserProfileEntity.pointerCols,
+    ...UserProfileEntity.relationCols
+  ];
+  static List<String> filterSingleCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (UserProfileEntity.singleCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp;
+  }
+
+  static List<String> filterPointerCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (UserProfileEntity.pointerCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp;
+  }
+
+  static List<String> filterRelationCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (UserProfileEntity.relationCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp;
+  }
 
   Future<UserProfileModel> toModel(
     ParseObject parseObject, [
     List<String> cols = const [],
-    List<String> colsPointer = const [],
-    List<String> colsRelation = const [],
   ]) async {
     //+++ get office
     List<OfficeModel> officeList = [];
-    if (colsRelation.contains('UserProfile.offices')) {
+    if (cols.contains('offices')) {
       QueryBuilder<ParseObject> queryOffice =
           QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className));
       queryOffice.whereRelatedTo(UserProfileEntity.offices,
@@ -55,7 +109,7 @@ class UserProfileEntity {
     //+++ get expertise
     List<ExpertiseModel> expertiseList = [];
 
-    if (colsRelation.contains('UserProfile.expertises')) {
+    if (cols.contains('expertises')) {
       QueryBuilder<ParseObject> queryExpertise =
           QueryBuilder<ParseObject>(ParseObject(ExpertiseEntity.className));
       queryExpertise.whereRelatedTo(UserProfileEntity.expertises,
@@ -72,7 +126,7 @@ class UserProfileEntity {
     //+++ get procedure
     List<ProcedureModel> procedureList = [];
 
-    if (colsRelation.contains('UserProfile.procedures')) {
+    if (cols.contains('procedures')) {
       QueryBuilder<ParseObject> queryProcedure =
           QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className));
       queryProcedure.whereRelatedTo(UserProfileEntity.procedures,

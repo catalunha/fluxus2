@@ -117,9 +117,16 @@ class PatientViewView extends StatelessWidget {
                             : dateFormat.format(state.model.birthday!),
                       ),
                       AppTextTitleValue(
-                        title: 'Familiares: ',
+                        title: 'Familiares.name: ',
                         value: state.model.family
                             ?.map((e) => e.name)
+                            .toList()
+                            .join(', '),
+                      ),
+                      AppTextTitleValue(
+                        title: 'Familiares.nickname: ',
+                        value: state.model.family
+                            ?.map((e) => e.nickname)
                             .toList()
                             .join(', '),
                       ),
