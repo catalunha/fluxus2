@@ -9,14 +9,16 @@ class RegionEntity {
   static const String uf = 'uf';
   static const String city = 'city';
   static const String name = 'name';
-  static const List<String> singleCols = [
+  static final List<String> singleCols = [
     RegionEntity.uf,
     RegionEntity.city,
     RegionEntity.name,
-  ];
-  static const List<String> pointerCols = [];
-  static const List<String> relationCols = [];
-  static const List<String> allCols = [
+  ].map((e) => '${RegionEntity.className}.$e').toList();
+  static final List<String> pointerCols =
+      [].map((e) => '${RegionEntity.className}.$e').toList();
+  static final List<String> relationCols =
+      [].map((e) => '${RegionEntity.className}.$e').toList();
+  static final List<String> allCols = [
     ...RegionEntity.singleCols,
     ...RegionEntity.pointerCols,
     ...RegionEntity.relationCols
@@ -28,7 +30,9 @@ class RegionEntity {
         temp.add(col);
       }
     }
-    return temp;
+    return temp
+        .map((e) => e.replaceFirst('${RegionEntity.className}.', ''))
+        .toList();
   }
 
   static List<String> filterPointerCols(List<String> cols) {

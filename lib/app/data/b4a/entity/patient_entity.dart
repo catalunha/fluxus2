@@ -20,8 +20,8 @@ class PatientEntity {
   static const String family = 'family';
   static const String healthPlans = 'healthPlans';
 
-  static const List<String> singleCols = [
-    ${PatientEntity.className}${PatientEntity.email}',
+  static final List<String> singleCols = [
+    PatientEntity.email,
     PatientEntity.name,
     PatientEntity.nickname,
     PatientEntity.cpf,
@@ -29,15 +29,15 @@ class PatientEntity {
     PatientEntity.isFemale,
     PatientEntity.birthday,
     PatientEntity.address,
-  ];
-  static const List<String> pointerCols = [
+  ].map((e) => '${PatientEntity.className}.$e').toList();
+  static final List<String> pointerCols = [
     PatientEntity.region,
-  ];
-  static const List<String> relationCols = [
+  ].map((e) => '${PatientEntity.className}.$e').toList();
+  static final List<String> relationCols = [
     PatientEntity.family,
     PatientEntity.healthPlans
-  ];
-  static const List<String> allCols = [
+  ].map((e) => '${PatientEntity.className}.$e').toList();
+  static final List<String> allCols = [
     ...PatientEntity.singleCols,
     ...PatientEntity.pointerCols,
     ...PatientEntity.relationCols
