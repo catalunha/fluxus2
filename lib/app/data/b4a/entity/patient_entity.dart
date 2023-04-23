@@ -21,7 +21,7 @@ class PatientEntity {
   static const String healthPlans = 'healthPlans';
 
   static const List<String> singleCols = [
-    PatientEntity.email,
+    ${PatientEntity.className}${PatientEntity.email}',
     PatientEntity.name,
     PatientEntity.nickname,
     PatientEntity.cpf,

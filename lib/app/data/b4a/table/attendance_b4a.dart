@@ -8,7 +8,8 @@ import '../utils/parse_error_translate.dart';
 
 class AttendanceB4a {
   Future<QueryBuilder<ParseObject>> getQueryAll(
-      QueryBuilder<ParseObject> query, Pagination pagination) async {
+      QueryBuilder<ParseObject> query, Pagination pagination,
+      [List<String> cols = const []]) async {
     query.setAmountToSkip((pagination.page - 1) * pagination.limit);
     query.setLimit(pagination.limit);
     query.includeObject([
@@ -26,18 +27,17 @@ class AttendanceB4a {
   }
 
   Future<List<AttendanceModel>> list(
-    QueryBuilder<ParseObject> query,
-    Pagination pagination,
-  ) async {
+      QueryBuilder<ParseObject> query, Pagination pagination,
+      [List<String> cols = const []]) async {
     QueryBuilder<ParseObject> query2;
-    query2 = await getQueryAll(query, pagination);
+    query2 = await getQueryAll(query, pagination, cols);
     ParseResponse? parseResponse;
     try {
       parseResponse = await query2.query();
       List<AttendanceModel> listTemp = <AttendanceModel>[];
       if (parseResponse.success && parseResponse.results != null) {
         for (var element in parseResponse.results!) {
-          listTemp.add(await AttendanceEntity().toModel(element));
+          listTemp.add(await AttendanceEntity().toModel(element, cols));
         }
         return listTemp;
       } else {

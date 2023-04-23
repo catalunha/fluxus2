@@ -10,35 +10,83 @@ import 'user_profile_entity.dart';
 class AttendanceEntity {
   static const String className = 'Attendance';
   static const String id = 'objectId';
-  static const String professional = 'professional';
-  static const String procedure = 'procedure';
-  static const String patient = 'patient';
-  static const String healthPlan = 'healthPlan';
   static const String authorizationCode = 'authorizationCode';
   static const String authorizationDateCreated = 'authorizationDateCreated';
   static const String authorizationDateLimit = 'authorizationDateLimit';
   static const String attendance = 'attendance';
   static const String confirmedPresence = 'confirmedPresence';
   static const String description = 'description';
+  static const String professional = 'professional';
+  static const String procedure = 'procedure';
+  static const String patient = 'patient';
+  static const String healthPlan = 'healthPlan';
   static const String status = 'status';
+  static const List<String> singleCols = [
+    AttendanceEntity.authorizationCode,
+    AttendanceEntity.authorizationDateCreated,
+    AttendanceEntity.authorizationDateLimit,
+    AttendanceEntity.attendance,
+    AttendanceEntity.confirmedPresence,
+    AttendanceEntity.description,
+  ];
+  static const List<String> pointerCols = [
+    AttendanceEntity.professional,
+    AttendanceEntity.procedure,
+    AttendanceEntity.patient,
+    AttendanceEntity.healthPlan,
+    AttendanceEntity.status,
+  ];
+  static const List<String> relationCols = [];
+  static const List<String> allCols = [
+    ...PatientEntity.singleCols,
+    ...PatientEntity.pointerCols,
+    ...PatientEntity.relationCols
+  ];
+  static List<String> filterSingleCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (PatientEntity.singleCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp;
+  }
 
-  Future<AttendanceModel> toModel(
-    ParseObject parseObject, [
-    List<String> excludeRelations = const [],
-  ]) async {
+  static List<String> filterPointerCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (PatientEntity.pointerCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp;
+  }
+
+  static List<String> filterRelationCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (PatientEntity.relationCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp;
+  }
+
+  Future<AttendanceModel> toModel(ParseObject parseObject,
+      [List<String> cols = const []]) async {
     AttendanceModel model = AttendanceModel(
       id: parseObject.objectId!,
       professional: parseObject.get(AttendanceEntity.professional) != null
-          ? await UserProfileEntity().toModel(
-              parseObject.get(AttendanceEntity.professional), excludeRelations)
+          ? await UserProfileEntity()
+              .toModel(parseObject.get(AttendanceEntity.professional), cols)
           : null,
       procedure: parseObject.get(AttendanceEntity.procedure) != null
           ? ProcedureEntity()
               .toModel(parseObject.get(AttendanceEntity.procedure))
           : null,
       patient: parseObject.get(AttendanceEntity.patient) != null
-          ? await PatientEntity().toModel(
-              parseObject.get(AttendanceEntity.patient), excludeRelations)
+          ? await PatientEntity()
+              .toModel(parseObject.get(AttendanceEntity.patient), cols)
           : null,
       healthPlan: parseObject.get(AttendanceEntity.healthPlan) != null
           ? HealthPlanEntity()
