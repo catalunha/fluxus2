@@ -62,7 +62,7 @@ class _UserProfileAccessViewState extends State<UserProfileAccessView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editar este operador'),
+        title: const Text('Atualizar este operador'),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.cloud_upload),
@@ -96,6 +96,10 @@ class _UserProfileAccessViewState extends State<UserProfileAccessView> {
                 .add(UserProfileSearchEventUpdateList(state.model));
             Navigator.of(context).pop();
           }
+          if (state.status == UserProfileAccessStateStatus.updated) {
+            Navigator.of(context).pop();
+            isActive = state.model.isActive;
+          }
           if (state.status == UserProfileAccessStateStatus.loading) {
             await showDialog(
               barrierDismissible: false,
@@ -119,28 +123,49 @@ class _UserProfileAccessViewState extends State<UserProfileAccessView> {
                       //   'Id: ${widget._userProfileAccessController.userProfile!.id}',
                       // ),
                       const SizedBox(height: 5),
-                      AppImageShow(
-                        photoUrl: widget.userProfileModel.photo,
+                      BlocBuilder<UserProfileAccessBloc,
+                          UserProfileAccessState>(
+                        builder: (context, state) {
+                          return AppImageShow(
+                            photoUrl: state.model.photo,
+                          );
+                        },
                       ),
                       AppTextTitleValue(
                         title: 'Email: ',
                         value: widget.userProfileModel.email,
                         inColumn: true,
                       ),
-                      AppTextTitleValue(
-                        inColumn: true,
-                        title: 'Nome: ',
-                        value: '${widget.userProfileModel.name}',
+                      BlocBuilder<UserProfileAccessBloc,
+                          UserProfileAccessState>(
+                        builder: (context, state) {
+                          return AppTextTitleValue(
+                            inColumn: true,
+                            title: 'Nome: ',
+                            value: '${state.model.name}',
+                          );
+                        },
                       ),
-                      AppTextTitleValue(
-                        title: 'Telefone: ',
-                        value: '${widget.userProfileModel.phone}',
+                      BlocBuilder<UserProfileAccessBloc,
+                          UserProfileAccessState>(
+                        builder: (context, state) {
+                          return AppTextTitleValue(
+                            inColumn: true,
+                            title: 'Nome curto: ',
+                            value: '${state.model.nickname}',
+                          );
+                        },
+                      ),
+                      BlocBuilder<UserProfileAccessBloc,
+                          UserProfileAccessState>(
+                        builder: (context, state) {
+                          return AppTextTitleValue(
+                            title: 'Telefone: ',
+                            value: '${state.model.phone}',
+                          );
+                        },
                       ),
 
-                      AppTextTitleValue(
-                        title: 'CPF: ',
-                        value: '${widget.userProfileModel.cpf}',
-                      ),
                       const Divider(
                         thickness: 2,
                       ),

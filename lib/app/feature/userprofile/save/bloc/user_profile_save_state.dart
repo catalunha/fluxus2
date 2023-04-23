@@ -3,7 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../core/models/region_model.dart';
 import '../../../../core/models/user_model.dart';
 
-enum UserProfileSaveStateStatus { initial, loading, success, error }
+enum UserProfileSaveStateStatus { initial, updated, loading, success, error }
 
 class UserProfileSaveState {
   final UserProfileSaveStateStatus status;

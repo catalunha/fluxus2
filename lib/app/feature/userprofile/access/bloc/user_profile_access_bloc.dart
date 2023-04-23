@@ -7,6 +7,7 @@ import '../../../../core/models/office_model.dart';
 import '../../../../core/models/procedure_model.dart';
 import '../../../../core/models/user_profile_model.dart';
 import '../../../../core/repositories/user_profile_repository.dart';
+import '../../../../data/b4a/entity/user_profile_entity.dart';
 import 'user_profile_access_event.dart';
 import 'user_profile_access_state.dart';
 
@@ -19,6 +20,8 @@ class UserProfileAccessBloc
       required UserProfileRepository repository})
       : _repository = repository,
         super(UserProfileAccessState.initial(model)) {
+    on<UserProfileAccessEventStart>(_onUserProfileAccessEventStart);
+
     on<UserProfileAccessEventFormSubmitted>(
         _onUserProfileAccessEventFormSubmitted);
     on<UserProfileAccessEventUpdateAccess>(
@@ -34,6 +37,32 @@ class UserProfileAccessBloc
         _onUserProfileAccessEventAddProcedure);
     on<UserProfileAccessEventRemoveProcedure>(
         _onUserProfileAccessEventRemoveProcedure);
+    add(UserProfileAccessEventStart());
+  }
+  FutureOr<void> _onUserProfileAccessEventStart(
+      UserProfileAccessEventStart event,
+      Emitter<UserProfileAccessState> emit) async {
+    print('UserProfileAccessBloc Staaaaaaaarting....');
+    emit(state.copyWith(status: UserProfileAccessStateStatus.loading));
+    try {
+      UserProfileModel? temp =
+          await _repository.readById(state.model.id, UserProfileEntity.allCols);
+      emit(state.copyWith(
+        model: temp,
+        status: UserProfileAccessStateStatus.updated,
+        officesOriginal: temp!.offices ?? [],
+        officesUpdated: temp.offices ?? [],
+        expertisesOriginal: temp.expertises ?? [],
+        expertisesUpdated: temp.expertises ?? [],
+        proceduresOriginal: temp.procedures ?? [],
+        proceduresUpdated: temp.procedures ?? [],
+      ));
+    } catch (e) {
+      //print(e);
+      emit(state.copyWith(
+          status: UserProfileAccessStateStatus.error,
+          error: 'Erro ao buscar dados do paciente'));
+    }
   }
 
   FutureOr<void> _onUserProfileAccessEventFormSubmitted(

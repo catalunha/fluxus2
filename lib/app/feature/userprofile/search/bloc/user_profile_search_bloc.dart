@@ -26,6 +26,7 @@ class UserProfileSearchBloc
   }
   List<String> cols() => [
         UserProfileEntity.name,
+        UserProfileEntity.nickname,
         UserProfileEntity.phone,
         UserProfileEntity.email,
         UserProfileEntity.access,

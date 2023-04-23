@@ -49,6 +49,10 @@ class UserProfileCard extends StatelessWidget {
                       value: '${model.name}',
                     ),
                     AppTextTitleValue(
+                      title: 'Nome curto: ',
+                      value: '${model.nickname}',
+                    ),
+                    AppTextTitleValue(
                       title: 'Telefone: ',
                       value: '${model.phone}',
                     ),

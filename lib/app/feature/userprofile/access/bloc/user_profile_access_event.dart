@@ -4,6 +4,8 @@ import '../../../../core/models/procedure_model.dart';
 
 abstract class UserProfileAccessEvent {}
 
+class UserProfileAccessEventStart extends UserProfileAccessEvent {}
+
 class UserProfileAccessEventFormSubmitted extends UserProfileAccessEvent {
   final bool isActive;
   UserProfileAccessEventFormSubmitted({

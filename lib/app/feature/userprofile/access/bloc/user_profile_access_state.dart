@@ -5,7 +5,7 @@ import '../../../../core/models/office_model.dart';
 import '../../../../core/models/procedure_model.dart';
 import '../../../../core/models/user_profile_model.dart';
 
-enum UserProfileAccessStateStatus { initial, loading, success, error }
+enum UserProfileAccessStateStatus { initial, updated, loading, success, error }
 
 class UserProfileAccessState {
   final UserProfileAccessStateStatus status;
