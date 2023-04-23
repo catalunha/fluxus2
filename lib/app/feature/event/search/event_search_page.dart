@@ -320,7 +320,7 @@ class _SearchPageState extends State<EventSearchView> {
                                     },
                                     icon: const Icon(Icons.search),
                                   ),
-                                  Text('${equalsPatient?.nickname}')
+                                  Text('${equalsPatient?.name}')
                                 ],
                               ),
                             ),
