@@ -24,14 +24,26 @@ class UserProfileSearchBloc
     on<UserProfileSearchEventFormSubmitted>(
         _onUserProfileSearchEventFormSubmitted);
   }
-  List<String> cols() => [
-        UserProfileEntity.name,
-        UserProfileEntity.nickname,
-        UserProfileEntity.phone,
-        UserProfileEntity.email,
-        UserProfileEntity.access,
-        UserProfileEntity.isActive,
-      ];
+  // List<String> cols => [
+  //       UserProfileEntity.name,
+  //       UserProfileEntity.nickname,
+  //       UserProfileEntity.phone,
+  //       UserProfileEntity.email,
+  //       UserProfileEntity.access,
+  //       UserProfileEntity.isActive,
+  //     ];
+  final List<String> cols = [
+    ...UserProfileEntity.selectedCols([
+      UserProfileEntity.name,
+      UserProfileEntity.nickname,
+      UserProfileEntity.phone,
+      UserProfileEntity.email,
+      UserProfileEntity.access,
+      UserProfileEntity.isActive,
+      // UserProfileEntity.region,
+    ]),
+    // ...HealthPlanEntity.selectedCols([HealthPlanEntity.code]),
+  ];
 
   FutureOr<void> _onUserProfileSearchEventFormSubmitted(
       UserProfileSearchEventFormSubmitted event,
@@ -60,11 +72,11 @@ class UserProfileSearchBloc
         query.whereEqualTo('phone', event.phoneEqualToString);
       }
       query.orderByDescending('updatedAt');
-      print(cols());
+      print(cols);
       List<UserProfileModel> listGet = await _userProfileRepository.list(
         query,
         Pagination(page: state.page, limit: state.limit),
-        cols(),
+        cols,
       );
       emit(state.copyWith(
         status: UserProfileSearchStateStatus.success,
@@ -108,7 +120,7 @@ class UserProfileSearchBloc
       List<UserProfileModel> listGet = await _userProfileRepository.list(
         state.query,
         Pagination(page: state.page, limit: state.limit),
-        cols(),
+        cols,
       );
       if (state.page == 1) {
         emit(
@@ -141,7 +153,7 @@ class UserProfileSearchBloc
     List<UserProfileModel> listGet = await _userProfileRepository.list(
       state.query,
       Pagination(page: state.page + 1, limit: state.limit),
-      cols(),
+      cols,
     );
     if (listGet.isEmpty) {
       emit(state.copyWith(

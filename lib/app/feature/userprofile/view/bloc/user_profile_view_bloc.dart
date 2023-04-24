@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 
 import '../../../../core/models/user_profile_model.dart';
 import '../../../../core/repositories/user_profile_repository.dart';
+import '../../../../data/b4a/entity/office_entity.dart';
 import '../../../../data/b4a/entity/user_profile_entity.dart';
 import 'user_profile_view_event.dart';
 import 'user_profile_view_state.dart';
@@ -19,13 +20,16 @@ class UserProfileViewBloc
     on<UserProfileViewEventStart>(_onUserProfileViewEventStart);
     add(UserProfileViewEventStart());
   }
+  final List<String> cols = [
+    ...UserProfileEntity.allCols,
+    ...OfficeEntity.selectedCols([OfficeEntity.name]),
+  ];
   FutureOr<void> _onUserProfileViewEventStart(UserProfileViewEventStart event,
       Emitter<UserProfileViewState> emit) async {
     print('Staaaaaaaarting....');
     emit(state.copyWith(status: UserProfileViewStateStatus.loading));
     try {
-      UserProfileModel? temp =
-          await _repository.readById(state.model.id, UserProfileEntity.allCols);
+      UserProfileModel? temp = await _repository.readById(state.model.id, cols);
       emit(state.copyWith(
           model: temp, status: UserProfileViewStateStatus.updated));
     } catch (e) {

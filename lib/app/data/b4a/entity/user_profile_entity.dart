@@ -117,6 +117,7 @@ class UserProfileEntity {
       List<String> colsOffices = cols
           .where((e) => e.startsWith('${OfficeEntity.className}.'))
           .toList();
+      print('colsOffices: $colsOffices');
       queryOffice.keysToReturn([
         ...OfficeEntity.filterSingleCols(colsOffices),
         ...OfficeEntity.filterPointerCols(colsOffices),
