@@ -20,6 +20,10 @@ class PatientEntity {
   static const String family = 'family';
   static const String healthPlans = 'healthPlans';
 
+  static List<String> selectedCols(List<String> cols) {
+    return cols.map((e) => '${PatientEntity.className}.$e').toList();
+  }
+
   static final List<String> singleCols = [
     PatientEntity.email,
     PatientEntity.name,
@@ -30,18 +34,22 @@ class PatientEntity {
     PatientEntity.birthday,
     PatientEntity.address,
   ].map((e) => '${PatientEntity.className}.$e').toList();
+
   static final List<String> pointerCols = [
     PatientEntity.region,
   ].map((e) => '${PatientEntity.className}.$e').toList();
+
   static final List<String> relationCols = [
     PatientEntity.family,
     PatientEntity.healthPlans
   ].map((e) => '${PatientEntity.className}.$e').toList();
+
   static final List<String> allCols = [
     ...PatientEntity.singleCols,
     ...PatientEntity.pointerCols,
     ...PatientEntity.relationCols
   ];
+
   static List<String> filterSingleCols(List<String> cols) {
     List<String> temp = [];
     for (var col in cols) {
@@ -49,7 +57,9 @@ class PatientEntity {
         temp.add(col);
       }
     }
-    return temp;
+    return temp
+        .map((e) => e.replaceFirst('${PatientEntity.className}.', ''))
+        .toList();
   }
 
   static List<String> filterPointerCols(List<String> cols) {
@@ -59,7 +69,9 @@ class PatientEntity {
         temp.add(col);
       }
     }
-    return temp;
+    return temp
+        .map((e) => e.replaceFirst('${PatientEntity.className}.', ''))
+        .toList();
   }
 
   static List<String> filterRelationCols(List<String> cols) {
@@ -69,14 +81,17 @@ class PatientEntity {
         temp.add(col);
       }
     }
-    return temp;
+    return temp
+        .map((e) => e.replaceFirst('${PatientEntity.className}.', ''))
+        .toList();
   }
 
   Future<PatientModel> toModel(ParseObject parseObject,
       [List<String> cols = const []]) async {
+    print('cols: $cols');
     //+++ get family
     List<PatientModel> familyList = [];
-    if (cols.contains(PatientEntity.family)) {
+    if (cols.contains('${PatientEntity.className}.${PatientEntity.family}')) {
       QueryBuilder<ParseObject> queryPatient =
           QueryBuilder<ParseObject>(ParseObject(PatientEntity.className));
       queryPatient.whereRelatedTo(
@@ -85,8 +100,8 @@ class PatientEntity {
       final ParseResponse parseResponse = await queryPatient.query();
       if (parseResponse.success && parseResponse.results != null) {
         for (var e in parseResponse.results!) {
-          familyList.add(await PatientEntity()
-              .toModel(e as ParseObject, cols = [PatientEntity.name]));
+          familyList.add(await PatientEntity().toModel(e as ParseObject,
+              ['${PatientEntity.className}.${PatientEntity.name}']));
         }
       }
     }
@@ -94,11 +109,22 @@ class PatientEntity {
     //--- get family
     //+++ get healthPlan
     List<HealthPlanModel> healthPlanList = [];
-    if (cols.contains(PatientEntity.healthPlans)) {
+    if (cols
+        .contains('${PatientEntity.className}.${PatientEntity.healthPlans}')) {
       QueryBuilder<ParseObject> queryHealthPlanType =
           QueryBuilder<ParseObject>(ParseObject(HealthPlanEntity.className));
       queryHealthPlanType.whereRelatedTo(PatientEntity.healthPlans,
           PatientEntity.className, parseObject.objectId!);
+      List<String> colsHearhPlan = cols
+          .where((e) => e.startsWith('${HealthPlanEntity.className}.'))
+          .toList();
+      queryHealthPlanType.keysToReturn([
+        ...HealthPlanEntity.filterSingleCols(colsHearhPlan),
+        ...HealthPlanEntity.filterPointerCols(colsHearhPlan),
+        ...HealthPlanEntity.filterRelationCols(colsHearhPlan)
+      ]);
+      queryHealthPlanType
+          .includeObject(HealthPlanEntity.filterPointerCols(colsHearhPlan));
       final ParseResponse parseResponse = await queryHealthPlanType.query();
       if (parseResponse.success && parseResponse.results != null) {
         for (var e in parseResponse.results!) {
@@ -120,7 +146,7 @@ class PatientEntity {
       isFemale: parseObject.get(PatientEntity.isFemale),
       birthday: parseObject.get<DateTime>(PatientEntity.birthday)?.toLocal(),
       region: parseObject.get(PatientEntity.region) != null
-          ? RegionEntity().toModel(parseObject.get(PatientEntity.region))
+          ? RegionEntity().toModel(parseObject.get(PatientEntity.region), cols)
           : null,
       family: familyList,
       healthPlans: healthPlanList,

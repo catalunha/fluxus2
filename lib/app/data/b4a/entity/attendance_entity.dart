@@ -37,7 +37,7 @@ class AttendanceEntity {
     AttendanceEntity.status,
   ];
   static const List<String> relationCols = [];
-  static const List<String> allCols = [
+  static final List<String> allCols = [
     ...PatientEntity.singleCols,
     ...PatientEntity.pointerCols,
     ...PatientEntity.relationCols

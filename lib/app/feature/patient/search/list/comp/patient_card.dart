@@ -66,8 +66,19 @@ class PatientCard extends StatelessWidget {
               value: model.family?.map((e) => e.name).toList().join(', '),
             ),
             AppTextTitleValue(
-              title: 'Plano de Saúde: ',
+              title: 'Plano de Saúde id: ',
+              value: model.healthPlans?.map((e) => e.id).toList().join(', '),
+            ),
+            AppTextTitleValue(
+              title: 'Plano de Saúde code: ',
               value: model.healthPlans?.map((e) => e.code).toList().join(', '),
+            ),
+            AppTextTitleValue(
+              title: 'Plano de Saúde desc: ',
+              value: model.healthPlans
+                  ?.map((e) => e.description)
+                  .toList()
+                  .join(', '),
             ),
             Center(
               child: Wrap(

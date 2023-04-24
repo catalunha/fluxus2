@@ -55,13 +55,16 @@ class RegionEntity {
     return temp;
   }
 
-  RegionModel toModel(ParseObject parseObject) {
+  RegionModel toModel(ParseObject parseObject, [List<String> cols = const []]) {
     RegionModel model = RegionModel(
-      id: parseObject.objectId!,
-      uf: parseObject.get(RegionEntity.uf),
-      city: parseObject.get(RegionEntity.city),
-      name: parseObject.get(RegionEntity.name),
-    );
+        id: parseObject.objectId!,
+        uf: parseObject.get(RegionEntity.uf),
+        city: parseObject.get(RegionEntity.city),
+        name: parseObject.get(RegionEntity.name)
+        // name: RegionEntity.relationCols.contains(RegionEntity.name)
+        //     ? parseObject.get(RegionEntity.name)
+        //     : null,
+        );
     return model;
   }
 

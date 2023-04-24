@@ -5,8 +5,8 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../../core/models/patient_model.dart';
 import '../../../../core/repositories/patient_repository.dart';
+import '../../../../data/b4a/entity/healthplan_entity.dart';
 import '../../../../data/b4a/entity/patient_entity.dart';
-import '../../../../data/b4a/entity/region_entity.dart';
 import '../../../../data/utils/pagination.dart';
 import 'patient_search_event.dart';
 import 'patient_search_state.dart';
@@ -23,19 +23,15 @@ class PatientSearchBloc extends Bloc<PatientSearchEvent, PatientSearchState> {
     on<PatientSearchEventUpdateList>(_onPatientSearchEventUpdateList);
     on<PatientSearchEventRemoveFromList>(_onPatientSearchEventRemoveFromList);
   }
-  List<String> cols() => [
-        [PatientEntity.name, PatientEntity.region]
-            .map((e) => '${PatientEntity.className}.$e')
-            .toList()
-            .join(),
-        [RegionEntity.name]
-            .map((e) => '${RegionEntity.className}.$e')
-            .toList()
-            .join()
-      ];
+  final List<String> cols = [
+    ...PatientEntity.selectedCols([
+      PatientEntity.name,
+      PatientEntity.region,
+      PatientEntity.healthPlans,
+    ]),
+    ...HealthPlanEntity.selectedCols([HealthPlanEntity.code]),
+  ];
 
-  // // static final List<String> _cols = ['name', 'region'];
-  // static const List<String> _cols = PatientEntity.allCols;
   FutureOr<void> _onPatientSearchEventFormSubmitted(
       PatientSearchEventFormSubmitted event,
       Emitter<PatientSearchState> emit) async {
@@ -62,7 +58,7 @@ class PatientSearchBloc extends Bloc<PatientSearchEvent, PatientSearchState> {
       List<PatientModel> listGet = await _userProfileRepository.list(
         query,
         Pagination(page: state.page, limit: state.limit),
-        cols(),
+        cols,
       );
       emit(state.copyWith(
         status: PatientSearchStateStatus.success,
@@ -116,7 +112,7 @@ class PatientSearchBloc extends Bloc<PatientSearchEvent, PatientSearchState> {
       List<PatientModel> listGet = await _userProfileRepository.list(
         state.query,
         Pagination(page: state.page, limit: state.limit),
-        cols(),
+        cols,
       );
       if (state.page == 1) {
         emit(
@@ -148,7 +144,7 @@ class PatientSearchBloc extends Bloc<PatientSearchEvent, PatientSearchState> {
     List<PatientModel> listGet = await _userProfileRepository.list(
       state.query,
       Pagination(page: state.page + 1, limit: state.limit),
-      cols(),
+      cols,
     );
     if (listGet.isEmpty) {
       emit(state.copyWith(

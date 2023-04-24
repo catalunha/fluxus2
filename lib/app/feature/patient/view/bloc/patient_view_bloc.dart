@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 
 import '../../../../core/models/patient_model.dart';
 import '../../../../core/repositories/patient_repository.dart';
+import '../../../../data/b4a/entity/healthplan_entity.dart';
 import '../../../../data/b4a/entity/patient_entity.dart';
 import 'patient_view_event.dart';
 import 'patient_view_state.dart';
@@ -18,13 +19,18 @@ class PatientViewBloc extends Bloc<PatientViewEvent, PatientViewState> {
     on<PatientViewEventStart>(_onPatientViewEventStart);
     add(PatientViewEventStart());
   }
+  List<String> cols = [
+    ...PatientEntity.allCols,
+    ...HealthPlanEntity.selectedCols([
+      HealthPlanEntity.code,
+      HealthPlanEntity.description,
+    ]),
+  ];
   FutureOr<void> _onPatientViewEventStart(
       PatientViewEventStart event, Emitter<PatientViewState> emit) async {
-    print('Staaaaaaaarting....');
     emit(state.copyWith(status: PatientViewStateStatus.loading));
     try {
-      PatientModel? temp =
-          await _repository.readById(state.model.id!, PatientEntity.allCols);
+      PatientModel? temp = await _repository.readById(state.model.id!, cols);
       emit(state.copyWith(model: temp, status: PatientViewStateStatus.updated));
     } catch (e) {
       //print(e);

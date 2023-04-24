@@ -11,8 +11,68 @@ class HealthPlanEntity {
   static const String due = 'due';
   static const String description = 'description';
   static const String healthPlanType = 'healthPlanType';
+  static List<String> selectedCols(List<String> cols) {
+    return cols.map((e) => '${HealthPlanEntity.className}.$e').toList();
+  }
 
-  HealthPlanModel toModel(ParseObject parseObject) {
+  static final List<String> singleCols = [
+    HealthPlanEntity.code,
+    HealthPlanEntity.due,
+    HealthPlanEntity.description,
+    HealthPlanEntity.healthPlanType,
+  ].map((e) => '${HealthPlanEntity.className}.$e').toList();
+
+  static final List<String> pointerCols = [
+    HealthPlanEntity.healthPlanType,
+  ].map((e) => '${HealthPlanEntity.className}.$e').toList();
+
+  static final List<String> relationCols =
+      [].map((e) => '${HealthPlanEntity.className}.$e').toList();
+
+  static final List<String> allCols = [
+    ...HealthPlanEntity.singleCols,
+    ...HealthPlanEntity.pointerCols,
+    ...HealthPlanEntity.relationCols
+  ];
+
+  static List<String> filterSingleCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (HealthPlanEntity.singleCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp
+        .map((e) => e.replaceFirst('${HealthPlanEntity.className}.', ''))
+        .toList();
+  }
+
+  static List<String> filterPointerCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (HealthPlanEntity.pointerCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp
+        .map((e) => e.replaceFirst('${HealthPlanEntity.className}.', ''))
+        .toList();
+  }
+
+  static List<String> filterRelationCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (HealthPlanEntity.relationCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp
+        .map((e) => e.replaceFirst('${HealthPlanEntity.className}.', ''))
+        .toList();
+  }
+
+  HealthPlanModel toModel(ParseObject parseObject,
+      [List<String> cols = const []]) {
     HealthPlanModel model = HealthPlanModel(
       id: parseObject.objectId!,
       code: parseObject.get(HealthPlanEntity.code),
