@@ -7,6 +7,8 @@ import '../../../../core/models/office_model.dart';
 import '../../../../core/models/procedure_model.dart';
 import '../../../../core/models/user_profile_model.dart';
 import '../../../../core/repositories/user_profile_repository.dart';
+import '../../../../data/b4a/entity/expertise_entity.dart';
+import '../../../../data/b4a/entity/office_entity.dart';
 import '../../../../data/b4a/entity/user_profile_entity.dart';
 import 'user_profile_access_event.dart';
 import 'user_profile_access_state.dart';
@@ -39,14 +41,18 @@ class UserProfileAccessBloc
         _onUserProfileAccessEventRemoveProcedure);
     add(UserProfileAccessEventStart());
   }
+  final List<String> cols = [
+    ...UserProfileEntity.allCols,
+    ...OfficeEntity.selectedCols([OfficeEntity.name]),
+    ...ExpertiseEntity.selectedCols([ExpertiseEntity.name]),
+  ];
   FutureOr<void> _onUserProfileAccessEventStart(
       UserProfileAccessEventStart event,
       Emitter<UserProfileAccessState> emit) async {
     print('UserProfileAccessBloc Staaaaaaaarting....');
     emit(state.copyWith(status: UserProfileAccessStateStatus.loading));
     try {
-      UserProfileModel? temp =
-          await _repository.readById(state.model.id, UserProfileEntity.allCols);
+      UserProfileModel? temp = await _repository.readById(state.model.id, cols);
       emit(state.copyWith(
         model: temp,
         status: UserProfileAccessStateStatus.updated,
