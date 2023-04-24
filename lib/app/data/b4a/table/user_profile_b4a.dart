@@ -58,6 +58,7 @@ class UserProfileB4a {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(UserProfileEntity.className));
     query.whereEqualTo(UserProfileEntity.id, id);
+    print('readById: $cols');
     query.keysToReturn([
       ...UserProfileEntity.filterSingleCols(cols),
       ...UserProfileEntity.filterPointerCols(cols),
@@ -76,7 +77,8 @@ class UserProfileB4a {
         'Perfil do usuário não encontrado.',
         where: 'UserProfileRepositoryB4a.readById()',
       );
-    } catch (_) {
+    } catch (e) {
+      print(e);
       rethrow;
     }
   }

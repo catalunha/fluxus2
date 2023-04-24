@@ -7,6 +7,62 @@ class ExpertiseEntity {
   static const String id = 'objectId';
   static const String name = 'name';
 
+  static List<String> selectedCols(List<String> cols) {
+    return cols.map((e) => '${ExpertiseEntity.className}.$e').toList();
+  }
+
+  static final List<String> singleCols = [
+    ExpertiseEntity.name,
+  ].map((e) => '${ExpertiseEntity.className}.$e').toList();
+
+  static final List<String> pointerCols =
+      [].map((e) => '${ExpertiseEntity.className}.$e').toList();
+
+  static final List<String> relationCols =
+      [].map((e) => '${ExpertiseEntity.className}.$e').toList();
+
+  static final List<String> allCols = [
+    ...ExpertiseEntity.singleCols,
+    ...ExpertiseEntity.pointerCols,
+    ...ExpertiseEntity.relationCols
+  ];
+
+  static List<String> filterSingleCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (ExpertiseEntity.singleCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp
+        .map((e) => e.replaceFirst('${ExpertiseEntity.className}.', ''))
+        .toList();
+  }
+
+  static List<String> filterPointerCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (ExpertiseEntity.pointerCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp
+        .map((e) => e.replaceFirst('${ExpertiseEntity.className}.', ''))
+        .toList();
+  }
+
+  static List<String> filterRelationCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (ExpertiseEntity.relationCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp
+        .map((e) => e.replaceFirst('${ExpertiseEntity.className}.', ''))
+        .toList();
+  }
+
   ExpertiseModel toModel(ParseObject parseObject) {
     ExpertiseModel model = ExpertiseModel(
       id: parseObject.objectId!,

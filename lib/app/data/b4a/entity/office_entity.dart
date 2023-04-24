@@ -7,6 +7,62 @@ class OfficeEntity {
   static const String id = 'objectId';
   static const String name = 'name';
 
+  static List<String> selectedCols(List<String> cols) {
+    return cols.map((e) => '${OfficeEntity.className}.$e').toList();
+  }
+
+  static final List<String> singleCols = [
+    OfficeEntity.name,
+  ].map((e) => '${OfficeEntity.className}.$e').toList();
+
+  static final List<String> pointerCols =
+      [].map((e) => '${OfficeEntity.className}.$e').toList();
+
+  static final List<String> relationCols =
+      [].map((e) => '${OfficeEntity.className}.$e').toList();
+
+  static final List<String> allCols = [
+    ...OfficeEntity.singleCols,
+    ...OfficeEntity.pointerCols,
+    ...OfficeEntity.relationCols
+  ];
+
+  static List<String> filterSingleCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (OfficeEntity.singleCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp
+        .map((e) => e.replaceFirst('${OfficeEntity.className}.', ''))
+        .toList();
+  }
+
+  static List<String> filterPointerCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (OfficeEntity.pointerCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp
+        .map((e) => e.replaceFirst('${OfficeEntity.className}.', ''))
+        .toList();
+  }
+
+  static List<String> filterRelationCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (OfficeEntity.relationCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp
+        .map((e) => e.replaceFirst('${OfficeEntity.className}.', ''))
+        .toList();
+  }
+
   OfficeModel toModel(ParseObject parseObject) {
     OfficeModel model = OfficeModel(
       id: parseObject.objectId!,

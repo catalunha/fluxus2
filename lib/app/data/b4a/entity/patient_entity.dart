@@ -115,16 +115,16 @@ class PatientEntity {
           QueryBuilder<ParseObject>(ParseObject(HealthPlanEntity.className));
       queryHealthPlanType.whereRelatedTo(PatientEntity.healthPlans,
           PatientEntity.className, parseObject.objectId!);
-      List<String> colsHearhPlan = cols
+      List<String> colsHealthPlans = cols
           .where((e) => e.startsWith('${HealthPlanEntity.className}.'))
           .toList();
       queryHealthPlanType.keysToReturn([
-        ...HealthPlanEntity.filterSingleCols(colsHearhPlan),
-        ...HealthPlanEntity.filterPointerCols(colsHearhPlan),
-        ...HealthPlanEntity.filterRelationCols(colsHearhPlan)
+        ...HealthPlanEntity.filterSingleCols(colsHealthPlans),
+        ...HealthPlanEntity.filterPointerCols(colsHealthPlans),
+        ...HealthPlanEntity.filterRelationCols(colsHealthPlans)
       ]);
       queryHealthPlanType
-          .includeObject(HealthPlanEntity.filterPointerCols(colsHearhPlan));
+          .includeObject(HealthPlanEntity.filterPointerCols(colsHealthPlans));
       final ParseResponse parseResponse = await queryHealthPlanType.query();
       if (parseResponse.success && parseResponse.results != null) {
         for (var e in parseResponse.results!) {
