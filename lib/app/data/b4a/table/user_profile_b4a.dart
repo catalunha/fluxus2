@@ -59,8 +59,6 @@ class UserProfileB4a {
     print('readById: $cols');
     query.keysToReturn([
       ...UserProfileEntity.filterSingleCols(cols),
-      ...UserProfileEntity.filterPointerCols(cols),
-      ...UserProfileEntity.filterRelationCols(cols)
     ]);
     query.includeObject(UserProfileEntity.filterPointerCols(cols));
 

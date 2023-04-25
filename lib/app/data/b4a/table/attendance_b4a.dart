@@ -40,6 +40,31 @@ class AttendanceB4a {
     return query;
   }
 
+  Future<AttendanceModel?> readById(String id,
+      [List<String> cols = const []]) async {
+    QueryBuilder<ParseObject> query =
+        QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
+    query.whereEqualTo(AttendanceEntity.id, id);
+    query.keysToReturn([
+      ...AttendanceEntity.filterSingleCols(cols),
+    ]);
+    query.includeObject(AttendanceEntity.filterPointerCols(cols));
+    query.first();
+    try {
+      var response = await query.query();
+
+      if (response.success && response.results != null) {
+        return AttendanceEntity().toModel(response.results!.first, cols);
+      }
+      throw B4aException(
+        'Perfil do usuário não encontrado.',
+        where: 'AttendanceRepositoryB4a.readById()',
+      );
+    } catch (_) {
+      rethrow;
+    }
+  }
+
   Future<List<AttendanceModel>> list(
       QueryBuilder<ParseObject> query, Pagination pagination,
       [List<String> cols = const []]) async {

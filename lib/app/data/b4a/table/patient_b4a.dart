@@ -55,8 +55,6 @@ class PatientB4a {
     query.whereEqualTo(PatientEntity.id, id);
     query.keysToReturn([
       ...PatientEntity.filterSingleCols(cols),
-      ...PatientEntity.filterPointerCols(cols),
-      ...PatientEntity.filterRelationCols(cols)
     ]);
     query.includeObject(PatientEntity.filterPointerCols(cols));
     query.first();
