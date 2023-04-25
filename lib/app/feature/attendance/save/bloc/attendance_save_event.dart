@@ -5,6 +5,8 @@ import '../../../../core/models/user_profile_model.dart';
 
 abstract class AttendanceSaveEvent {}
 
+class AttendanceSaveEventStart extends AttendanceSaveEvent {}
+
 class AttendanceSaveEventDelete extends AttendanceSaveEvent {}
 
 class AttendanceSaveEventFormSubmitted extends AttendanceSaveEvent {

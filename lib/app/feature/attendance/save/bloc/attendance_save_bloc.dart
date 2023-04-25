@@ -6,6 +6,7 @@ import '../../../../core/models/attendance_model.dart';
 import '../../../../core/models/healthplan_model.dart';
 import '../../../../core/models/procedure_model.dart';
 import '../../../../core/repositories/attendance_repository.dart';
+import '../../../../data/b4a/entity/attendance_entity.dart';
 import 'attendance_save_event.dart';
 import 'attendance_save_state.dart';
 
@@ -17,6 +18,8 @@ class AttendanceSaveBloc
     required AttendanceRepository repository,
   })  : _repository = repository,
         super(AttendanceSaveState.initial(model)) {
+    on<AttendanceSaveEventStart>(_onAttendanceSaveEventStart);
+
     on<AttendanceSaveEventFormSubmitted>(_onAttendanceSaveEventFormSubmitted);
     on<AttendanceSaveEventDelete>(_onAttendanceSaveEventDelete);
     on<AttendanceSaveEventSetProfessional>(
@@ -28,6 +31,39 @@ class AttendanceSaveBloc
         _onAttendanceSaveEventRemoveProcedure);
     on<AttendanceSaveEventRemoveHealthPlan>(
         _onAttendanceSaveEventRemoveHealthPlan);
+    if (model == null) {
+    } else {
+      add(AttendanceSaveEventStart());
+    }
+  }
+  final List<String> cols = [
+    ...AttendanceEntity.singleCols,
+    ...AttendanceEntity.selectedCols([
+      'healthPlan.healthPlanType',
+    ]),
+  ];
+
+  FutureOr<void> _onAttendanceSaveEventStart(
+      AttendanceSaveEventStart event, Emitter<AttendanceSaveState> emit) async {
+    print('Staaaaaaaarting....');
+    emit(state.copyWith(status: AttendanceSaveStateStatus.loading));
+    try {
+      AttendanceModel? temp =
+          await _repository.readById(state.model!.id!, cols);
+      emit(state.copyWith(
+        model: temp,
+        professional: temp?.professional,
+        procedures: temp?.procedure != null ? [temp!.procedure!] : [],
+        patient: temp?.patient,
+        healthPlans: temp?.healthPlan != null ? [temp!.healthPlan!] : [],
+        status: AttendanceSaveStateStatus.updated,
+      ));
+    } catch (e) {
+      //print(e);
+      emit(state.copyWith(
+          status: AttendanceSaveStateStatus.error,
+          error: 'Erro ao buscar dados do atendimento'));
+    }
   }
 
   FutureOr<void> _onAttendanceSaveEventFormSubmitted(

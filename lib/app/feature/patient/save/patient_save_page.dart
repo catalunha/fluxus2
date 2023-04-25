@@ -74,24 +74,26 @@ class _PatientSaveViewState extends State<PatientSaveView> {
   @override
   void initState() {
     super.initState();
-    _emailTec.text = widget.model?.email ?? "";
-    _nameTec.text = widget.model?.name ?? "";
-    _nicknameTec.text = widget.model?.nickname ?? "";
-    _phoneTec.text = widget.model?.phone ?? "";
-    _cpfTec.text = widget.model?.cpf ?? "";
-    _addressTec.text = widget.model?.address ?? "";
-    isFemale = widget.model?.isFemale ?? true;
-    _birthday = widget.model?.birthday ?? DateTime.now();
-//     WidgetsBinding.instance.addPostFrameCallback((_) {
-//       _emailTec.text = widget.model?.email ?? "";
-//     _nameTec.text = widget.model?.name ?? "";
-//     _nicknameTec.text = widget.model?.nickname ?? "";
-//     _phoneTec.text = widget.model?.phone ?? "";
-//     _cpfTec.text = widget.model?.cpf ?? "";
-//     _addressTec.text = widget.model?.address ?? "";
-//     isFemale = widget.model?.isFemale ?? true;
-//     _birthday = widget.model?.birthday ?? DateTime.now();
-// });
+    startFields(widget.model);
+    // _emailTec.text = widget.model?.email ?? "";
+    // _nameTec.text = widget.model?.name ?? "";
+    // _nicknameTec.text = widget.model?.nickname ?? "";
+    // _phoneTec.text = widget.model?.phone ?? "";
+    // _cpfTec.text = widget.model?.cpf ?? "";
+    // _addressTec.text = widget.model?.address ?? "";
+    // isFemale = widget.model?.isFemale ?? true;
+    // _birthday = widget.model?.birthday ?? DateTime.now();
+  }
+
+  void startFields(PatientModel? patientModel) {
+    _emailTec.text = patientModel?.email ?? "";
+    _nameTec.text = patientModel?.name ?? "";
+    _nicknameTec.text = patientModel?.nickname ?? "";
+    _phoneTec.text = patientModel?.phone ?? "";
+    _cpfTec.text = patientModel?.cpf ?? "";
+    _addressTec.text = patientModel?.address ?? "";
+    isFemale = patientModel?.isFemale ?? true;
+    _birthday = patientModel?.birthday ?? DateTime.now();
   }
 
   @override
@@ -147,14 +149,16 @@ class _PatientSaveViewState extends State<PatientSaveView> {
           }
           if (state.status == PatientSaveStateStatus.updated) {
             Navigator.of(context).pop();
-            _emailTec.text = state.model?.email ?? "";
-            _nameTec.text = state.model?.name ?? "";
-            _nicknameTec.text = state.model?.nickname ?? "";
-            _phoneTec.text = state.model?.phone ?? "";
-            _cpfTec.text = state.model?.cpf ?? "";
-            _addressTec.text = state.model?.address ?? "";
-            isFemale = state.model?.isFemale ?? true;
-            _birthday = state.model?.birthday ?? DateTime.now();
+            startFields(state.model);
+
+            // _emailTec.text = state.model?.email ?? "";
+            // _nameTec.text = state.model?.name ?? "";
+            // _nicknameTec.text = state.model?.nickname ?? "";
+            // _phoneTec.text = state.model?.phone ?? "";
+            // _cpfTec.text = state.model?.cpf ?? "";
+            // _addressTec.text = state.model?.address ?? "";
+            // isFemale = state.model?.isFemale ?? true;
+            // _birthday = state.model?.birthday ?? DateTime.now();
           }
           if (state.status == PatientSaveStateStatus.loading) {
             await showDialog(

@@ -57,19 +57,36 @@ class _AttendanceSaveViewState extends State<AttendanceSaveView> {
   @override
   void initState() {
     super.initState();
-    _authorizationCodeTEC.text = widget.model?.authorizationCode ?? "";
+    startFields(widget.model);
+    // _authorizationCodeTEC.text = widget.model?.authorizationCode ?? "";
+    // _authorizationDateCreated =
+    //     widget.model?.authorizationDateCreated ?? DateTime.now();
+
+    // _attendance = widget.model?.attendance;
+    // updateAttendance = widget.model?.attendance != null ? true : false;
+    // _confirmedPresence = widget.model?.confirmedPresence;
+    // updateConfirmedPresence =
+    //     widget.model?.confirmedPresence != null ? true : false;
+
+    // _authorizationDateLimit = widget.model?.authorizationDateLimit ??
+    //     DateTime.now().add(const Duration(days: 30));
+    // _descriptionTEC.text = widget.model?.description ?? "";
+  }
+
+  void startFields(AttendanceModel? attendanceModel) {
+    _authorizationCodeTEC.text = attendanceModel?.authorizationCode ?? "";
     _authorizationDateCreated =
-        widget.model?.authorizationDateCreated ?? DateTime.now();
+        attendanceModel?.authorizationDateCreated ?? DateTime.now();
 
-    _attendance = widget.model?.attendance;
-    updateAttendance = widget.model?.attendance != null ? true : false;
-    _confirmedPresence = widget.model?.confirmedPresence;
+    _attendance = attendanceModel?.attendance;
+    updateAttendance = attendanceModel?.attendance != null ? true : false;
+    _confirmedPresence = attendanceModel?.confirmedPresence;
     updateConfirmedPresence =
-        widget.model?.confirmedPresence != null ? true : false;
+        attendanceModel?.confirmedPresence != null ? true : false;
 
-    _authorizationDateLimit = widget.model?.authorizationDateLimit ??
+    _authorizationDateLimit = attendanceModel?.authorizationDateLimit ??
         DateTime.now().add(const Duration(days: 30));
-    _descriptionTEC.text = widget.model?.description ?? "";
+    _descriptionTEC.text = attendanceModel?.description ?? "";
   }
 
   @override
@@ -131,6 +148,7 @@ class _AttendanceSaveViewState extends State<AttendanceSaveView> {
           }
           if (state.status == AttendanceSaveStateStatus.updated) {
             Navigator.of(context).pop();
+            startFields(state.model);
           }
           if (state.status == AttendanceSaveStateStatus.loading) {
             await showDialog(

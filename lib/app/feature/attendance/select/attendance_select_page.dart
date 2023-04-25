@@ -58,7 +58,7 @@ class _AttendanceSelectViewState extends State<AttendanceSelectView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Selecione uma graduação'),
+        title: const Text('Selecione um atendimento'),
       ),
       body: BlocListener<AttendanceSelectBloc, AttendanceSelectState>(
         listenWhen: (previous, current) {
