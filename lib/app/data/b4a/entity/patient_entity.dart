@@ -7,6 +7,7 @@ import 'region_entity.dart';
 
 class PatientEntity {
   static const String className = 'Patient';
+  //SingleCols
   static const String id = 'objectId';
   static const String email = 'email';
   static const String name = 'name';
@@ -16,7 +17,9 @@ class PatientEntity {
   static const String isFemale = 'isFemale';
   static const String birthday = 'birthday';
   static const String address = 'address';
+  //PointerCols
   static const String region = 'region';
+  //RelationCols
   static const String family = 'family';
   static const String healthPlans = 'healthPlans';
 

@@ -5,7 +5,6 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../../core/models/patient_model.dart';
 import '../../../../core/repositories/patient_repository.dart';
-import '../../../../data/b4a/entity/healthplan_entity.dart';
 import '../../../../data/b4a/entity/patient_entity.dart';
 import '../../../../data/utils/pagination.dart';
 import 'patient_search_event.dart';
@@ -26,10 +25,12 @@ class PatientSearchBloc extends Bloc<PatientSearchEvent, PatientSearchState> {
   final List<String> cols = [
     ...PatientEntity.selectedCols([
       PatientEntity.name,
-      PatientEntity.region,
-      PatientEntity.healthPlans,
+      PatientEntity.nickname,
+      PatientEntity.phone,
+      // PatientEntity.region,
+      // PatientEntity.healthPlans,
     ]),
-    ...HealthPlanEntity.selectedCols([HealthPlanEntity.code]),
+    // ...HealthPlanEntity.selectedCols([HealthPlanEntity.code]),
   ];
 
   FutureOr<void> _onPatientSearchEventFormSubmitted(

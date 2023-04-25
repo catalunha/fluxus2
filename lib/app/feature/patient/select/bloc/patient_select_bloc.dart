@@ -25,9 +25,12 @@ class PatientSelectBloc extends Bloc<PatientSelectEvent, PatientSelectState> {
         _onPatientSelectEventUpdateSelectedValues);
     add(PatientSelectEventStartQuery());
   }
-  static final List<String> _cols = [
-    PatientEntity.name,
-    PatientEntity.healthPlans
+  // static final List<String> cols = [
+  //   PatientEntity.name,
+  //   PatientEntity.healthPlans
+  // ];
+  final List<String> cols = [
+    ...PatientEntity.selectedCols([PatientEntity.name]),
   ];
 
   FutureOr<void> _onPatientSelectEventStartQuery(
@@ -47,7 +50,7 @@ class PatientSelectBloc extends Bloc<PatientSelectEvent, PatientSelectState> {
 
       query.orderByAscending('name');
       List<PatientModel> listGet = await _repository.list(
-          query, Pagination(page: state.page, limit: state.limit), _cols);
+          query, Pagination(page: state.page, limit: state.limit), cols);
 
       emit(state.copyWith(
         status: PatientSelectStateStatus.success,
@@ -79,7 +82,7 @@ class PatientSelectBloc extends Bloc<PatientSelectEvent, PatientSelectState> {
         ),
       );
       List<PatientModel> listGet = await _repository.list(
-          state.query, Pagination(page: state.page, limit: state.limit), _cols);
+          state.query, Pagination(page: state.page, limit: state.limit), cols);
       if (state.page == 1) {
         emit(
           state.copyWith(
@@ -109,7 +112,7 @@ class PatientSelectBloc extends Bloc<PatientSelectEvent, PatientSelectState> {
       state.copyWith(status: PatientSelectStateStatus.loading),
     );
     List<PatientModel> listGet = await _repository.list(state.query,
-        Pagination(page: state.page + 1, limit: state.limit), _cols);
+        Pagination(page: state.page + 1, limit: state.limit), cols);
     if (listGet.isEmpty) {
       emit(state.copyWith(
         status: PatientSelectStateStatus.success,

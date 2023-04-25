@@ -19,7 +19,6 @@ class HealthPlanEntity {
     HealthPlanEntity.code,
     HealthPlanEntity.due,
     HealthPlanEntity.description,
-    HealthPlanEntity.healthPlanType,
   ].map((e) => '${HealthPlanEntity.className}.$e').toList();
 
   static final List<String> pointerCols = [

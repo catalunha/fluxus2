@@ -8,6 +8,7 @@ import '../../../../core/models/healthplantype_model.dart';
 import '../../../../core/models/patient_model.dart';
 import '../../../../core/repositories/healthplan_repository.dart';
 import '../../../../core/repositories/patient_repository.dart';
+import '../../../../data/b4a/entity/healthplan_entity.dart';
 import 'patient_save_event.dart';
 import 'patient_save_state.dart';
 
@@ -38,14 +39,27 @@ class PatientSaveBloc extends Bloc<PatientSaveEvent, PatientSaveState> {
       add(PatientSaveEventStart());
     }
   }
+  final List<String> cols = [
+    ...PatientEntity.allCols,
+    ...HealthPlanEntity.allCols,
+    // ...HealthPlanEntity.selectedCols([HealthPlanEntity.code]),
+  ];
+
   FutureOr<void> _onPatientSaveEventStart(
       PatientSaveEventStart event, Emitter<PatientSaveState> emit) async {
     print('Staaaaaaaarting....');
     emit(state.copyWith(status: PatientSaveStateStatus.loading));
     try {
-      PatientModel? temp =
-          await _repository.readById(state.model!.id!, PatientEntity.allCols);
-      emit(state.copyWith(model: temp, status: PatientSaveStateStatus.updated));
+      PatientModel? temp = await _repository.readById(state.model!.id!, cols);
+      emit(state.copyWith(
+        model: temp,
+        region: temp?.region,
+        familyOriginal: temp?.family ?? [],
+        familyUpdated: temp?.family ?? [],
+        healthPlansOriginal: temp?.healthPlans ?? [],
+        healthPlansUpdated: temp?.healthPlans ?? [],
+        status: PatientSaveStateStatus.updated,
+      ));
     } catch (e) {
       //print(e);
       emit(state.copyWith(

@@ -22,64 +22,64 @@ class PatientCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // AppTextTitleValue(
+            //   title: 'Email: ',
+            //   value: model.email,
+            // ),
             AppTextTitleValue(
-              title: 'Email: ',
-              value: model.email,
+              title: 'Nome curto: ',
+              value: model.nickname,
             ),
             AppTextTitleValue(
               title: 'Nome: ',
               value: '${model.name}',
             ),
             AppTextTitleValue(
-              title: 'Nome curto: ',
-              value: model.nickname,
-            ),
-            AppTextTitleValue(
               title: 'Telefone: ',
               value: '${model.phone}',
             ),
-            AppTextTitleValue(
-              title: 'CPF: ',
-              value: '${model.cpf}',
-            ),
-            AppTextTitleValue(
-              title: 'Endereço: ',
-              value: model.address,
-            ),
-            AppTextTitleValue(
-              title: 'Região: ',
-              value:
-                  '${model.region?.uf}. ${model.region?.city}. ${model.region?.name}',
-            ),
-            AppTextTitleValue(
-              title: 'Sexo: ',
-              value: model.isFemale ?? true ? "Feminino" : "Masculino",
-            ),
-            AppTextTitleValue(
-              title: 'Aniversário: ',
-              value: model.birthday == null
-                  ? '...'
-                  : dateFormat.format(model.birthday!),
-            ),
-            AppTextTitleValue(
-              title: 'Familiares: ',
-              value: model.family?.map((e) => e.name).toList().join(', '),
-            ),
-            AppTextTitleValue(
-              title: 'Plano de Saúde id: ',
-              value: model.healthPlans?.map((e) => e.id).toList().join(', '),
-            ),
-            AppTextTitleValue(
-              title: 'Plano de Saúde code: ',
-              value: model.healthPlans?.map((e) => e.code).toList().join(', '),
-            ),
-            AppTextTitleValue(
-              title: 'Plano de Saúde desc: ',
-              value: model.healthPlans
-                  ?.map((e) => e.description)
-                  .toList()
-                  .join(', '),
-            ),
+            // AppTextTitleValue(
+            //   title: 'CPF: ',
+            //   value: '${model.cpf}',
+            // ),
+            // AppTextTitleValue(
+            //   title: 'Endereço: ',
+            //   value: model.address,
+            // ),
+            // AppTextTitleValue(
+            //   title: 'Região: ',
+            //   value:
+            //       '${model.region?.uf}. ${model.region?.city}. ${model.region?.name}',
+            // ),
+            // AppTextTitleValue(
+            //   title: 'Sexo: ',
+            //   value: model.isFemale ?? true ? "Feminino" : "Masculino",
+            // ),
+            // AppTextTitleValue(
+            //   title: 'Aniversário: ',
+            //   value: model.birthday == null
+            //       ? '...'
+            //       : dateFormat.format(model.birthday!),
+            // ),
+            // AppTextTitleValue(
+            //   title: 'Familiares: ',
+            //   value: model.family?.map((e) => e.name).toList().join(', '),
+            // ),
+            // AppTextTitleValue(
+            //   title: 'Plano de Saúde id: ',
+            //   value: model.healthPlans?.map((e) => e.id).toList().join(', '),
+            // ),
+            // AppTextTitleValue(
+            //   title: 'Plano de Saúde code: ',
+            //   value: model.healthPlans?.map((e) => e.code).toList().join(', '),
+            // ),
+            // AppTextTitleValue(
+            //   title: 'Plano de Saúde desc: ',
+            //   value: model.healthPlans
+            //       ?.map((e) => e.description)
+            //       .toList()
+            //       .join(', '),
+            // ),
             Center(
               child: Wrap(
                 children: [
