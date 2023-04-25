@@ -10,7 +10,6 @@ class EventEntity {
   static const String className = 'Event';
   static const String id = 'objectId';
   static const String attendances = 'attendances';
-  static const String attendanceBrief = 'attendanceBrief';
   static const String room = 'room';
   static const String start = 'start';
   static const String end = 'end';
@@ -18,27 +17,70 @@ class EventEntity {
   static const String history = 'history';
   static const String description = 'description';
 
+  static List<String> selectedCols(List<String> cols) {
+    return cols.map((e) => '${EventEntity.className}.$e').toList();
+  }
+
+  static final List<String> singleCols = [
+    EventEntity.start,
+    EventEntity.end,
+    EventEntity.history,
+    EventEntity.status,
+    EventEntity.room,
+    EventEntity.attendances,
+  ].map((e) => '${EventEntity.className}.$e').toList();
+
+  static final List<String> pointerCols = [
+    EventEntity.status,
+    EventEntity.room,
+  ].map((e) => '${EventEntity.className}.$e').toList();
+
+  static final List<String> relationCols = [
+    EventEntity.attendances,
+  ].map((e) => '${EventEntity.className}.$e').toList();
+
+  static List<String> filterSingleCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (EventEntity.singleCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp
+        .map((e) => e.replaceFirst('${EventEntity.className}.', ''))
+        .toList();
+  }
+
+  static List<String> filterPointerCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (EventEntity.pointerCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp
+        .map((e) => e.replaceFirst('${EventEntity.className}.', ''))
+        .toList();
+  }
+
+  static List<String> filterRelationCols(List<String> cols) {
+    List<String> temp = [];
+    for (var col in cols) {
+      if (EventEntity.relationCols.contains(col)) {
+        temp.add(col);
+      }
+    }
+    return temp
+        .map((e) => e.replaceFirst('${EventEntity.className}.', ''))
+        .toList();
+  }
+
   Future<EventModel> toModel(
     ParseObject parseObject, [
-    List<String> excludeRelations = const [],
+    List<String> cols = const [],
   ]) async {
-    // print(
-    //     'parseObject.containsKey("status"): ${parseObject. containsKey('status')}');
-    // print(
-    //     'parseObject.containsKey("attendances"): ${parseObject.containsKey('attendances')}');
-    // // print('===>>> ${parseObject.toJson()}');
-    // print('===>>> ${parseObject.toJson(
-    //   full: true,
-    // )} <<<===');
-    // print('===>>> ${parseObject.toJson(
-    //   // full: true,
-    //   forApiRQ: true,
-    // )}');
-    // print('===>>> ${parseObject.toJson(
-    //   // full: true,
-    //   // forApiRQ: true,
-    //   allowCustomObjectId: true,
-    // )}');
+    print('PatientEntity.toModel cols: $cols');
+
     //+++ get attendance
     List<AttendanceModel> attendanceList = [];
     {
@@ -46,26 +88,30 @@ class EventEntity {
           QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
       queryAttendanceType.whereRelatedTo(EventEntity.attendances,
           EventEntity.className, parseObject.objectId!);
-
-      queryAttendanceType.includeObject([
-        'professional',
-        'professional.region',
-        'procedure',
-        'procedure.expertise',
-        'patient',
-        'patient.region',
-        'healthPlan',
-        'healthPlan.healthPlanType',
-        'status',
-        'event',
-        'evolution',
-        'invoice',
+      List<String> colsRelation = cols
+          .where((e) => e.startsWith('${AttendanceEntity.className}.'))
+          .toList();
+      queryAttendanceType.keysToReturn([
+        ...AttendanceEntity.filterSingleCols(colsRelation),
       ]);
+      queryAttendanceType
+          .includeObject(AttendanceEntity.filterPointerCols(colsRelation));
+      // queryAttendanceType.includeObject([
+      //   'professional',
+      //   'professional.region',
+      //   'procedure',
+      //   'procedure.expertise',
+      //   'patient',
+      //   'patient.region',
+      //   'healthPlan',
+      //   'healthPlan.healthPlanType',
+      //   'status',
+      // ]);
       final ParseResponse parseResponse = await queryAttendanceType.query();
       if (parseResponse.success && parseResponse.results != null) {
         for (var e in parseResponse.results!) {
-          attendanceList.add(await AttendanceEntity()
-              .toModel(e as ParseObject, excludeRelations));
+          attendanceList
+              .add(await AttendanceEntity().toModel(e as ParseObject, cols));
         }
       }
     }
@@ -74,7 +120,6 @@ class EventEntity {
     EventModel model = EventModel(
       id: parseObject.objectId!,
       attendances: attendanceList,
-      attendanceBrief: parseObject.get(EventEntity.attendanceBrief),
       room: parseObject.get(EventEntity.room) != null
           ? RoomEntity().toModel(parseObject.get(EventEntity.room))
           : null,
@@ -91,9 +136,7 @@ class EventEntity {
   Future<ParseObject> toParse(EventModel model) async {
     final parseObject = ParseObject(EventEntity.className);
     parseObject.objectId = model.id;
-    if (model.attendanceBrief != null) {
-      parseObject.set(EventEntity.attendanceBrief, model.attendanceBrief);
-    }
+
     if (model.room != null) {
       parseObject.set(
           EventEntity.room,

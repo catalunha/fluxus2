@@ -4,6 +4,8 @@ import '../../../../core/models/status_model.dart';
 
 abstract class EventSaveEvent {}
 
+class EventSaveEventStart extends EventSaveEvent {}
+
 class EventSaveEventFormSubmitted extends EventSaveEvent {
   final String? history;
   final DateTime? start;

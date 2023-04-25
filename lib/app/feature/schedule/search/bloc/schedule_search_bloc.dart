@@ -8,6 +8,7 @@ import '../../../../core/models/event_model.dart';
 import '../../../../core/models/room_model.dart';
 import '../../../../core/repositories/event_repository.dart';
 import '../../../../core/repositories/room_repository.dart';
+import '../../../../data/b4a/entity/attendance_entity.dart';
 import '../../../../data/b4a/entity/event_entity.dart';
 import '../../../../data/b4a/entity/room_entity.dart';
 import '../../../../data/b4a/entity/status_entity.dart';
@@ -31,7 +32,14 @@ class ScheduleSearchBloc
     on<ScheduleSearchEventUpdateAttendances>(
         _onScheduleSearchEventUpdateAttendances);
   }
-
+  final List<String> cols = [
+    ...EventEntity.singleCols,
+    ...AttendanceEntity.selectedCols([
+      AttendanceEntity.professional,
+      AttendanceEntity.procedure,
+      AttendanceEntity.patient,
+    ]),
+  ];
   FutureOr<void> _onScheduleSearchEventFormSubmitted(
       ScheduleSearchEventFormSubmitted event,
       Emitter<ScheduleSearchState> emit) async {

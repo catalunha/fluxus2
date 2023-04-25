@@ -8,30 +8,36 @@ import '../utils/parse_error_translate.dart';
 
 class EventB4a {
   Future<QueryBuilder<ParseObject>> getQueryAll(
-      QueryBuilder<ParseObject> query, Pagination pagination) async {
+      QueryBuilder<ParseObject> query, Pagination pagination,
+      [List<String> cols = const []]) async {
     query.setAmountToSkip((pagination.page - 1) * pagination.limit);
     query.setLimit(pagination.limit);
-    query.includeObject([
-      'room',
-      'status',
+    query.keysToReturn([
+      ...EventEntity.filterSingleCols(cols),
     ]);
+    query.includeObject(EventEntity.filterPointerCols(cols));
+
+    // query.includeObject([
+    //   'room',
+    //   'status',
+    // ]);
     return query;
   }
 
   Future<List<EventModel>> list(
     QueryBuilder<ParseObject> query,
     Pagination pagination, [
-    List<String> excludeRelations = const [],
+    List<String> cols = const [],
   ]) async {
     QueryBuilder<ParseObject> query2;
-    query2 = await getQueryAll(query, pagination);
+    query2 = await getQueryAll(query, pagination, cols);
     ParseResponse? response;
     try {
       response = await query2.query();
       List<EventModel> listTemp = <EventModel>[];
       if (response.success && response.results != null) {
         for (var element in response.results!) {
-          listTemp.add(await EventEntity().toModel(element, excludeRelations));
+          listTemp.add(await EventEntity().toModel(element, cols));
         }
         return listTemp;
       } else {
@@ -47,17 +53,22 @@ class EventB4a {
     }
   }
 
-  Future<EventModel?> readById(String id) async {
+  Future<EventModel?> readById(String id,
+      [List<String> cols = const []]) async {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
     query.whereEqualTo(EventEntity.id, id);
-    query.includeObject(['region']);
+    query.keysToReturn([
+      ...EventEntity.filterSingleCols(cols),
+    ]);
+    query.includeObject(EventEntity.filterPointerCols(cols));
+    // query.includeObject(['region']);
     query.first();
     try {
       var response = await query.query();
 
       if (response.success && response.results != null) {
-        return EventEntity().toModel(response.results!.first);
+        return EventEntity().toModel(response.results!.first, cols);
       }
       throw B4aException(
         'Perfil do usuário não encontrado.',

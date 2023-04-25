@@ -26,9 +26,37 @@ class EventCard extends StatelessWidget {
               title: 'Id: ',
               value: model.id,
             ),
-            AppTextTitleValue(
-              title: 'Atendimentos: ',
-              value: model.attendances?.map((e) => e.id).toList().join(', '),
+            // AppTextTitleValue(
+            //   title: 'Atendimentos: ',
+            //   value: model.attendances
+            //       ?.map((e) => e.professional?.nickname)
+            //       .toList()
+            //       .join(', '),
+            // ),
+            const Text('Atendimentos:'),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: model.attendances!
+                  .map(
+                    (e) => Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Id: ${e.id}'),
+                            Text('Prof.: ${e.professional?.name}'),
+                            Text('Proc.: ${e.procedure?.code}'),
+                            Text('Pac.: ${e.patient?.name}'),
+                            Text('PS: ${e.healthPlan?.code}'),
+                            Text(
+                                'PS Tipo: ${e.healthPlan?.healthPlanType?.name}'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
             ),
             AppTextTitleValue(
               title: 'Status: ',

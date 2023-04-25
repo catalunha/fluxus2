@@ -11,12 +11,13 @@ class EventRepository {
   Future<List<EventModel>> list(
     QueryBuilder<ParseObject> query,
     Pagination pagination, [
-    List<String> excludeRelations = const [],
+    List<String> cols = const [],
   ]) =>
-      apiB4a.list(query, pagination, excludeRelations);
+      apiB4a.list(query, pagination, cols);
   Future<String> update(EventModel userProfileModel) =>
       apiB4a.update(userProfileModel);
-  Future<EventModel?> readById(String id) => apiB4a.readById(id);
+  Future<EventModel?> readById(String id, [List<String> cols = const []]) =>
+      apiB4a.readById(id, cols);
 
   Future<void> updateRelationAttendances(
           String objectId, List<String> ids, bool add) =>

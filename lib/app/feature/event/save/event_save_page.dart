@@ -59,9 +59,17 @@ class _EventSaveViewState extends State<EventSaveView> {
   @override
   void initState() {
     super.initState();
+    startFields(widget.model);
+
+    // _historyTec.text = "";
+    // _start = widget.model?.start ?? DateTime.now();
+    // _end = widget.model?.end ?? DateTime.now();
+  }
+
+  void startFields(EventModel? eventModel) {
     _historyTec.text = "";
-    _start = widget.model?.start ?? DateTime.now();
-    _end = widget.model?.end ?? DateTime.now();
+    _start = eventModel?.start ?? DateTime.now();
+    _end = eventModel?.end ?? DateTime.now();
   }
 
   @override
@@ -111,7 +119,10 @@ class _EventSaveViewState extends State<EventSaveView> {
             }
             Navigator.of(context).pop();
           }
-
+          if (state.status == EventSaveStateStatus.updated) {
+            Navigator.of(context).pop();
+            startFields(state.model);
+          }
           if (state.status == EventSaveStateStatus.loading) {
             await showDialog(
               barrierDismissible: false,

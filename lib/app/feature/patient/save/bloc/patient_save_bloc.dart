@@ -39,6 +39,7 @@ class PatientSaveBloc extends Bloc<PatientSaveEvent, PatientSaveState> {
       add(PatientSaveEventStart());
     }
   }
+
   final List<String> cols = [
     ...PatientEntity.singleCols,
     ...HealthPlanEntity.singleCols,

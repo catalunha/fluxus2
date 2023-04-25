@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import '../../../../core/models/attendance_model.dart';
 import '../../../../core/models/event_model.dart';
 import '../../../../core/repositories/event_repository.dart';
+import '../../../../data/b4a/entity/attendance_entity.dart';
+import '../../../../data/b4a/entity/event_entity.dart';
 import 'event_save_event.dart';
 import 'event_save_state.dart';
 
@@ -16,12 +18,50 @@ class EventSaveBloc extends Bloc<EventSaveEvent, EventSaveState> {
     required EventRepository repository,
   })  : _repository = repository,
         super(EventSaveState.initial(model)) {
+    on<EventSaveEventStart>(_onEventSaveEventStart);
+
     on<EventSaveEventFormSubmitted>(_onEventSaveEventFormSubmitted);
     on<EventSaveEventAddRoom>(_onEventSaveEventAddRoom);
     on<EventSaveEventAddStatus>(_onEventSaveEventAddStatus);
     on<EventSaveEventAddAttendance>(_onEventSaveEventAddAttendance);
     on<EventSaveEventRemoveAttendance>(_onEventSaveEventRemoveAttendance);
-    if (model == null) {}
+    if (model == null) {
+    } else {
+      add(EventSaveEventStart());
+    }
+  }
+
+  final List<String> cols = [
+    ...EventEntity.singleCols,
+    ...AttendanceEntity.selectedCols([
+      AttendanceEntity.professional,
+      AttendanceEntity.procedure,
+      AttendanceEntity.patient,
+      AttendanceEntity.healthPlan,
+      'healthPlan.healthPlanType',
+    ]),
+  ];
+
+  FutureOr<void> _onEventSaveEventStart(
+      EventSaveEventStart event, Emitter<EventSaveState> emit) async {
+    print('Staaaaaaaarting....');
+    emit(state.copyWith(status: EventSaveStateStatus.loading));
+    try {
+      EventModel? temp = await _repository.readById(state.model!.id!, cols);
+      emit(state.copyWith(
+        model: temp,
+        attendancesOriginal: temp?.attendances ?? [],
+        attendancesUpdated: temp?.attendances ?? [],
+        room: temp?.room,
+        statusEvent: temp?.status,
+        status: EventSaveStateStatus.updated,
+      ));
+    } catch (e) {
+      //print(e);
+      emit(state.copyWith(
+          status: EventSaveStateStatus.error,
+          error: 'Erro ao buscar dados do paciente'));
+    }
   }
 
   FutureOr<void> _onEventSaveEventFormSubmitted(
