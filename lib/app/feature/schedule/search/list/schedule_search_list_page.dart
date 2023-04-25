@@ -121,7 +121,7 @@ class ScheduleSearchListView extends StatelessWidget {
                           confirmedPresence++;
                         }
                         tooltipMsgs.add(
-                            '${attendance.confirmedPresence != null ? "+" : "-"}${attendance.professional?.nickname}. ${attendance.patient?.nickname}. ${attendance.patient?.phone}');
+                            '${attendance.confirmedPresence != null ? "+" : "-"}${attendance.professional?.nickname} (${attendance.procedure?.code}) - ${attendance.patient?.nickname} ( ${attendance.healthPlan?.healthPlanType?.name}) ${attendance.patient?.phone}');
                         texts.add(
                             '${attendance.confirmedPresence != null ? "+" : "-"}${attendance.professional?.nickname}');
                       }

@@ -78,7 +78,7 @@ class ScheduleConfirmAttendanceView extends StatelessWidget {
                     for (var model in state.modelsAlreadyConfirmed) {
                       widgetsConfirmPresence.add(Card(
                         child: Text(
-                            '${model.patient?.nickname} (${model.professional?.nickname} - ${model.procedure?.code}) ${model.id} '),
+                            '${model.professional?.nickname} (${model.procedure?.code}) - ${model.patient?.nickname} (${model.healthPlan?.healthPlanType?.name}) ${model.id} '),
                       ));
                     }
 
@@ -88,7 +88,7 @@ class ScheduleConfirmAttendanceView extends StatelessWidget {
                           tristate: false,
                           title: Card(
                             child: Text(
-                                '${model.patient?.nickname} (${model.professional?.nickname} - ${model.procedure?.code}) ${model.id} '),
+                                '${model.professional?.nickname} (${model.procedure?.code}) - ${model.patient?.nickname} (${model.healthPlan?.healthPlanType?.name}) ${model.id} '),
                           ),
                           onChanged: (value) {
                             if (value != null && value == true) {

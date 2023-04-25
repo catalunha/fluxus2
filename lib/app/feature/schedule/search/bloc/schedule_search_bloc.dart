@@ -33,11 +33,19 @@ class ScheduleSearchBloc
         _onScheduleSearchEventUpdateAttendances);
   }
   final List<String> cols = [
-    ...EventEntity.singleCols,
+    ...EventEntity.selectedCols([
+      EventEntity.attendances,
+      EventEntity.status,
+      EventEntity.room,
+      EventEntity.start,
+      EventEntity.end,
+    ]),
     ...AttendanceEntity.selectedCols([
       AttendanceEntity.professional,
       AttendanceEntity.procedure,
       AttendanceEntity.patient,
+      AttendanceEntity.healthPlan,
+      'healthPlan.healthPlanType',
     ]),
   ];
   FutureOr<void> _onScheduleSearchEventFormSubmitted(
@@ -66,14 +74,11 @@ class ScheduleSearchBloc
           DateTime(event.end!.year, event.end!.month, event.end!.day, 23, 59));
 
       query.orderByDescending('updatedAt');
-      List<EventModel> listGet =
-          await _repository.list(query, Pagination(page: 1, limit: 100), [
-        'UserProfile.offices',
-        'UserProfile.expertises',
-        'UserProfile.procedures',
-        'Patient.family',
-        'Patient.healthPlans',
-      ]);
+      List<EventModel> listGet = await _repository.list(
+        query,
+        Pagination(page: 1, limit: 100),
+        cols,
+      );
       QueryBuilder<ParseObject> queryRoom =
           QueryBuilder<ParseObject>(ParseObject(RoomEntity.className));
       queryRoom.orderByAscending('name');
