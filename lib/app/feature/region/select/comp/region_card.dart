@@ -9,7 +9,7 @@ class RegionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text('${model.name}. Em ${model.uf}: ${model.city}'),
+      title: Text('${model.uf}. ${model.city}. ${model.name}.'),
       onTap: () => Navigator.of(context).pop(model),
     );
   }

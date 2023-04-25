@@ -30,8 +30,11 @@ class EventViewPage extends StatelessWidget {
                 ),
                 AppTextTitleValue(
                   title: 'Atendimentos: ',
-                  value:
-                      model.attendances?.map((e) => e.id).toList().join(', '),
+                  value: model.attendances
+                      ?.map((e) =>
+                          '${e.professional?.nickname} - ${e.professional?.nickname}')
+                      .toList()
+                      .join(', '),
                 ),
                 AppTextTitleValue(
                   title: 'Status: ',

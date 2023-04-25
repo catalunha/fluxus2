@@ -129,6 +129,7 @@ class ExpertiseListBloc extends Bloc<ExpertiseListEvent, ExpertiseListState> {
       ExpertiseListEventAddToList event, Emitter<ExpertiseListState> emit) {
     List<ExpertiseModel> listTemp = [...state.list];
     listTemp.add(event.model);
+    listTemp.sort((a, b) => a.name!.compareTo(b.name!));
     emit(state.copyWith(list: listTemp));
   }
 
@@ -138,6 +139,7 @@ class ExpertiseListBloc extends Bloc<ExpertiseListEvent, ExpertiseListState> {
     if (index >= 0) {
       List<ExpertiseModel> listTemp = [...state.list];
       listTemp.replaceRange(index, index + 1, [event.model]);
+      listTemp.sort((a, b) => a.name!.compareTo(b.name!));
       emit(state.copyWith(list: listTemp));
     }
   }

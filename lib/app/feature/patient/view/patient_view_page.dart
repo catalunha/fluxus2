@@ -144,20 +144,6 @@ class PatientViewView extends StatelessWidget {
                             .toList()
                             .join(', '),
                       ),
-                      AppTextTitleValue(
-                        title: 'Plano de Saúde code: ',
-                        value: state.model.healthPlans
-                            ?.map((e) => e.code)
-                            .toList()
-                            .join(', '),
-                      ),
-                      AppTextTitleValue(
-                        title: 'Plano de Saúde desc: ',
-                        value: state.model.healthPlans
-                            ?.map((e) => e.description)
-                            .toList()
-                            .join(', '),
-                      ),
                     ],
                   );
                 },
