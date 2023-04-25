@@ -8,16 +8,16 @@ import '../utils/parse_error_translate.dart';
 
 class ExpertiseB4a {
   Future<QueryBuilder<ParseObject>> getQueryAll(
-      QueryBuilder<ParseObject> query, Pagination pagination) async {
+      QueryBuilder<ParseObject> query, Pagination pagination,
+      [List<String> cols = const []]) async {
     query.setAmountToSkip((pagination.page - 1) * pagination.limit);
     query.setLimit(pagination.limit);
     return query;
   }
 
   Future<List<ExpertiseModel>> list(
-    QueryBuilder<ParseObject> query,
-    Pagination pagination,
-  ) async {
+      QueryBuilder<ParseObject> query, Pagination pagination,
+      [List<String> cols = const []]) async {
     QueryBuilder<ParseObject> query2;
     query2 = await getQueryAll(query, pagination);
     ParseResponse? parseResponse;
@@ -26,7 +26,7 @@ class ExpertiseB4a {
       List<ExpertiseModel> listTemp = <ExpertiseModel>[];
       if (parseResponse.success && parseResponse.results != null) {
         for (var element in parseResponse.results!) {
-          listTemp.add(ExpertiseEntity().toModel(element));
+          listTemp.add(ExpertiseEntity().toModel(element, cols));
         }
         return listTemp;
       } else {

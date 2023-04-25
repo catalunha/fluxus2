@@ -5,6 +5,7 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../../core/models/user_profile_model.dart';
 import '../../../../core/repositories/user_profile_repository.dart';
+import '../../../../data/b4a/entity/procedure_entity.dart';
 import '../../../../data/b4a/entity/user_profile_entity.dart';
 import '../../../../data/utils/pagination.dart';
 import 'user_profile_select_event.dart';
@@ -29,7 +30,18 @@ class UserProfileSelectBloc
         _onUserProfileSelectEventUpdateSelectedValues);
     add(UserProfileSelectEventStartQuery());
   }
-
+  final List<String> cols = [
+    // ...UserProfileEntity.allCols,
+    ...UserProfileEntity.selectedCols([
+      UserProfileEntity.name,
+      UserProfileEntity.isActive,
+      UserProfileEntity.access,
+      UserProfileEntity.email,
+      UserProfileEntity.procedures,
+    ]),
+    ...ProcedureEntity.selectedCols(
+        [ProcedureEntity.code, ProcedureEntity.name]),
+  ];
   FutureOr<void> _onUserProfileSelectEventStartQuery(
       UserProfileSelectEventStartQuery event,
       Emitter<UserProfileSelectState> emit) async {
@@ -50,6 +62,7 @@ class UserProfileSelectBloc
       List<UserProfileModel> listGet = await _repository.list(
         query,
         Pagination(page: state.page, limit: state.limit),
+        cols,
       );
 
       emit(state.copyWith(
@@ -84,6 +97,7 @@ class UserProfileSelectBloc
       List<UserProfileModel> listGet = await _repository.list(
         state.query,
         Pagination(page: state.page, limit: state.limit),
+        cols,
       );
       if (state.page == 1) {
         emit(
@@ -117,6 +131,7 @@ class UserProfileSelectBloc
     List<UserProfileModel> listGet = await _repository.list(
       state.query,
       Pagination(page: state.page + 1, limit: state.limit),
+      cols,
     );
     if (listGet.isEmpty) {
       emit(state.copyWith(

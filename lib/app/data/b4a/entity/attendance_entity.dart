@@ -10,70 +10,95 @@ import 'user_profile_entity.dart';
 class AttendanceEntity {
   static const String className = 'Attendance';
   static const String id = 'objectId';
+  //singleCols
   static const String authorizationCode = 'authorizationCode';
   static const String authorizationDateCreated = 'authorizationDateCreated';
   static const String authorizationDateLimit = 'authorizationDateLimit';
   static const String attendance = 'attendance';
   static const String confirmedPresence = 'confirmedPresence';
   static const String description = 'description';
+  //pointerCols
   static const String professional = 'professional';
   static const String procedure = 'procedure';
   static const String patient = 'patient';
   static const String healthPlan = 'healthPlan';
   static const String status = 'status';
-  static const List<String> singleCols = [
+
+  static List<String> selectedCols(List<String> cols) {
+    return cols.map((e) => '${AttendanceEntity.className}.$e').toList();
+  }
+
+  static final List<String> singleCols = [
     AttendanceEntity.authorizationCode,
     AttendanceEntity.authorizationDateCreated,
     AttendanceEntity.authorizationDateLimit,
     AttendanceEntity.attendance,
     AttendanceEntity.confirmedPresence,
     AttendanceEntity.description,
-  ];
-  static const List<String> pointerCols = [
     AttendanceEntity.professional,
     AttendanceEntity.procedure,
     AttendanceEntity.patient,
     AttendanceEntity.healthPlan,
     AttendanceEntity.status,
-  ];
-  static const List<String> relationCols = [];
-  static final List<String> allCols = [
-    ...PatientEntity.singleCols,
-    ...PatientEntity.pointerCols,
-    ...PatientEntity.relationCols
-  ];
+  ].map((e) => '${AttendanceEntity.className}.$e').toList();
+
+  static final List<String> pointerCols = [
+    AttendanceEntity.professional,
+    AttendanceEntity.procedure,
+    AttendanceEntity.patient,
+    AttendanceEntity.healthPlan,
+    'healthPlan.healthPlanType',
+    AttendanceEntity.status,
+  ].map((e) => '${AttendanceEntity.className}.$e').toList();
+
+  static final List<String> relationCols =
+      [].map((e) => '${AttendanceEntity.className}.$e').toList();
+
+  // static final List<String> allCols = [
+  //   ...AttendanceEntity.singleCols,
+  //   ...AttendanceEntity.pointerCols,
+  //   ...AttendanceEntity.relationCols
+  // ];
+
   static List<String> filterSingleCols(List<String> cols) {
     List<String> temp = [];
     for (var col in cols) {
-      if (PatientEntity.singleCols.contains(col)) {
+      if (AttendanceEntity.singleCols.contains(col)) {
         temp.add(col);
       }
     }
-    return temp;
+    return temp
+        .map((e) => e.replaceFirst('${AttendanceEntity.className}.', ''))
+        .toList();
   }
 
   static List<String> filterPointerCols(List<String> cols) {
     List<String> temp = [];
     for (var col in cols) {
-      if (PatientEntity.pointerCols.contains(col)) {
+      if (AttendanceEntity.pointerCols.contains(col)) {
         temp.add(col);
       }
     }
-    return temp;
+    return temp
+        .map((e) => e.replaceFirst('${AttendanceEntity.className}.', ''))
+        .toList();
   }
 
   static List<String> filterRelationCols(List<String> cols) {
     List<String> temp = [];
     for (var col in cols) {
-      if (PatientEntity.relationCols.contains(col)) {
+      if (AttendanceEntity.relationCols.contains(col)) {
         temp.add(col);
       }
     }
-    return temp;
+    return temp
+        .map((e) => e.replaceFirst('${AttendanceEntity.className}.', ''))
+        .toList();
   }
 
   Future<AttendanceModel> toModel(ParseObject parseObject,
       [List<String> cols = const []]) async {
+    print('AttendanceEntity.toModel cols $cols');
     AttendanceModel model = AttendanceModel(
       id: parseObject.objectId!,
       professional: parseObject.get(AttendanceEntity.professional) != null

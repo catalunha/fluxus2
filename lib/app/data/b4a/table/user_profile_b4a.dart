@@ -16,8 +16,6 @@ class UserProfileB4a {
     query.setLimit(pagination.limit);
     query.keysToReturn([
       ...UserProfileEntity.filterSingleCols(cols),
-      ...UserProfileEntity.filterPointerCols(cols),
-      ...UserProfileEntity.filterRelationCols(cols)
     ]);
     query.includeObject(UserProfileEntity.filterPointerCols(cols));
 

@@ -49,6 +49,10 @@ class UserProfileEntity {
     UserProfileEntity.birthday,
     UserProfileEntity.address,
     UserProfileEntity.access,
+    UserProfileEntity.region,
+    UserProfileEntity.offices,
+    UserProfileEntity.expertises,
+    UserProfileEntity.procedures,
   ].map((e) => '${UserProfileEntity.className}.$e').toList();
   static final List<String> pointerCols = [
     UserProfileEntity.region,
@@ -60,11 +64,11 @@ class UserProfileEntity {
     UserProfileEntity.procedures,
   ].map((e) => '${UserProfileEntity.className}.$e').toList();
 
-  static final List<String> allCols = [
-    ...UserProfileEntity.singleCols,
-    ...UserProfileEntity.pointerCols,
-    ...UserProfileEntity.relationCols
-  ];
+  // static final List<String> allCols = [
+  //   ...UserProfileEntity.singleCols,
+  //   ...UserProfileEntity.pointerCols,
+  //   ...UserProfileEntity.relationCols
+  // ];
   static List<String> filterSingleCols(List<String> cols) {
     List<String> temp = [];
     for (var col in cols) {

@@ -200,7 +200,7 @@ class _AttendanceSaveViewState extends State<AttendanceSaveView> {
                                               );
                                         },
                                       ),
-                                      Text('${e.code}.${e.hashCode}'),
+                                      Text('Cod.: ${e.code}'),
                                       IconButton(
                                         icon: const Icon(Icons.delete),
                                         onPressed: () {
@@ -256,7 +256,8 @@ class _AttendanceSaveViewState extends State<AttendanceSaveView> {
                                   .map(
                                     (e) => Row(
                                       children: [
-                                        Text('${e.code}'),
+                                        Text(
+                                            'Cod.: ${e.code}. Tipo: ${e.healthPlanType?.name}'),
                                         IconButton(
                                           icon: const Icon(Icons.delete),
                                           onPressed: () {

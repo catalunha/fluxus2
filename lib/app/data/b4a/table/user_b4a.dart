@@ -174,7 +174,7 @@ class UserB4a {
       var profileField = parseUser.get(UserEntity.userProfile);
       var profileRepositoryB4a = UserProfileB4a();
       var profileModel = await profileRepositoryB4a.readById(
-          profileField.objectId, UserProfileEntity.allCols);
+          profileField.objectId, UserProfileEntity.singleCols);
       return profileModel;
     } catch (_) {
       rethrow;

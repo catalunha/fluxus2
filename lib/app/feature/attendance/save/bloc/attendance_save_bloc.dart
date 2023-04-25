@@ -35,6 +35,18 @@ class AttendanceSaveBloc
       Emitter<AttendanceSaveState> emit) async {
     emit(state.copyWith(status: AttendanceSaveStateStatus.loading));
     try {
+      if (state.healthPlans.length > 1) {
+        emit(state.copyWith(
+            status: AttendanceSaveStateStatus.error,
+            error: 'Plano de saúde deve haver apenas um'));
+        return;
+      }
+      if (state.procedures.isEmpty) {
+        emit(state.copyWith(
+            status: AttendanceSaveStateStatus.error,
+            error: 'Procedimento deve haver pelo menos um'));
+        return;
+      }
       if (state.healthPlans.length == 1 && state.procedures.isNotEmpty) {
         AttendanceModel? modelTemp;
         for (var procedure in state.procedures) {
@@ -97,6 +109,7 @@ class AttendanceSaveBloc
   FutureOr<void> _onAttendanceSaveEventSetProfessional(
       AttendanceSaveEventSetProfessional event,
       Emitter<AttendanceSaveState> emit) {
+    print('AttendanceSaveEventSetProfessional: ${event.model}');
     emit(state.copyWith(
       professional: event.model,
       procedures: event.model.procedures,

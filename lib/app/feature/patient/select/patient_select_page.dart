@@ -53,7 +53,7 @@ class _PatientSelectViewState extends State<PatientSelectView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Selecione um procedimento'),
+        title: const Text('Selecione um paciente'),
       ),
       body: BlocListener<PatientSelectBloc, PatientSelectState>(
         listenWhen: (previous, current) {

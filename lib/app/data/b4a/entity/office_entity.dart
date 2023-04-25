@@ -21,11 +21,11 @@ class OfficeEntity {
   static final List<String> relationCols =
       [].map((e) => '${OfficeEntity.className}.$e').toList();
 
-  static final List<String> allCols = [
-    ...OfficeEntity.singleCols,
-    ...OfficeEntity.pointerCols,
-    ...OfficeEntity.relationCols
-  ];
+  // static final List<String> allCols = [
+  //   ...OfficeEntity.singleCols,
+  //   ...OfficeEntity.pointerCols,
+  //   ...OfficeEntity.relationCols
+  // ];
 
   static List<String> filterSingleCols(List<String> cols) {
     List<String> temp = [];

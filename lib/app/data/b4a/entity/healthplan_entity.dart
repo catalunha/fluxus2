@@ -19,6 +19,7 @@ class HealthPlanEntity {
     HealthPlanEntity.code,
     HealthPlanEntity.due,
     HealthPlanEntity.description,
+    HealthPlanEntity.healthPlanType,
   ].map((e) => '${HealthPlanEntity.className}.$e').toList();
 
   static final List<String> pointerCols = [
@@ -28,11 +29,11 @@ class HealthPlanEntity {
   static final List<String> relationCols =
       [].map((e) => '${HealthPlanEntity.className}.$e').toList();
 
-  static final List<String> allCols = [
-    ...HealthPlanEntity.singleCols,
-    ...HealthPlanEntity.pointerCols,
-    ...HealthPlanEntity.relationCols
-  ];
+  // static final List<String> allCols = [
+  //   ...HealthPlanEntity.singleCols,
+  //   ...HealthPlanEntity.pointerCols,
+  //   ...HealthPlanEntity.relationCols
+  // ];
 
   static List<String> filterSingleCols(List<String> cols) {
     List<String> temp = [];

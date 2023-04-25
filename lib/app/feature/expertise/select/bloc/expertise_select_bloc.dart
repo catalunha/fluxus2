@@ -48,6 +48,7 @@ class ExpertiseSelectBloc
       List<ExpertiseModel> listGet = await _repository.list(
         query,
         Pagination(page: state.page, limit: state.limit),
+        ExpertiseEntity.singleCols,
       );
 
       emit(state.copyWith(

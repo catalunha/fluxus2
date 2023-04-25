@@ -21,11 +21,11 @@ class ExpertiseEntity {
   static final List<String> relationCols =
       [].map((e) => '${ExpertiseEntity.className}.$e').toList();
 
-  static final List<String> allCols = [
-    ...ExpertiseEntity.singleCols,
-    ...ExpertiseEntity.pointerCols,
-    ...ExpertiseEntity.relationCols
-  ];
+  // static final List<String> allCols = [
+  //   ...ExpertiseEntity.singleCols,
+  //   ...ExpertiseEntity.pointerCols,
+  //   ...ExpertiseEntity.relationCols
+  // ];
 
   static List<String> filterSingleCols(List<String> cols) {
     List<String> temp = [];
@@ -63,7 +63,8 @@ class ExpertiseEntity {
         .toList();
   }
 
-  ExpertiseModel toModel(ParseObject parseObject) {
+  ExpertiseModel toModel(ParseObject parseObject,
+      [List<String> cols = const []]) {
     ExpertiseModel model = ExpertiseModel(
       id: parseObject.objectId!,
       name: parseObject.get(ExpertiseEntity.name),

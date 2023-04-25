@@ -20,7 +20,7 @@ class PatientViewBloc extends Bloc<PatientViewEvent, PatientViewState> {
     add(PatientViewEventStart());
   }
   List<String> cols = [
-    ...PatientEntity.allCols,
+    ...PatientEntity.singleCols,
     ...HealthPlanEntity.selectedCols([
       HealthPlanEntity.code,
       HealthPlanEntity.description,

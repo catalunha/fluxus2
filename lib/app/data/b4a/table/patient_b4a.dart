@@ -15,8 +15,6 @@ class PatientB4a {
 
     query.keysToReturn([
       ...PatientEntity.filterSingleCols(cols),
-      ...PatientEntity.filterPointerCols(cols),
-      ...PatientEntity.filterRelationCols(cols)
     ]);
     query.includeObject(PatientEntity.filterPointerCols(cols));
 

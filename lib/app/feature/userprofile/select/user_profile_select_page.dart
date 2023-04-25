@@ -59,7 +59,7 @@ class _UserProfileSelectViewState extends State<UserProfileSelectView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Selecione uma especialidade'),
+        title: const Text('Selecione um profissional'),
       ),
       body: BlocListener<UserProfileSelectBloc, UserProfileSelectState>(
         listenWhen: (previous, current) {

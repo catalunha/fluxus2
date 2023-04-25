@@ -29,7 +29,15 @@ class AttendanceSearchBloc
     on<AttendanceSearchEventRemoveFromList>(
         _onAttendanceSearchEventRemoveFromList);
   }
-
+  final List<String> cols = [
+    ...AttendanceEntity.selectedCols([
+      AttendanceEntity.professional,
+      AttendanceEntity.procedure,
+      AttendanceEntity.patient,
+      AttendanceEntity.healthPlan,
+      'healthPlan.healthPlanType',
+    ]),
+  ];
   FutureOr<void> _onAttendanceSearchEventFormSubmitted(
       AttendanceSearchEventFormSubmitted event,
       Emitter<AttendanceSearchState> emit) async {
@@ -84,6 +92,7 @@ class AttendanceSearchBloc
       List<AttendanceModel> modelListGet = await _repository.list(
         query,
         Pagination(page: state.page, limit: state.limit),
+        cols,
       );
 
       emit(state.copyWith(
@@ -115,9 +124,10 @@ class AttendanceSearchBloc
           page: state.page - 1,
         ),
       );
-      List<AttendanceModel> AttendanceModelListGet = await _repository.list(
+      List<AttendanceModel> attendanceModelListGet = await _repository.list(
         state.query,
         Pagination(page: state.page, limit: state.limit),
+        cols,
       );
       if (state.page == 1) {
         emit(
@@ -130,7 +140,7 @@ class AttendanceSearchBloc
       }
       emit(state.copyWith(
         status: AttendanceSearchStateStatus.success,
-        list: AttendanceModelListGet,
+        list: attendanceModelListGet,
         lastPage: false,
       ));
     } else {
@@ -147,11 +157,12 @@ class AttendanceSearchBloc
     emit(
       state.copyWith(status: AttendanceSearchStateStatus.loading),
     );
-    List<AttendanceModel> AttendanceModelListGet = await _repository.list(
+    List<AttendanceModel> attendanceModelListGet = await _repository.list(
       state.query,
       Pagination(page: state.page + 1, limit: state.limit),
+      cols,
     );
-    if (AttendanceModelListGet.isEmpty) {
+    if (attendanceModelListGet.isEmpty) {
       emit(state.copyWith(
         status: AttendanceSearchStateStatus.success,
         // firstPage: false,
@@ -160,7 +171,7 @@ class AttendanceSearchBloc
     } else {
       emit(state.copyWith(
         status: AttendanceSearchStateStatus.success,
-        list: AttendanceModelListGet,
+        list: attendanceModelListGet,
         page: state.page + 1,
         firstPage: false,
       ));

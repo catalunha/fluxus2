@@ -44,11 +44,15 @@ class AttendanceCard extends StatelessWidget {
               value: model.patient?.nickname,
             ),
             AppTextTitleValue(
-              title: 'Plano de saúde: ',
+              title: 'Plano de saúde id: ',
+              value: model.healthPlan?.id,
+            ),
+            AppTextTitleValue(
+              title: 'Plano de saúde code: ',
               value: model.healthPlan?.code,
             ),
             AppTextTitleValue(
-              title: 'Tipo de Plano de saúde: ',
+              title: 'Plano de saúde tipo: ',
               value: model.healthPlan?.healthPlanType?.name,
             ),
             AppTextTitleValue(

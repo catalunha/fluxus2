@@ -18,11 +18,11 @@ class RegionEntity {
       [].map((e) => '${RegionEntity.className}.$e').toList();
   static final List<String> relationCols =
       [].map((e) => '${RegionEntity.className}.$e').toList();
-  static final List<String> allCols = [
-    ...RegionEntity.singleCols,
-    ...RegionEntity.pointerCols,
-    ...RegionEntity.relationCols
-  ];
+  // static final List<String> allCols = [
+  //   ...RegionEntity.singleCols,
+  //   ...RegionEntity.pointerCols,
+  //   ...RegionEntity.relationCols
+  // ];
   static List<String> filterSingleCols(List<String> cols) {
     List<String> temp = [];
     for (var col in cols) {

@@ -36,6 +36,9 @@ class PatientEntity {
     PatientEntity.isFemale,
     PatientEntity.birthday,
     PatientEntity.address,
+    PatientEntity.region,
+    PatientEntity.family,
+    PatientEntity.healthPlans
   ].map((e) => '${PatientEntity.className}.$e').toList();
 
   static final List<String> pointerCols = [
@@ -47,11 +50,11 @@ class PatientEntity {
     PatientEntity.healthPlans
   ].map((e) => '${PatientEntity.className}.$e').toList();
 
-  static final List<String> allCols = [
-    ...PatientEntity.singleCols,
-    ...PatientEntity.pointerCols,
-    ...PatientEntity.relationCols
-  ];
+  // static final List<String> allCols = [
+  //   ...PatientEntity.singleCols,
+  //   ...PatientEntity.pointerCols,
+  //   ...PatientEntity.relationCols
+  // ];
 
   static List<String> filterSingleCols(List<String> cols) {
     List<String> temp = [];
@@ -91,7 +94,7 @@ class PatientEntity {
 
   Future<PatientModel> toModel(ParseObject parseObject,
       [List<String> cols = const []]) async {
-    print('cols: $cols');
+    print('PatientEntity.toModel cols: $cols');
     //+++ get family
     List<PatientModel> familyList = [];
     if (cols.contains('${PatientEntity.className}.${PatientEntity.family}')) {

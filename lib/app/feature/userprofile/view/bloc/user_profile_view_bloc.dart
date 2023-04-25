@@ -22,7 +22,7 @@ class UserProfileViewBloc
     add(UserProfileViewEventStart());
   }
   final List<String> cols = [
-    ...UserProfileEntity.allCols,
+    ...UserProfileEntity.singleCols,
     ...OfficeEntity.selectedCols([OfficeEntity.name]),
     ...ExpertiseEntity.selectedCols([ExpertiseEntity.name]),
   ];

@@ -9,10 +9,9 @@ class ExpertiseRepository {
 
   ExpertiseRepository();
   Future<List<ExpertiseModel>> list(
-    QueryBuilder<ParseObject> query,
-    Pagination pagination,
-  ) =>
-      apiB4a.list(query, pagination);
+          QueryBuilder<ParseObject> query, Pagination pagination,
+          [List<String> cols = const []]) =>
+      apiB4a.list(query, pagination, cols);
   Future<String> update(ExpertiseModel model) => apiB4a.update(model);
   Future<bool> delete(String modelId) => apiB4a.delete(modelId);
 }

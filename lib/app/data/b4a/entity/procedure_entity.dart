@@ -20,6 +20,7 @@ class ProcedureEntity {
     ProcedureEntity.code,
     ProcedureEntity.name,
     ProcedureEntity.cost,
+    ProcedureEntity.expertise,
   ].map((e) => '${ProcedureEntity.className}.$e').toList();
 
   static final List<String> pointerCols = [
@@ -29,11 +30,11 @@ class ProcedureEntity {
   static final List<String> relationCols =
       [].map((e) => '${ProcedureEntity.className}.$e').toList();
 
-  static final List<String> allCols = [
-    ...ProcedureEntity.singleCols,
-    ...ProcedureEntity.pointerCols,
-    ...ProcedureEntity.relationCols
-  ];
+  // static final List<String> allCols = [
+  //   ...ProcedureEntity.singleCols,
+  //   ...ProcedureEntity.pointerCols,
+  //   ...ProcedureEntity.relationCols
+  // ];
 
   static List<String> filterSingleCols(List<String> cols) {
     List<String> temp = [];

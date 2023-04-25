@@ -12,17 +12,31 @@ class AttendanceB4a {
       [List<String> cols = const []]) async {
     query.setAmountToSkip((pagination.page - 1) * pagination.limit);
     query.setLimit(pagination.limit);
-    query.includeObject([
-      'professional',
-      'professional.region',
-      'procedure',
-      'procedure.expertise',
-      'patient',
-      'patient.region',
-      'healthPlan',
-      'healthPlan.healthPlanType',
-      'status',
+    print('AttendanceB4a.getQueryAll $cols');
+
+    query.keysToReturn([
+      ...AttendanceEntity.filterSingleCols(cols),
     ]);
+    // query.keysToReturn([
+    //   'professional',
+    //   'procedure',
+    //   'patient',
+    //   'healthPlan',
+    //   // 'healthPlan.healthPlanType',
+    // ]);
+    query.includeObject(AttendanceEntity.filterPointerCols(cols));
+    // print(AttendanceEntity.filterPointerCols(cols));
+    // query.includeObject([
+    //   'professional',
+    //   // 'professional.region',
+    //   'procedure',
+    //   // 'procedure.expertise',
+    //   'patient',
+    //   // 'patient.region',
+    //   'healthPlan',
+    //   'healthPlan.healthPlanType',
+    //   // 'status',
+    // ]);
     return query;
   }
 

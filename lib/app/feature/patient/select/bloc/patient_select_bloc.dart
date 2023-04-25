@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:fluxus2/app/data/b4a/entity/healthplan_entity.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../../core/models/patient_model.dart';
@@ -25,12 +26,11 @@ class PatientSelectBloc extends Bloc<PatientSelectEvent, PatientSelectState> {
         _onPatientSelectEventUpdateSelectedValues);
     add(PatientSelectEventStartQuery());
   }
-  // static final List<String> cols = [
-  //   PatientEntity.name,
-  //   PatientEntity.healthPlans
-  // ];
+
   final List<String> cols = [
-    ...PatientEntity.selectedCols([PatientEntity.name]),
+    ...PatientEntity.selectedCols(
+        [PatientEntity.name, PatientEntity.healthPlans]),
+    ...HealthPlanEntity.singleCols
   ];
 
   FutureOr<void> _onPatientSelectEventStartQuery(
