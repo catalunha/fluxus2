@@ -2,7 +2,7 @@ import '../../../../../../core/models/attendance_model.dart';
 
 abstract class ScheduleConfirmPresenceEvent {}
 
-class ScheduleConfirmPresenceEventOnInit extends ScheduleConfirmPresenceEvent {}
+class ScheduleConfirmPresenceEventStart extends ScheduleConfirmPresenceEvent {}
 
 class ScheduleConfirmPresenceEventAddConfirm
     extends ScheduleConfirmPresenceEvent {

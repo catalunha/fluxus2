@@ -16,20 +16,49 @@ class AttendanceCard extends StatelessWidget {
       builder: (context, state) {
         Color? color;
         if (state.selectedValues.contains(model)) {
-          color = Colors.green;
+          color = Colors.black;
         }
-        return ListTile(
-            title: Text('${model.id}'),
-            tileColor: color,
-            onTap: () {
-              if (state.isSingleValue) {
-                Navigator.of(context).pop([model]);
-              } else {
-                context
-                    .read<AttendanceSelectBloc>()
-                    .add(AttendanceSelectEventUpdateSelectedValues(model));
-              }
-            });
+        return InkWell(
+          child: Card(
+            color: color,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Id: ${model.id}'),
+                  Text('Prof.: ${model.professional?.name}'),
+                  Text('Proc.: ${model.procedure?.code}'),
+                  Text('Pac.: ${model.patient?.name}'),
+                  Text('PS: ${model.healthPlan?.code}'),
+                  Text('PS Tipo: ${model.healthPlan?.healthPlanType?.name}'),
+                ],
+              ),
+            ),
+          ),
+          onTap: () {
+            if (state.isSingleValue) {
+              Navigator.of(context).pop([model]);
+            } else {
+              context
+                  .read<AttendanceSelectBloc>()
+                  .add(AttendanceSelectEventUpdateSelectedValues(model));
+            }
+          },
+        );
+        // return ListTile(
+        //   title: Text('${model.id}'),
+        //   tileColor: color,
+        //   onTap: () {
+        //     if (state.isSingleValue) {
+        //       Navigator.of(context).pop([model]);
+        //     } else {
+        //       context
+        //           .read<AttendanceSelectBloc>()
+        //           .add(AttendanceSelectEventUpdateSelectedValues(model));
+        //     }
+        //   },
+        // );
       },
     );
   }

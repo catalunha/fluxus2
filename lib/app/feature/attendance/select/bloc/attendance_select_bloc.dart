@@ -30,6 +30,15 @@ class AttendanceSelectBloc
 
     add(AttendanceSelectEventStartQuery());
   }
+  final List<String> cols = [
+    ...AttendanceEntity.selectedCols([
+      AttendanceEntity.professional,
+      AttendanceEntity.procedure,
+      AttendanceEntity.patient,
+      AttendanceEntity.healthPlan,
+      'healthPlan.healthPlanType',
+    ]),
+  ];
 
   FutureOr<void> _onAttendanceSelectEventStartQuery(
       AttendanceSelectEventStartQuery event,
@@ -50,6 +59,7 @@ class AttendanceSelectBloc
       List<AttendanceModel> listGet = await _repository.list(
         query,
         Pagination(page: state.page, limit: state.limit),
+        cols,
       );
 
       emit(state.copyWith(
@@ -84,6 +94,7 @@ class AttendanceSelectBloc
       List<AttendanceModel> listGet = await _repository.list(
         state.query,
         Pagination(page: state.page, limit: state.limit),
+        cols,
       );
       if (state.page == 1) {
         emit(
@@ -117,6 +128,7 @@ class AttendanceSelectBloc
     List<AttendanceModel> listGet = await _repository.list(
       state.query,
       Pagination(page: state.page + 1, limit: state.limit),
+      cols,
     );
     if (listGet.isEmpty) {
       emit(state.copyWith(

@@ -238,7 +238,29 @@ class _EventSaveViewState extends State<EventSaveView> {
                                     .map(
                                       (e) => Row(
                                         children: [
-                                          Text('${e.id}'),
+                                          Card(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text('Id: ${e.id}'),
+                                                  Text(
+                                                      'Prof.: ${e.professional?.name}'),
+                                                  Text(
+                                                      'Proc.: ${e.procedure?.code}'),
+                                                  Text(
+                                                      'Pac.: ${e.patient?.name}'),
+                                                  Text(
+                                                      'PS: ${e.healthPlan?.code}'),
+                                                  Text(
+                                                      'PS Tipo: ${e.healthPlan?.healthPlanType?.name}'),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
                                           IconButton(
                                             icon: const Icon(Icons.delete),
                                             onPressed: () {

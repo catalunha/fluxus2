@@ -76,16 +76,20 @@ class ScheduleConfirmAttendanceView extends StatelessWidget {
                   builder: (context, state) {
                     final List<Widget> widgetsConfirmPresence = [];
                     for (var model in state.modelsAlreadyConfirmed) {
-                      widgetsConfirmPresence.add(Text(
-                          '${model.id} ${model.patient?.nickname} (${model.professional?.nickname})'));
+                      widgetsConfirmPresence.add(Card(
+                        child: Text(
+                            '${model.patient?.nickname} (${model.professional?.nickname} - ${model.procedure?.code}) ${model.id} '),
+                      ));
                     }
 
                     for (var model in state.modelsUnconfirmed) {
                       widgetsConfirmPresence.add(
                         CheckboxListTile(
                           tristate: false,
-                          title: Text(
-                              '${model.id} ${model.patient?.nickname} (${model.professional?.nickname})'),
+                          title: Card(
+                            child: Text(
+                                '${model.patient?.nickname} (${model.professional?.nickname} - ${model.procedure?.code}) ${model.id} '),
+                          ),
                           onChanged: (value) {
                             if (value != null && value == true) {
                               context.read<ScheduleConfirmPresenceBloc>().add(

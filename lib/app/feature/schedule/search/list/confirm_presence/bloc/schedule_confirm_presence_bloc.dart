@@ -16,18 +16,17 @@ class ScheduleConfirmPresenceBloc
     required AttendanceRepository repository,
   })  : _repository = repository,
         super(ScheduleConfirmPresenceState.initial(event)) {
-    on<ScheduleConfirmPresenceEventOnInit>(
-        _onScheduleConfirmPresenceEventOnInit);
+    on<ScheduleConfirmPresenceEventStart>(_onScheduleConfirmPresenceEventStart);
     on<ScheduleConfirmPresenceEventAddConfirm>(
         _onScheduleConfirmPresenceEventAddConfirm);
     on<ScheduleConfirmPresenceEventRemoveConfirm>(
         _onScheduleConfirmPresenceEventRemoveConfirm);
     on<ScheduleConfirmPresenceEventUpdate>(
         _onScheduleConfirmPresenceEventUpdate);
-    add(ScheduleConfirmPresenceEventOnInit());
+    add(ScheduleConfirmPresenceEventStart());
   }
-  FutureOr<void> _onScheduleConfirmPresenceEventOnInit(
-      ScheduleConfirmPresenceEventOnInit event,
+  FutureOr<void> _onScheduleConfirmPresenceEventStart(
+      ScheduleConfirmPresenceEventStart event,
       Emitter<ScheduleConfirmPresenceState> emit) {
     final List<AttendanceModel> modelsUnconfirmedTemp = [];
     final List<AttendanceModel> modelsAlreadyConfirmedTemp = [];

@@ -109,8 +109,8 @@ class ScheduleSearchListView extends StatelessWidget {
                     bool allConfirmedPresence = false;
                     if (e.attendances?.length == 1) {
                       for (AttendanceModel attendance in e.attendances ?? []) {
-                        texts.add('${attendance.professional?.name}');
-                        texts.add('${attendance.patient?.name}');
+                        texts.add('${attendance.professional?.nickname}');
+                        texts.add('${attendance.patient?.nickname}');
                         allConfirmedPresence =
                             attendance.confirmedPresence == null ? false : true;
                       }
@@ -121,9 +121,9 @@ class ScheduleSearchListView extends StatelessWidget {
                           confirmedPresence++;
                         }
                         tooltipMsgs.add(
-                            '${attendance.confirmedPresence != null ? "*" : ""}${attendance.professional?.name}. ${attendance.patient?.name}. ${attendance.patient?.phone}');
+                            '${attendance.confirmedPresence != null ? "+" : "-"}${attendance.professional?.nickname}. ${attendance.patient?.nickname}. ${attendance.patient?.phone}');
                         texts.add(
-                            '${attendance.confirmedPresence != null ? "*" : ""}${attendance.professional?.name}');
+                            '${attendance.confirmedPresence != null ? "+" : "-"}${attendance.professional?.nickname}');
                       }
                       texts.add(
                           '$confirmedPresence/${e.attendances?.length} Cfm/Ats. ');
