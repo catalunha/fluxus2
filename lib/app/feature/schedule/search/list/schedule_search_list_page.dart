@@ -8,6 +8,7 @@ import '../../../../core/models/event_model.dart';
 import '../bloc/schedule_search_bloc.dart';
 import '../bloc/schedule_search_event.dart';
 import '../bloc/schedule_search_state.dart';
+import 'add/event_add_page.dart';
 import 'confirm_presence/schedule_confirm_presence_page.dart';
 
 class ScheduleSearchListPage extends StatelessWidget {
@@ -46,6 +47,7 @@ class ScheduleSearchListView extends StatelessWidget {
           BlocBuilder<ScheduleSearchBloc, ScheduleSearchState>(
             builder: (context, state) {
               List<Widget> roomWidget = [];
+
               for (var room in state.rooms) {
                 roomWidget.add(CircleAvatar(
                   radius: 20,
@@ -142,9 +144,22 @@ class ScheduleSearchListView extends StatelessWidget {
                           minutes: e.start!.minute,
                         ),
                         minutesDuration: e.duration(),
-                        child: Tooltip(
-                            message: tooltipMsgs.join('\n'),
-                            child: Text(texts.join('\n'))),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => BlocProvider.value(
+                                  value: BlocProvider.of<ScheduleSearchBloc>(
+                                      context),
+                                  child: EventAddPage(model: e),
+                                ),
+                              ),
+                            );
+                          },
+                          child: Tooltip(
+                              message: tooltipMsgs.join('\n'),
+                              child: Text(texts.join('\n'))),
+                        ),
                         onTap: () async {
                           await showDialog(
                             barrierDismissible: false,
@@ -180,7 +195,16 @@ class ScheduleSearchListView extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => BlocProvider.value(
+                value: BlocProvider.of<ScheduleSearchBloc>(context),
+                child: const EventAddPage(model: null),
+              ),
+            ),
+          );
+        },
         child: const Icon(Icons.add),
       ),
     );

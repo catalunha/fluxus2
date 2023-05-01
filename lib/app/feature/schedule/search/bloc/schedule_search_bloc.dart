@@ -31,6 +31,8 @@ class ScheduleSearchBloc
     on<ScheduleSearchEventFilterByRoom>(_onScheduleSearchEventFilterByRoom);
     on<ScheduleSearchEventUpdateAttendances>(
         _onScheduleSearchEventUpdateAttendances);
+    on<ScheduleSearchEventUpdateList>(_onScheduleSearchEventUpdateList);
+    on<ScheduleSearchEventRemoveFromList>(_onScheduleSearchEventRemoveFromList);
   }
   final List<String> cols = [
     ...EventEntity.selectedCols([
@@ -154,5 +156,30 @@ class ScheduleSearchBloc
       emit(state.copyWith(list: temp));
     }
     add(ScheduleSearchEventFilterByRoom(state.roomSelected!));
+  }
+
+  FutureOr<void> _onScheduleSearchEventUpdateList(
+      ScheduleSearchEventUpdateList event, Emitter<ScheduleSearchState> emit) {
+    int index = state.list.indexWhere((model) => model.id == event.model.id);
+    List<EventModel> temp = [...state.list];
+    if (index >= 0) {
+      temp.replaceRange(index, index + 1, [event.model]);
+    } else {
+      temp.add(event.model);
+    }
+    emit(state.copyWith(list: temp, roomSelected: event.model.room!));
+    add(ScheduleSearchEventFilterByRoom(state.roomSelected!));
+  }
+
+  FutureOr<void> _onScheduleSearchEventRemoveFromList(
+      ScheduleSearchEventRemoveFromList event,
+      Emitter<ScheduleSearchState> emit) {
+    int index = state.list.indexWhere((model) => model.id == event.model.id);
+    if (index >= 0) {
+      List<EventModel> temp = [...state.list];
+      temp.removeAt(index);
+      emit(state.copyWith(list: temp));
+      add(ScheduleSearchEventFilterByRoom(state.roomSelected!));
+    }
   }
 }

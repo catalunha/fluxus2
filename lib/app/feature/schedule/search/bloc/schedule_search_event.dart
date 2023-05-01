@@ -33,3 +33,17 @@ class ScheduleSearchEventUpdateAttendances extends ScheduleSearchEvent {
     this.attendances,
   );
 }
+
+class ScheduleSearchEventUpdateList extends ScheduleSearchEvent {
+  final EventModel model;
+  ScheduleSearchEventUpdateList(
+    this.model,
+  );
+}
+
+class ScheduleSearchEventRemoveFromList extends ScheduleSearchEvent {
+  final EventModel model;
+  ScheduleSearchEventRemoveFromList(
+    this.model,
+  );
+}
