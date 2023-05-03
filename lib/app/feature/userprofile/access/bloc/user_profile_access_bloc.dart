@@ -9,6 +9,7 @@ import '../../../../core/models/user_profile_model.dart';
 import '../../../../core/repositories/user_profile_repository.dart';
 import '../../../../data/b4a/entity/expertise_entity.dart';
 import '../../../../data/b4a/entity/office_entity.dart';
+import '../../../../data/b4a/entity/procedure_entity.dart';
 import '../../../../data/b4a/entity/user_profile_entity.dart';
 import 'user_profile_access_event.dart';
 import 'user_profile_access_state.dart';
@@ -44,6 +45,7 @@ class UserProfileAccessBloc
   final List<String> cols = [
     ...UserProfileEntity.singleCols,
     ...OfficeEntity.selectedCols([OfficeEntity.name]),
+    ...ProcedureEntity.selectedCols([ProcedureEntity.code]),
     ...ExpertiseEntity.selectedCols([ExpertiseEntity.name]),
   ];
   FutureOr<void> _onUserProfileAccessEventStart(

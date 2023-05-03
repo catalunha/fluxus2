@@ -36,6 +36,7 @@ class UserProfileSearchBloc
     ...UserProfileEntity.selectedCols([
       UserProfileEntity.name,
       UserProfileEntity.nickname,
+      UserProfileEntity.photo,
       UserProfileEntity.phone,
       UserProfileEntity.email,
       UserProfileEntity.access,

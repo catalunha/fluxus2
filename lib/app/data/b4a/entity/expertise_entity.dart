@@ -21,12 +21,6 @@ class ExpertiseEntity {
   static final List<String> relationCols =
       [].map((e) => '${ExpertiseEntity.className}.$e').toList();
 
-  // static final List<String> allCols = [
-  //   ...ExpertiseEntity.singleCols,
-  //   ...ExpertiseEntity.pointerCols,
-  //   ...ExpertiseEntity.relationCols
-  // ];
-
   static List<String> filterSingleCols(List<String> cols) {
     List<String> temp = [];
     for (var col in cols) {

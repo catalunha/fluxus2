@@ -13,10 +13,10 @@ class AttendanceB4a {
     query.setAmountToSkip((pagination.page - 1) * pagination.limit);
     query.setLimit(pagination.limit);
     print('AttendanceB4a.getQueryAll $cols');
-
     query.keysToReturn([
       ...AttendanceEntity.filterSingleCols(cols),
     ]);
+
     // query.keysToReturn([
     //   'professional',
     //   'procedure',
