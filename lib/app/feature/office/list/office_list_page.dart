@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluxus2/app/feature/utils/app_extension_size.dart';
+import 'package:fluxus2/app/feature/utils/app_mixin_loader.dart';
 
 import '../../../core/models/office_model.dart';
 import '../../../core/repositories/office_repository.dart';
+import '../../utils/app_mixin_message.dart';
 import '../save/office_save_page.dart';
 import 'bloc/office_list_bloc.dart';
 import 'bloc/office_list_event.dart';
@@ -21,14 +24,15 @@ class OfficeListPage extends StatelessWidget {
       child: BlocProvider(
         create: (context) => OfficeListBloc(
             repository: RepositoryProvider.of<OfficeRepository>(context)),
-        child: const OfficeListView(),
+        child: OfficeListView(),
       ),
     );
   }
 }
 
-class OfficeListView extends StatelessWidget {
-  const OfficeListView({Key? key}) : super(key: key);
+class OfficeListView extends StatelessWidget
+    with AppMixinLoader, AppMixinMessage {
+  OfficeListView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,22 +57,26 @@ class OfficeListView extends StatelessWidget {
         },
         listener: (context, state) async {
           if (state.status == OfficeListStateStatus.error) {
-            Navigator.of(context).pop();
-            ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(SnackBar(content: Text(state.error ?? '...')));
+            // Navigator.of(context).pop();
+            hideLoader(context);
+            showMessage(context, state.error);
+            // ScaffoldMessenger.of(context)
+            //   ..hideCurrentSnackBar()
+            //   ..showSnackBar(SnackBar(content: Text(state.error ?? '...')));
           }
           if (state.status == OfficeListStateStatus.success) {
-            Navigator.of(context).pop();
+            // Navigator.of(context).pop();
+            hideLoader(context);
           }
           if (state.status == OfficeListStateStatus.loading) {
-            await showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (BuildContext context) {
-                return const Center(child: CircularProgressIndicator());
-              },
-            );
+            showLoader(context);
+            // await showDialog(
+            //   barrierDismissible: false,
+            //   context: context,
+            //   builder: (BuildContext context) {
+            //     return const Center(child: CircularProgressIndicator());
+            //   },
+            // );
           }
         },
         child: Column(
