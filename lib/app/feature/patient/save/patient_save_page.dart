@@ -149,16 +149,11 @@ class _PatientSaveViewState extends State<PatientSaveView> {
           }
           if (state.status == PatientSaveStateStatus.updated) {
             Navigator.of(context).pop();
-            startFields(state.model);
+          }
 
-            // _emailTec.text = state.model?.email ?? "";
-            // _nameTec.text = state.model?.name ?? "";
-            // _nicknameTec.text = state.model?.nickname ?? "";
-            // _phoneTec.text = state.model?.phone ?? "";
-            // _cpfTec.text = state.model?.cpf ?? "";
-            // _addressTec.text = state.model?.address ?? "";
-            // isFemale = state.model?.isFemale ?? true;
-            // _birthday = state.model?.birthday ?? DateTime.now();
+          if (state.status == PatientSaveStateStatus.fetched) {
+            Navigator.of(context).pop();
+            startFields(state.model);
           }
           if (state.status == PatientSaveStateStatus.loading) {
             await showDialog(

@@ -4,7 +4,14 @@ import '../../../../core/models/healthplan_model.dart';
 import '../../../../core/models/patient_model.dart';
 import '../../../../core/models/region_model.dart';
 
-enum PatientSaveStateStatus { initial, updated, loading, success, error }
+enum PatientSaveStateStatus {
+  initial,
+  fetched,
+  updated,
+  loading,
+  success,
+  error
+}
 
 class PatientSaveState {
   final PatientSaveStateStatus status;

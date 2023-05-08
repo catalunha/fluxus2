@@ -59,7 +59,7 @@ class PatientSaveBloc extends Bloc<PatientSaveEvent, PatientSaveState> {
         familyUpdated: temp?.family ?? [],
         healthPlansOriginal: temp?.healthPlans ?? [],
         healthPlansUpdated: temp?.healthPlans ?? [],
-        status: PatientSaveStateStatus.updated,
+        status: PatientSaveStateStatus.fetched,
       ));
     } catch (e) {
       //print(e);
