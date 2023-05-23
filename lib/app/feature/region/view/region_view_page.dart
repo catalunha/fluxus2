@@ -19,10 +19,10 @@ class RegionViewPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                AppTextTitleValue(
-                  title: 'Id: ',
-                  value: model.id,
-                ),
+                // AppTextTitleValue(
+                //   title: 'Id: ',
+                //   value: model.id,
+                // ),
                 AppTextTitleValue(
                   title: 'UF: ',
                   value: model.uf,

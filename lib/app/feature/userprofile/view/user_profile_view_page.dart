@@ -85,10 +85,10 @@ class UserProfileViewView extends StatelessWidget {
                         height: 100,
                         width: 100,
                       ),
-                      AppTextTitleValue(
-                        title: 'id: ',
-                        value: state.model.id,
-                      ),
+                      // AppTextTitleValue(
+                      //   title: 'id: ',
+                      //   value: state.model.id,
+                      // ),
                       AppTextTitleValue(
                         title: 'E-mail: ',
                         value: state.model.email,
