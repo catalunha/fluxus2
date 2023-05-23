@@ -1,0 +1,31 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "fluxus2",
+      "request": "launch",
+      "type": "dart",
+      "toolArgs": [
+        "--dart-define",
+        "keyApplicationId=DJORW0khdQmM9ZrmDt2gKOrVfPHdYFlJkRRY51I1",
+        "--dart-define",
+        "keyClientKey=1a84GqtZaTHeVs1UL3UknN0qqcDmfFnwG3LxL2v6"
+      ]
+    },
+    {
+      "name": "fluxus2 (profile mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "fluxus2 (release mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
+    }
+  ]
+}
