@@ -26,13 +26,6 @@ class EventCard extends StatelessWidget {
               title: 'Id: ',
               value: model.id,
             ),
-            // AppTextTitleValue(
-            //   title: 'Atendimentos: ',
-            //   value: model.attendances
-            //       ?.map((e) => e.professional?.nickname)
-            //       .toList()
-            //       .join(', '),
-            // ),
             const Text('Atendimentos:'),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
