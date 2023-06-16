@@ -75,12 +75,7 @@ class ScheduleSearchListView extends StatelessWidget {
                   state.start == null ||
                   state.end == null) {
                 return const Center(child: Text(''));
-                // const Center(
-                //     child: Text('Eventos não encontrados nestas condições.'));
               }
-              // print('room: ${state.roomSelected?.name}');
-              // print('list: ${state.list.length}');
-              // print('listFiltered: ${state.listFiltered}');
               var list = [...state.listFiltered];
               DateTime start = DateTime(
                   state.start!.year, state.start!.month, state.start!.day);
